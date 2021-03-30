@@ -131,20 +131,33 @@ public class Map : MonoBehaviour
                     Node tempNode = new Node();
 
                     // Set the properties of the cube primitive such as position, scale and material.
-                    tempNode.cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    tempNode.cube.transform.position = new Vector3Int(x, y, z);
-                    tempNode.cube.transform.localScale = new Vector3Int(1, 1, 1);
-                    tempNode.cube.transform.parent = null;
-                    tempNode.cube.GetComponent<MeshRenderer>().material = mAirMaterial;
+                    //tempNode.cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    //tempNode.cube.transform.position = new Vector3Int(x, y, z);
+                    //tempNode.cube.transform.localScale = new Vector3Int(1, 1, 1);
+                    //tempNode.cube.transform.parent = null;
+                    //tempNode.cube.GetComponent<MeshRenderer>().material = mAirMaterial;
 
                     // Set the node type to be air, so that agents can walk through these points.
                     tempNode.type = NodeType.Air;
 
                     if (y == 2 && z != (mMapSize.z - 1))
                     {
+                        tempNode.cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        tempNode.cube.transform.position = new Vector3Int(x, y, z);
+                        tempNode.cube.transform.localScale = new Vector3Int(1, 1, 1);
+                        tempNode.cube.transform.parent = null;
                         tempNode.type = NodeType.Wall;
                         tempNode.cube.GetComponent<MeshRenderer>().material = mWallMaterial;
                     }
+                    //if (y == 3 && z == mMapSize.z-1)
+                    //{
+                    //    tempNode.cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    //    tempNode.cube.transform.position = new Vector3Int(x, y, z);
+                    //    tempNode.cube.transform.localScale = new Vector3Int(1, 1, 1);
+                    //    tempNode.cube.transform.parent = null;
+                    //    tempNode.type = NodeType.Wall;
+                    //    tempNode.cube.GetComponent<MeshRenderer>().material = mWallMaterial;
+                    //}
 
                     // Set the index of [x,y,z] of mMapArray to be the tempNode.
                     mMapAry[x, y, z] = tempNode;

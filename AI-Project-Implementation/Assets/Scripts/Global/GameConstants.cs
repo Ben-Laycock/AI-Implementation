@@ -98,8 +98,9 @@ public class GameConstants : MonoBehaviour
         set { mControllerRightStickDeadzone = value; }
     }
 
-    [Space][Space][Space]
 
+    [Space][Space][Space]
+    
 
     /*
      * World Variables

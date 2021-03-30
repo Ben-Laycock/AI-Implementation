@@ -56,6 +56,9 @@ public class VoxelManager : MonoBehaviour
         Vector3Int mapSize = mMapSize * mChunkSize;
         float voxelScale = Instance.VoxelScale;
 
+        Vector3 planetCenter = new Vector3(112, 112, 112);
+        float planetRadiusSqr = 60 * 60;
+
         for (int x = 0; x < mapSize.x; x++)
         {
             for (int y = 0; y < mapSize.y; y++)
@@ -64,7 +67,10 @@ public class VoxelManager : MonoBehaviour
                 {
                     Vector3 voxelWorldPos = new Vector3(x, y, z) * voxelScale;
 
-                    if (PerlinValueAtPoint(voxelWorldPos) > Instance.PerlinThreshold)
+                    float perlinVal = PerlinValueAtPoint(voxelWorldPos);
+                    float distSqr = Vector3.SqrMagnitude(voxelWorldPos - planetCenter);
+                    
+                    if (perlinVal > Instance.PerlinThresholdMinMax.x && perlinVal < Instance.PerlinThresholdMinMax.y && distSqr < planetRadiusSqr) // && distSqr < planetRadiusSqr
                         mMapData[x, y, z] = 1;
                     else
                         mMapData[x, y, z] = 0;
@@ -102,10 +108,10 @@ public class VoxelManager : MonoBehaviour
         get { return mVoxelScale; }
     }
 
-    [SerializeField] private float mPerlinThreshold = 0.5f;
-    public float PerlinThreshold
+    [SerializeField] private Vector2 mPerlinThresholdMinMax = new Vector2(0.3f, 0.5f);
+    public Vector2 PerlinThresholdMinMax
     {
-        get { return mPerlinThreshold; }
+        get { return mPerlinThresholdMinMax; }
     }
 
     [SerializeField] private float mPerlinScale = 0.1f;

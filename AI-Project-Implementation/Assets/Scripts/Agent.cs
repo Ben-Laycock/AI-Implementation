@@ -101,6 +101,7 @@ public class Agent : MonoBehaviour
                 {
                     for (int z = -1; z <= 1; z++)
                     {
+                        if ((x != 0 && z != 0) || (x != 0 && y != 0) || (z != 0 && y != 0)) continue;
                         if ((currentPoint.x + x) < 0 || (currentPoint.y + y) < 0 || (currentPoint.z + z) < 0 || (currentPoint.x + x) > Map.Instance.mapSize.x - 1 || (currentPoint.y + y) > Map.Instance.mapSize.y - 1 || (currentPoint.z + z) > Map.Instance.mapSize.z - 1 || (x == 0 && y == 0 && z == 0))
                             continue;
 
@@ -146,6 +147,9 @@ public class Agent : MonoBehaviour
 
         foreach (Vector3Int point in agentPath)
         {
+            Map.Instance.mapAry[point.x, point.y, point.z].cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            Map.Instance.mapAry[point.x, point.y, point.z].cube.transform.position = point;
+            Map.Instance.mapAry[point.x, point.y, point.z].cube.transform.localScale = new Vector3Int(1, 1, 1);
             Map.Instance.mapAry[point.x, point.y, point.z].cube.GetComponent<MeshRenderer>().material = Map.Instance.visitedMaterial;
         }
 
