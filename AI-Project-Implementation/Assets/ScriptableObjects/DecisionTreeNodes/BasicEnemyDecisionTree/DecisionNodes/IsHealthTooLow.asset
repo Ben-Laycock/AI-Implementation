@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01f74e539be371b4095991c7c225316d, type: 3}
+  m_Name: IsHealthTooLow
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: IsHealthTooLow
+  mWindowID: 6
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: 620
+    y: 305
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 0}
+  TrueNode: {fileID: 11400000, guid: 6fa06e4fd1f05704996b6e70bab52ed5, type: 2}
+  FalseNode: {fileID: 11400000, guid: fc85f1b075c114a4496c60e96a1a5b18, type: 2}
+  TrueAction: {fileID: 0}
+  FalseAction: {fileID: 0}

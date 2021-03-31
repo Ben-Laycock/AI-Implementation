@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aba5efd2f71afc4bbb94106a6bc9cbe, type: 3}
+  m_Name: CanNPCSeePlayer
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: CanNPCSeePlayer
+  mWindowID: 7
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: 1520
+    y: 705
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: fc85f1b075c114a4496c60e96a1a5b18, type: 2}
+  TrueNode: {fileID: 0}
+  FalseNode: {fileID: 0}
+  TrueAction: {fileID: 11400000, guid: 2b0b16510f394514c9617943c6bcdbb0, type: 2}
+  FalseAction: {fileID: 11400000, guid: bc883c7bf8e1a3740a78f6379198f8bf, type: 2}

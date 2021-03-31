@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6174428915bcbf249a432ee9566669bf, type: 3}
+  m_Name: TradeEnergyForHealth
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: TradeEnergyForHealth
+  mWindowID: 8
+  mEditableActionRect:
+    serializedVersion: 2
+    x: -480
+    y: 905
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: 9e03980eb1e65574cb176b5ca9c3b566, type: 2}
