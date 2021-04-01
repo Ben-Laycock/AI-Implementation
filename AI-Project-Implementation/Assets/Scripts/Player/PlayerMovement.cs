@@ -219,9 +219,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void MovePlayer()
     {
-        //mPlayerCameraTarget.transform.position = transform.position;
+        mPlayerCameraTarget.transform.position = transform.position;
         mPlayerRigidbody.velocity = transform.forward * mPlayerMovementSpeed;
-        mCameraTargetRigidbody.velocity = mPlayerRigidbody.velocity;
+        //mCameraTargetRigidbody.velocity = mPlayerRigidbody.velocity;
     }
 
     public float Remap(float from, float fromMin, float fromMax, float toMin, float toMax)
