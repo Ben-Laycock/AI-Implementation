@@ -26,8 +26,10 @@ public class AStar : MonoBehaviour
         Dictionary<Vector3Int, Node> openNodes = new Dictionary<Vector3Int, Node>();
         Dictionary<Vector3Int, Node> closedNodes = new Dictionary<Vector3Int, Node>();
 
-        openNodes.Add(argStartPos, new Node(argStartPos, argStartPos, 0f, Vector3.SqrMagnitude(argEndPos - argStartPos)));
+        if (argArray[argStartPos.x, argStartPos.y, argStartPos.z] != (byte)0) return new List<Vector3Int>();
+        if (argArray[argEndPos.x, argEndPos.y, argEndPos.z] != (byte)0) return new List<Vector3Int>();
 
+        openNodes.Add(argStartPos, new Node(argStartPos, argStartPos, 0f, Vector3.SqrMagnitude(argEndPos - argStartPos)));
         while (true)
         {
             Node nextBest = FindLowestFCost(openNodes);

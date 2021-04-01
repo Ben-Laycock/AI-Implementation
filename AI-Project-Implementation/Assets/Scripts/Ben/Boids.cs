@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Boids : MonoBehaviour
 {
-    [SerializeField] private Boids mFlockLeader = null;
+    [SerializeField] private GameObject mTarget = null;
     [SerializeField] private LayerMask mCollisionDetectionMask = new LayerMask();
-    [SerializeField] private GameObject mExplosionVFXPrefab = null;
     [SerializeField] private float mCollisionRadiusCheck = 1f;
     [SerializeField] private int mMaxNeighbours = 10;
 
@@ -31,47 +30,41 @@ public class Boids : MonoBehaviour
     [SerializeField] private float mSeparationWeight = 1f;
     [SerializeField] private float mAlignmentWeight = 1f;
     [SerializeField] private float mCohesionWeight = 1f;
-    [SerializeField] private float mLeaderFollowWeight = 1f;
+    [SerializeField] private float mTargetFollowWeight = 1f;
     [SerializeField] private float mObstacleAvoidanceWeight = 1f;
     
     [Space]
     private Flock mFlock = null;
-    public int mHealth = 1;
+    private bool mShouldFlock = false;
 
-    // Start is called before the first frame update
-    void Start()
+
+    public void RemoveBoidFromFlock()
     {
-        
+        if (mFlock != null) mFlock.RemoveAgent(this);
+    }    
+
+    public void ResetBoid()
+    {
+        mVelocity = Vector3.zero;
+        mAcceleration = Vector3.zero;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetPosition(Vector3 argPosition)
     {
-        if (mHealth <= 0)
-        {
-            if (mFlock != null) mFlock.RemoveAgent(this);
-
-            if (mExplosionVFXPrefab != null)
-            {
-                GameObject explosion = PoolSystem.Instance.GetObjectFromPool(mExplosionVFXPrefab, true);
-                explosion.transform.position = transform.position;
-                explosion.GetComponent<DeactivateVFX>().WaitForDeactivation();
-            }
-
-            Destroy(this.gameObject);
-        }
+        transform.position = argPosition;
     }
 
     public void UpdateBoid(List<Boids> argNeighbours)
     {
+        if (!mShouldFlock) return;
         mAcceleration = Vector3.zero;
 
-        if (mFlockLeader != null)
+        if (mTarget != null)
         {
-            if (CanSee(mFlockLeader.transform.position, mObstacleAvoidanceDistance))
+            if (CanSee(mTarget.transform.position, mObstacleAvoidanceDistance))
             {
-                Vector3 directionToTarget = mFlockLeader.transform.position - transform.position;
-                AddAccelerationForce(SteerTo(directionToTarget) * mLeaderFollowWeight);
+                Vector3 directionToTarget = mTarget.transform.position - transform.position;
+                AddAccelerationForce(SteerTo(directionToTarget) * mTargetFollowWeight);
             }
         }
 
@@ -185,7 +178,8 @@ public class Boids : MonoBehaviour
 
         foreach (Boids other in argNeighbours)
         {
-            if (ReferenceEquals(this, other)) continue; // Continue to next boid, testing against self?
+            if (!other.GetShouldFlock()) continue; // Continue to next, current isnt flocking
+            if (ReferenceEquals(this, other)) continue; // Continue to next, testing against self?
 
             float distanceToNeighbour = Vector3.Distance(transform.position, other.transform.position);
             if (distanceToNeighbour > mAlignmentDistance || distanceToNeighbour <= 0) continue;
@@ -206,6 +200,7 @@ public class Boids : MonoBehaviour
 
         foreach (Boids other in argNeighbours)
         {
+            if (!other.GetShouldFlock()) continue; // Continue to next, current isnt flocking
             if (ReferenceEquals(this, other)) continue; // Continue to next boid, testing against self?
 
             float distanceToNeighbour = Vector3.Distance(transform.position, other.transform.position);
@@ -222,14 +217,14 @@ public class Boids : MonoBehaviour
         return (flockCentre - transform.position);
     }
 
-    public void SetLeader(Boids argLeader)
+    public void SetTarget(GameObject argTaget)
     {
-        mFlockLeader = argLeader;
+        mTarget = argTaget;
     }
 
-    public Boids GetLeader()
+    public GameObject GetTarget()
     {
-        return mFlockLeader;
+        return mTarget;
     }
 
     public void SetFlock(Flock argFlock)
@@ -237,13 +232,13 @@ public class Boids : MonoBehaviour
         mFlock = argFlock;
     }
 
-    public int GetHealth()
+    public void SetShouldFlock(bool argState)
     {
-        return mHealth;
+        mShouldFlock = argState;
     }
 
-    public void Kill()
+    public bool GetShouldFlock()
     {
-        Destroy(this.gameObject);
+        return mShouldFlock;
     }
 }

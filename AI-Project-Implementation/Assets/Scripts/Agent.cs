@@ -33,7 +33,7 @@ public class PQueue<Vector3Int>
             if (pointsQueue[i].Value < pointsQueue[bestIndex].Value)
                 bestIndex = i;
         }
-
+        
         // Return the point with the most priority, then remove it from the queue.
         Vector3Int prioritisedPoint = pointsQueue[bestIndex].Key;
         pointsQueue.RemoveAt(bestIndex);
@@ -102,7 +102,13 @@ public class Agent : MonoBehaviour
                     for (int z = -1; z <= 1; z++)
                     {
                         if ((x != 0 && z != 0) || (x != 0 && y != 0) || (z != 0 && y != 0)) continue;
-                        if ((currentPoint.x + x) < 0 || (currentPoint.y + y) < 0 || (currentPoint.z + z) < 0 || (currentPoint.x + x) > Map.Instance.mapSize.x - 1 || (currentPoint.y + y) > Map.Instance.mapSize.y - 1 || (currentPoint.z + z) > Map.Instance.mapSize.z - 1 || (x == 0 && y == 0 && z == 0))
+                        if ((currentPoint.x + x) < 0 || 
+                            (currentPoint.y + y) < 0 || 
+                            (currentPoint.z + z) < 0 || 
+                            (currentPoint.x + x) > Map.Instance.mapSize.x - 1 || 
+                            (currentPoint.y + y) > Map.Instance.mapSize.y - 1 || 
+                            (currentPoint.z + z) > Map.Instance.mapSize.z - 1 || 
+                            (x == 0 && y == 0 && z == 0))
                             continue;
 
                         if (Map.Instance.mapAry[currentPoint.x + x, currentPoint.y + y, currentPoint.z + z].type == NodeType.Wall)
