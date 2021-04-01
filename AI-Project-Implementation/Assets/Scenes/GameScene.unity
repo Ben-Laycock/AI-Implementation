@@ -238,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7124416190475855576, guid: 28a87caeb64032541a7392952dda78b6, type: 3}
       propertyPath: mTimeScaleSpeedFactor
-      value: 1
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7124416190475855576, guid: 28a87caeb64032541a7392952dda78b6, type: 3}
       propertyPath: mCameraRotationLerpSpeed

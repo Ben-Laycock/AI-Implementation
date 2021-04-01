@@ -199,7 +199,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 mShipRotationVector = new Vector3(rotateVertical * mPlayerCameraSensitivity, rotateHorizontal * mPlayerCameraSensitivity, -mInputDirections.y);
         mShipRotationVector.Normalize();
 
-        mPlayerRigidbody.angularVelocity = (transform.rotation * (mShipRotationVector * 1.5f)) * mTimeScaleSpeedFactor;
+        mPlayerRigidbody.angularVelocity = (transform.rotation * (mShipRotationVector * 1.5f));
 
         mPlayerCamera.fieldOfView = Mathf.Clamp(60.0f + ((30 / (mPlayerBoostMultiplier * mPlayerNormalSpeed)) * mPlayerMovementSpeed), 50.0f, 90.0f);
 
@@ -212,7 +212,7 @@ public class PlayerMovement : MonoBehaviour
         mCameraTargetRigidbody.maxAngularVelocity = 1000;
 
         Quaternion rotation = targetRotation * Quaternion.Inverse(mCameraTargetRigidbody.rotation);
-        Vector3 torque = new Vector3(rotation.x, rotation.y, rotation.z) * rotation.w * Time.fixedDeltaTime * 60.0f;
+        Vector3 torque = new Vector3(rotation.x, rotation.y, rotation.z) * rotation.w * Time.deltaTime * mTimeScaleSpeedFactor;
         mCameraTargetRigidbody.AddTorque(torque, ForceMode.VelocityChange);
         mCameraTargetRigidbody.angularVelocity = Vector3.zero;
     }
