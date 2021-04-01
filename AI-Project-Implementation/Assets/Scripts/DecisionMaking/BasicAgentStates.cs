@@ -16,11 +16,11 @@ public class FollowPathState : FSMState
         {
             if(directionToPlayer.magnitude <= agent.GetAttackRange())
             {
-                agent.GetComponent<TestAgentFSM>().FSMTransitionPassthrough(fsmTransition.ToAttack);
+                agent.FSMTransitionPassthrough(fsmTransition.ToAttack);
             }
             else
             {
-                agent.GetComponent<TestAgentFSM>().FSMTransitionPassthrough(fsmTransition.ToChase);
+                agent.FSMTransitionPassthrough(fsmTransition.ToChase);
             }
         }
     }
@@ -44,12 +44,12 @@ public class AttackState : FSMState
         Vector3 directionToPlayer = GameConstants.Instance.PlayerObject.transform.position - agent.transform.position;
         if (Physics.Raycast(agent.transform.position, directionToPlayer.normalized, directionToPlayer.magnitude, LayerMask.GetMask("Default")))
         {
-            agent.GetComponent<TestAgentFSM>().FSMTransitionPassthrough(fsmTransition.ToLostPlayer);
+            agent.FSMTransitionPassthrough(fsmTransition.ToLostPlayer);
         }
         else
         {
             if(directionToPlayer.magnitude >= agent.GetAttackRange())
-                agent.GetComponent<TestAgentFSM>().FSMTransitionPassthrough(fsmTransition.ToChase);
+                agent.FSMTransitionPassthrough(fsmTransition.ToChase);
         }
     }
 
@@ -78,12 +78,12 @@ public class ChasePlayerState : FSMState
         Vector3 directionToPlayer = GameConstants.Instance.PlayerObject.transform.position - agent.transform.position;
         if (Physics.Raycast(agent.transform.position, directionToPlayer.normalized, directionToPlayer.magnitude, LayerMask.GetMask("Default")))
         {
-            agent.GetComponent<TestAgentFSM>().FSMTransitionPassthrough(fsmTransition.ToLostPlayer);
+            agent.FSMTransitionPassthrough(fsmTransition.ToLostPlayer);
         }
         else
         {
             if (directionToPlayer.magnitude <= agent.GetAttackRange())
-                agent.GetComponent<TestAgentFSM>().FSMTransitionPassthrough(fsmTransition.ToAttack);
+                agent.FSMTransitionPassthrough(fsmTransition.ToAttack);
         }
     }
 

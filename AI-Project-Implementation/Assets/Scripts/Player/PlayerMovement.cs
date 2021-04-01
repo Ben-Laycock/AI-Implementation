@@ -28,6 +28,9 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float mTimeScaleSpeedFactor = 60.0f;
 
+    private float rotateHorizontal = 0.0f;
+    private float rotateVertical = 0.0f;
+
     [Header("Player Current Values")]
     [SerializeField] private float mPlayerMovementSpeed = 0.0f;
     [SerializeField] private CurrentMovementType mCurrentMovementType = CurrentMovementType.None;
@@ -190,23 +193,35 @@ public class PlayerMovement : MonoBehaviour
 
     public void CalculatePlayerCamera()
     {
-        float rotateHorizontal = Input.GetAxis(GameConstants.Instance.HorizontalLookInput);
-        float rotateVertical = -Input.GetAxis(GameConstants.Instance.VerticalLookInput);
+        rotateHorizontal = Input.GetAxis(GameConstants.Instance.HorizontalLookInput);
+        rotateVertical = -Input.GetAxis(GameConstants.Instance.VerticalLookInput);
 
         Vector3 mShipRotationVector = new Vector3(rotateVertical * mPlayerCameraSensitivity, rotateHorizontal * mPlayerCameraSensitivity, -mInputDirections.y);
         mShipRotationVector.Normalize();
 
-        mPlayerRigidbody.angularVelocity = (transform.rotation * (mShipRotationVector * 1.5f)) * Time.deltaTime * mTimeScaleSpeedFactor;
+        mPlayerRigidbody.angularVelocity = (transform.rotation * (mShipRotationVector * 1.5f)) * mTimeScaleSpeedFactor;
 
         mPlayerCamera.fieldOfView = Mathf.Clamp(60.0f + ((30 / (mPlayerBoostMultiplier * mPlayerNormalSpeed)) * mPlayerMovementSpeed), 50.0f, 90.0f);
 
-        mPlayerCameraTarget.transform.rotation = Quaternion.Lerp(mPlayerCameraTarget.transform.rotation, transform.rotation, mCameraRotationLerpSpeed * Time.deltaTime);
+        //mPlayerCameraTarget.transform.rotation = Quaternion.Lerp(mPlayerCameraTarget.transform.rotation, transform.rotation, mCameraRotationLerpSpeed);
+        MoveRotationTorque(transform.rotation);
+    }
+
+    public void MoveRotationTorque(Quaternion targetRotation)
+    {
+        mCameraTargetRigidbody.maxAngularVelocity = 1000;
+
+        Quaternion rotation = targetRotation * Quaternion.Inverse(mCameraTargetRigidbody.rotation);
+        Vector3 torque = new Vector3(rotation.x, rotation.y, rotation.z) * rotation.w * Time.fixedDeltaTime * 60.0f;
+        mCameraTargetRigidbody.AddTorque(torque, ForceMode.VelocityChange);
+        mCameraTargetRigidbody.angularVelocity = Vector3.zero;
     }
 
     public void MovePlayer()
     {
-        mPlayerCameraTarget.transform.position = transform.position;
+        //mPlayerCameraTarget.transform.position = transform.position;
         mPlayerRigidbody.velocity = transform.forward * mPlayerMovementSpeed;
+        mCameraTargetRigidbody.velocity = mPlayerRigidbody.velocity;
     }
 
     public float Remap(float from, float fromMin, float fromMax, float toMin, float toMax)

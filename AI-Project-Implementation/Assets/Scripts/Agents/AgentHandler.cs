@@ -80,6 +80,7 @@ public class AgentHandler : MonoBehaviour, IDamageable
     private void Start()
     {
         mBoidController = gameObject.GetComponent<Boids>();
+        SetupFSM();
     }
 
     //Run AI Agent Functionality
