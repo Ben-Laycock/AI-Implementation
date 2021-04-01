@@ -33,6 +33,18 @@ public class VoxelManager : MonoBehaviour
         return mMapData[x, y, z];
     }
 
+    bool WithinBounds(int x, int y, int z)
+    {
+        if (x >= mMapData.GetLength(0) || 
+            y >= mMapData.GetLength(1) || 
+            z >= mMapData.GetLength(2) || 
+            x < 0 || 
+            y < 0 ||
+            z < 0) 
+            return false;
+
+        return true;
+    }
 
     private void Awake()
     {
@@ -49,6 +61,20 @@ public class VoxelManager : MonoBehaviour
         }
 
         GenerateMapData();
+    }
+
+    private void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    List<Vector3Int> path = AStar.SearchForPath(Vector3Int.zero, new Vector3Int(90, 90, 90), ref mMapData);
+        //    print(path.Count);
+        //    foreach (Vector3Int point in path)
+        //    {
+        //        GameObject newCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //        newCube.transform.position = point;
+        //    }
+        //}
     }
 
     void GenerateMapData()
@@ -69,9 +95,15 @@ public class VoxelManager : MonoBehaviour
 
                     float perlinVal = PerlinValueAtPoint(voxelWorldPos);
                     float distSqr = Vector3.SqrMagnitude(voxelWorldPos - planetCenter);
-                    
-                    if (perlinVal > Instance.PerlinThresholdMinMax.x && perlinVal < Instance.PerlinThresholdMinMax.y && distSqr < planetRadiusSqr) // && distSqr < planetRadiusSqr
-                        mMapData[x, y, z] = 1;
+
+                    bool pointWithinPlanet = distSqr < planetRadiusSqr;
+                    if (perlinVal > Instance.PerlinThresholdMinMax.x && perlinVal < Instance.PerlinThresholdMinMax.y && pointWithinPlanet)
+                    {
+                        if (perlinVal > 0.46f)
+                            mMapData[x, y, z] = 1;
+                        else
+                            mMapData[x, y, z] = 2;
+                    }
                     else
                         mMapData[x, y, z] = 0;
                 }
@@ -95,6 +127,10 @@ public class VoxelManager : MonoBehaviour
         return average;
     }
 
+    public ref byte[,,] GetMapData()
+    {
+        return ref mMapData;
+    }
 
     [SerializeField] private int mChunkSize = 16;
     public int ChunkSize

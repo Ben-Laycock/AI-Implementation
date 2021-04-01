@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6319ace58eda94741b5e53c22d1fca88, type: 2}
+  - {fileID: 2100000, guid: 439f077857c18b6479e3ef61da6616c4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110,3 +110,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mChunkPosition: {x: 0, y: 0, z: 0}
+  mNumTextures: {x: 2, y: 1}
+  mTextureData:
+  - mName: Dirt
+    mOffset: {x: 0, y: 0}
+  - mName: Stone
+    mOffset: {x: 1, y: 0}
