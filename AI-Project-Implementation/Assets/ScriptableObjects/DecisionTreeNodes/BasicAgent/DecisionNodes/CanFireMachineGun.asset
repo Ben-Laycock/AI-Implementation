@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76453020b90606a43a190f775bad6aa5, type: 3}
+  m_Name: CanFireMachineGun
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: CanFireMachineGun
+  mWindowID: 3
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: -1580
+    y: 905
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: 4c0d4468ae8791548ad98c680a31d51e, type: 2}
+  TrueNode: {fileID: 0}
+  FalseNode: {fileID: 0}
+  TrueAction: {fileID: 11400000, guid: 84579a0c9e05fa847b353aead9223ac0, type: 2}
+  FalseAction: {fileID: 11400000, guid: 1fd313d11ae6fce408727e2302fcfea2, type: 2}

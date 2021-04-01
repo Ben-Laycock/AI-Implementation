@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a7f98ed9f23124cbaed3889c8dd4ae, type: 3}
+  m_Name: InRangeOfPlayerForAttack
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: InRangeOfPlayerForAttack
+  mWindowID: 1
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: -680
+    y: 505
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: 67d3cf1bc7349dd4ab9b4ace356d164d, type: 2}
+  TrueNode: {fileID: 11400000, guid: 4c0d4468ae8791548ad98c680a31d51e, type: 2}
+  FalseNode: {fileID: 11400000, guid: 07c41b995de2f0a41abd2c2d6654309c, type: 2}
+  TrueAction: {fileID: 0}
+  FalseAction: {fileID: 0}

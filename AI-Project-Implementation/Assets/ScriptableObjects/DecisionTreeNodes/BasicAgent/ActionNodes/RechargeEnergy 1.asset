@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 971d1b0811180604baa95961e17baa68, type: 3}
+  m_Name: RechargeEnergy 1
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: RechargeEnergy
+  mWindowID: 13
+  mEditableActionRect:
+    serializedVersion: 2
+    x: -1180
+    y: 1105
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: 8685448fc17f0024ea8cd31fa6531912, type: 2}

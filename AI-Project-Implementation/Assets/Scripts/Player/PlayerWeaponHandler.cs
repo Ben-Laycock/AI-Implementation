@@ -40,9 +40,6 @@ public class PlayerWeaponHandler : MonoBehaviour
 
         mPlayerHandler = gameObject.GetComponent<PlayerHandler>();
 
-        PoolSystem.Instance.CreatePool(mBulletPrefab, 20, false);
-        PoolSystem.Instance.CreatePool(mRocketPrefab, 10, false);
-
     }
 
     private void Update()

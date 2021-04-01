@@ -7,16 +7,20 @@ using UnityEngine;
 public class EditableTree : ScriptableObject
 {
 
+    //Tree Name
     [SerializeField] public string mDecisionTreeName = "Default Decision Tree";
 
+    //Node Storage
     [SerializeField] public List<EditableDecision> mUnconnectedDecisions;
     [SerializeField] public List<EditableAction> mUnconnectedActions;
 
     [SerializeField] public List<EditableDecision> mConnectedDecisions;
     [SerializeField] public List<EditableAction> mConnectedActions;
 
+    //Tree Root Node
     [SerializeField] public EditableDecision mRoot;
 
+    //Return Decision or Action based on Node ID
     public EditableDecision GetUnconnectedDecisionWithID(int id)
     {
         for (int i = 0; i < mUnconnectedDecisions.Count; i++)
@@ -65,6 +69,7 @@ public class EditableTree : ScriptableObject
         return null;
     }
 
+    //Remove Functions for Decision and Action Nodes with ID's
     public void RemoveUnconnectedDecisionWithID(int id)
     {
         for (int i = 0; i < mUnconnectedDecisions.Count; i++)
@@ -131,9 +136,9 @@ public abstract class EditableDecision : ScriptableObject
     public EditableAction TrueAction = null;
     public EditableAction FalseAction = null;
 
-    public abstract void MakeDecision(AgentInformation agentInformation);
+    public abstract void MakeDecision(AgentHandler agentInformation);
 
-    public void RunChildDecision(AgentInformation agentInformation, bool value)
+    public void RunChildDecision(AgentHandler agentInformation, bool value)
     {
         if (value)
         {
@@ -175,5 +180,5 @@ public abstract class EditableAction : ScriptableObject
     [SerializeField] public Rect mEditableActionRect;
     [SerializeField] public EditableDecision mParentDecision = null;
 
-    public abstract void TakeAction(AgentInformation agentInformation);
+    public abstract void TakeAction(AgentHandler agentInformation);
 }

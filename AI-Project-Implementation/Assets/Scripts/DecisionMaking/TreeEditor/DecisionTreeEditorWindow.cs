@@ -275,7 +275,7 @@ public class DecisionTreeEditorWindow : EditorWindow
             PossibleDecisionTypes = new List<Type>();
 
             //types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
-            typesToLoop = System.Reflection.Assembly.GetAssembly(typeof(EditableIsHealthTooLow)).GetTypes();
+            typesToLoop = System.Reflection.Assembly.GetAssembly(typeof(EditableDecision)).GetTypes();
 
             foreach(Type type in typesToLoop)
             {
@@ -297,7 +297,7 @@ public class DecisionTreeEditorWindow : EditorWindow
         {
             PossibleActionTypes = new List<Type>();
 
-            typesToLoop = System.Reflection.Assembly.GetAssembly(typeof(EditableTradeEnergyForHealth)).GetTypes();
+            typesToLoop = System.Reflection.Assembly.GetAssembly(typeof(EditableAction)).GetTypes();
 
             foreach (Type type in typesToLoop)
             {
@@ -366,7 +366,7 @@ public class DecisionTreeEditorWindow : EditorWindow
             Vector2 mOriginalPosition = mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position;
 
             mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position += mScreenOffset;
-            mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect = GUI.Window(mTreeToEdit.mUnconnectedDecisions[i].mWindowID, mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect, DrawUnconnectedDecisions, mTreeToEdit.mUnconnectedDecisions[i].mEditibleNodeName);
+            mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect = GUI.Window(mTreeToEdit.mUnconnectedDecisions[i].mWindowID, mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect, DrawUnconnectedDecisions, "Unconnected Decision");
             mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position -= mScreenOffset;
 
             ApplyDragMoveToSubNodes(mTreeToEdit.mUnconnectedDecisions[i], (mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position - mOriginalPosition));
@@ -384,7 +384,7 @@ public class DecisionTreeEditorWindow : EditorWindow
             }
 
             mTreeToEdit.mUnconnectedActions[i].mEditableActionRect.position += mScreenOffset;
-            mTreeToEdit.mUnconnectedActions[i].mEditableActionRect = GUI.Window(mTreeToEdit.mUnconnectedActions[i].mWindowID, mTreeToEdit.mUnconnectedActions[i].mEditableActionRect, DrawUnconnectedActions, mTreeToEdit.mUnconnectedActions[i].mEditibleNodeName);
+            mTreeToEdit.mUnconnectedActions[i].mEditableActionRect = GUI.Window(mTreeToEdit.mUnconnectedActions[i].mWindowID, mTreeToEdit.mUnconnectedActions[i].mEditableActionRect, DrawUnconnectedActions, "Unconnected Action");
             mTreeToEdit.mUnconnectedActions[i].mEditableActionRect.position -= mScreenOffset;
         }
 
@@ -426,9 +426,21 @@ public class DecisionTreeEditorWindow : EditorWindow
 
     void DrawCreateDecisionNodeWindow(int id)
     {
+        NodeWindow currentWindow = null;;
+
+        for (int i = 0; i < mCreateDecisionNodeWindows.Count; i++)
+        {
+            if (id == mCreateDecisionNodeWindows[i].mWindowID)
+            {
+                currentWindow = mCreateDecisionNodeWindows[i];
+                break;
+            }
+        }
+
+        if(currentWindow == null) return;
+
         int MaxPossibleTypes = PossibleDecisionTypes.Count;
 
-        int selected = 0;
         string[] options = new string[MaxPossibleTypes];
 
         for(int i = 0; i < MaxPossibleTypes; i++)
@@ -436,7 +448,7 @@ public class DecisionTreeEditorWindow : EditorWindow
             options[i] = PossibleDecisionTypes[i].ToString();
         }
 
-        selected = EditorGUILayout.Popup("Node Type", selected, options);
+        currentWindow.mSelectedElement = EditorGUILayout.Popup("Node Type", currentWindow.mSelectedElement, options);
 
         if (GUILayout.Button("Finalise Creation"))
         {
@@ -451,8 +463,8 @@ public class DecisionTreeEditorWindow : EditorWindow
                 AssetDatabase.CreateFolder("Assets/ScriptableObjects/DecisionTreeNodes/" + mTreeToEdit.mDecisionTreeName, "DecisionNodes");
             }
 
-            EditableDecision NodeToCreate = (EditableDecision)ScriptableObject.CreateInstance(PossibleDecisionTypes[selected]);
-            NodeToCreate.mEditibleNodeName = PossibleDecisionTypes[selected].ToString().Remove(0, 8);
+            EditableDecision NodeToCreate = (EditableDecision)ScriptableObject.CreateInstance(PossibleDecisionTypes[currentWindow.mSelectedElement]);
+            NodeToCreate.mEditibleNodeName = PossibleDecisionTypes[currentWindow.mSelectedElement].ToString().Remove(0, 8);
 
             string UniqueLocation = AssetDatabase.GenerateUniqueAssetPath("Assets/ScriptableObjects/DecisionTreeNodes/" + mTreeToEdit.mDecisionTreeName + "/DecisionNodes/" + NodeToCreate.mEditibleNodeName + ".asset");
             AssetDatabase.CreateAsset(NodeToCreate, UniqueLocation);
@@ -491,9 +503,21 @@ public class DecisionTreeEditorWindow : EditorWindow
 
     void DrawCreateActionNodeWindow(int id)
     {
+        NodeWindow currentWindow = null; ;
+
+        for (int i = 0; i < mCreateActionNodeWindows.Count; i++)
+        {
+            if (id == mCreateActionNodeWindows[i].mWindowID)
+            {
+                currentWindow = mCreateActionNodeWindows[i];
+                break;
+            }
+        }
+
+        if (currentWindow == null) return;
+
         int MaxPossibleTypes = PossibleActionTypes.Count;
 
-        int selected = 0;
         string[] options = new string[MaxPossibleTypes];
 
         for (int i = 0; i < MaxPossibleTypes; i++)
@@ -501,7 +525,7 @@ public class DecisionTreeEditorWindow : EditorWindow
             options[i] = PossibleActionTypes[i].ToString();
         }
 
-        selected = EditorGUILayout.Popup("Node Type", selected, options);
+        currentWindow.mSelectedElement = EditorGUILayout.Popup("Node Type", currentWindow.mSelectedElement, options);
 
         if (GUILayout.Button("Finalise Creation"))
         {
@@ -516,8 +540,8 @@ public class DecisionTreeEditorWindow : EditorWindow
                 AssetDatabase.CreateFolder("Assets/ScriptableObjects/DecisionTreeNodes/" + mTreeToEdit.mDecisionTreeName, "ActionNodes");
             }
 
-            EditableAction NodeToCreate = (EditableAction)ScriptableObject.CreateInstance(PossibleActionTypes[selected]);
-            NodeToCreate.mEditibleNodeName = PossibleActionTypes[selected].ToString().Remove(0, 8);
+            EditableAction NodeToCreate = (EditableAction)ScriptableObject.CreateInstance(PossibleActionTypes[currentWindow.mSelectedElement]);
+            NodeToCreate.mEditibleNodeName = PossibleActionTypes[currentWindow.mSelectedElement].ToString().Remove(0, 8);
 
             string name = AssetDatabase.GenerateUniqueAssetPath("Assets/ScriptableObjects/DecisionTreeNodes/" + mTreeToEdit.mDecisionTreeName + "/ActionNodes/" + NodeToCreate.mEditibleNodeName + ".asset");
             AssetDatabase.CreateAsset(NodeToCreate, name);
@@ -1449,6 +1473,7 @@ class NodeWindow
  
     public Rect mWindowRect;
     public int mWindowID = -1;
+    public int mSelectedElement = 0;
 
     public NodeWindow()
     {

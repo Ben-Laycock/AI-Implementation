@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9adfafc5e84f5b4e9091a8d5026b3ea, type: 3}
+  m_Name: HasEnoughEnergyForMachineGun
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: HasEnoughEnergyForMachineGun
+  mWindowID: 2
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: -1280
+    y: 705
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: 65905e51da4dee6418f44df5e0ac13e4, type: 2}
+  TrueNode: {fileID: 11400000, guid: 020c0ae56685b4c4ab8110b2868cd82f, type: 2}
+  FalseNode: {fileID: 11400000, guid: 8685448fc17f0024ea8cd31fa6531912, type: 2}
+  TrueAction: {fileID: 0}
+  FalseAction: {fileID: 0}

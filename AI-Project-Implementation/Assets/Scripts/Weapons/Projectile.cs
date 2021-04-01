@@ -17,8 +17,6 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        PoolSystem.Instance.CreatePool(mProjectileExplosionEffect, 20, false);
-
         mProjectileRigidbody = gameObject.GetComponent<Rigidbody>();
     }
 
@@ -72,9 +70,22 @@ public class Projectile : MonoBehaviour
         mSpeed = 0.0f;
     }
 
+    public float GetDamage()
+    {
+        return mDamage;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
+        IDamageable objectInterface = collision.gameObject.GetComponent<IDamageable>();
+
+        if(objectInterface != null)
+        {
+            objectInterface.TakeDamage(mDamage);
+        }
+        
         KillProjectile();
+
     }
 
 }

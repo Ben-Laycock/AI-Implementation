@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHandler : MonoBehaviour
+public class PlayerHandler : MonoBehaviour, IDamageable
 {
     [Header("Player Values")]
     [SerializeField] private float mHealth = 100.0f;
@@ -77,5 +77,10 @@ public class PlayerHandler : MonoBehaviour
     public int GetScore()
     {
         return mScore;
+    }
+
+    public void TakeDamage(float argAmount)
+    {
+        ChangePlayerHealthBy(-argAmount);
     }
 }

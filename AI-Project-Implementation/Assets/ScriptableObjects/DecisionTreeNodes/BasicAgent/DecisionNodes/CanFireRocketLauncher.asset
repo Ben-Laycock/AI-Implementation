@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdf3b6dddb9e57041a0348d471dbba73, type: 3}
+  m_Name: CanFireRocketLauncher
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: CanFireRocketLauncher
+  mWindowID: 5
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: -380
+    y: 905
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: 07c41b995de2f0a41abd2c2d6654309c, type: 2}
+  TrueNode: {fileID: 0}
+  FalseNode: {fileID: 0}
+  TrueAction: {fileID: 11400000, guid: 41fc96d92e139ae4b8bfa643a80b5e83, type: 2}
+  FalseAction: {fileID: 11400000, guid: 42616f11e0dfbf74ab961f060872570c, type: 2}

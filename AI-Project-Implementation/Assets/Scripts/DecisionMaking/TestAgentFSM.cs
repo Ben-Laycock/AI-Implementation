@@ -20,7 +20,7 @@ public class TestAgentFSM : MonoBehaviour
 
     public void SetupFSM()
     {
-        FollowPathState followState = new FollowPathState();
+        /*FollowPathState followState = new FollowPathState();
         followState.AddTransitionToState(fsmTransition.SawPlayer, fsmStateID.ChasePlayer);
         followState.AddTransitionToState(fsmTransition.Charge, fsmStateID.ChargeAttacks);
 
@@ -35,13 +35,14 @@ public class TestAgentFSM : MonoBehaviour
         fsm = new FiniteStateMachine();
         fsm.AddState(followState);
         fsm.AddState(chargeState);
-        fsm.AddState(chaseState);
+        fsm.AddState(chaseState);*/
     }
 
     public void FSMTransitionPassthrough(fsmTransition transition) { fsm.PerformTransition(transition); }
 
 }
 
+/*
 public class FollowPathState : FSMState
 {
     //private int currentWayPoint;
@@ -54,7 +55,7 @@ public class FollowPathState : FSMState
         mStateID = fsmStateID.FollowPath;
     }
 
-    public override void Reason(GameObject player, GameObject agent)
+    public override void Reason(GameObject player, AgentHandler agent)
     {
         RaycastHit hit;
         if (Physics.Raycast(agent.transform.position, (player.transform.position - agent.transform.position).normalized, out hit, 15F))
@@ -64,33 +65,9 @@ public class FollowPathState : FSMState
         }
     }
 
-    public override void Act(GameObject player, GameObject agent)
+    public override void Act(GameObject player, AgentHandler agent)
     {
-        //Vector3 vel = npc.rigidbody.velocity;
-        //Vector3 moveDir = waypoints[currentWayPoint].position - npc.transform.position;
 
-        /*if (moveDir.magnitude < 1)
-        {
-            currentWayPoint++;
-            if (currentWayPoint >= waypoints.Length)
-            {
-                currentWayPoint = 0;
-            }
-        }
-        else
-        {
-            vel = moveDir.normalized * 10;
-
-            // Rotate towards the waypoint
-            npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation,
-                                                      Quaternion.LookRotation(moveDir),
-                                                      5 * Time.deltaTime);
-            npc.transform.eulerAngles = new Vector3(0, npc.transform.eulerAngles.y, 0);
-
-        }
-
-        // Apply the Velocity
-        npc.rigidbody.velocity = vel;*/
     }
 
 }
@@ -102,7 +79,7 @@ public class ChargeAgentAttackState : FSMState
         mStateID = fsmStateID.ChargeAttacks;
     }
 
-    public override void Reason(GameObject player, GameObject agent)
+    public override void Reason(GameObject player, AgentHandler agent)
     {
 
         //if (Vector3.Distance(agent.transform.position, player.transform.position) >= 30)
@@ -111,7 +88,7 @@ public class ChargeAgentAttackState : FSMState
         //Check Player Charge
     }
 
-    public override void Act(GameObject player, GameObject agent)
+    public override void Act(GameObject player, AgentHandler agent)
     {
         //Charge NPC Attack
     }
@@ -125,16 +102,17 @@ public class ChasePlayerState : FSMState
         mStateID = fsmStateID.ChasePlayer;
     }
 
-    public override void Reason(GameObject player, GameObject agent)
+    public override void Reason(GameObject player, AgentHandler agent)
     {
 
         if (Vector3.Distance(agent.transform.position, player.transform.position) >= 30)
             agent.GetComponent<TestAgentFSM>().FSMTransitionPassthrough(fsmTransition.Charge);
     }
 
-    public override void Act(GameObject player, GameObject agent)
+    public override void Act(GameObject player, AgentHandler agent)
     {
         //Charge NPC Attack
     }
 
 }
+*/

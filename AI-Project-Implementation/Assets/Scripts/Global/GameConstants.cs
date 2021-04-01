@@ -120,4 +120,10 @@ public class GameConstants : MonoBehaviour
         set { mGlobalGravityScale = value; }
     }
 
+    [SerializeField] private GameObject mPlayerObject;
+    public GameObject PlayerObject
+    {
+        get { return mPlayerObject; }
+    }
+
 }

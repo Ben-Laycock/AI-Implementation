@@ -5,11 +5,9 @@ using UnityEngine;
 public enum fsmTransition
 {
     DefaultTransition = 0,
-    SawPlayer = 1,
-    Attack = 2,
-    Charge = 3,
-    ReturnToHealthStation = 4,
-    LostPlayer = 5,
+    ToChase = 1,
+    ToAttack = 2,
+    ToLostPlayer = 3,
 }
 
 public enum fsmStateID
@@ -17,10 +15,7 @@ public enum fsmStateID
     DefaultStateID = 0,
     ChasePlayer = 1,
     AttackPlayer = 2,
-    ChargeAttacks = 3,
-    GoToHealthStation = 4,
-    FollowSwarm = 5,
-    FollowPath = 6
+    FollowPath = 3
 }
 
 public abstract class FSMState
@@ -31,7 +26,7 @@ public abstract class FSMState
 
     public void AddTransitionToState(fsmTransition transition, fsmStateID stateID)
     {
-        // Check if anyone of the args is invalid
+        // Log error if the passed transition or state are incorrect
         if (transition == fsmTransition.DefaultTransition || stateID == fsmStateID.DefaultStateID)
         {
             Debug.LogError("FSMState ERROR: Transition or State are incorrect!");
@@ -76,8 +71,8 @@ public abstract class FSMState
 
     public virtual void DoBeforeEntering() { }
     public virtual void DoBeforeLeaving() { }
-    public abstract void Reason(GameObject player, GameObject agent);
-    public abstract void Act(GameObject player, GameObject agent);
+    public abstract void Reason(GameObject player, AgentHandler agent);
+    public abstract void Act(GameObject player, AgentHandler agent);
 
 } // Class FSMState
 
