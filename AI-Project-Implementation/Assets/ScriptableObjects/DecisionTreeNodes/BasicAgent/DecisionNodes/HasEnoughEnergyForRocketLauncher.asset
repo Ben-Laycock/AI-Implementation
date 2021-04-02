@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HasEnoughEnergyForRocketLauncher
   m_EditorClassIdentifier: 
   mEditibleNodeName: HasEnoughEnergyForRocketLauncher
-  mWindowID: 2
+  mWindowID: 5
   mEditableDecisionRect:
     serializedVersion: 2
     x: 1220

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SelectRocketLauncher
   m_EditorClassIdentifier: 
   mEditibleNodeName: SelectRocketLauncher
-  mWindowID: 10
+  mWindowID: 12
   mEditableActionRect:
     serializedVersion: 2
     x: 1120

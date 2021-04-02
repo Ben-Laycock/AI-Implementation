@@ -126,4 +126,10 @@ public class GameConstants : MonoBehaviour
         get { return mPlayerObject; }
     }
 
+    [SerializeField] private BoidsManager mBoidsManager;
+    public BoidsManager BoidsManager
+    {
+        get { return mBoidsManager; }
+    }
+
 }

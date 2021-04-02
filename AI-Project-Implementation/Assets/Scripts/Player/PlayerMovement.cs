@@ -16,15 +16,22 @@ public class PlayerMovement : MonoBehaviour
     [Header("Player objects")]
     [SerializeField] private GameObject mPlayerCameraTarget;
     [SerializeField] private GameObject mPlayerCameraObject;
+    [SerializeField] private GameObject mPlayerSpeedSystemObject;
+    [SerializeField] private LayerMask mLayerMaskForCameraToAdjustTo;
+
+    private ParticleSystem mSpeedSystem;
+    ParticleSystem.EmissionModule module;
+
     private Camera mPlayerCamera;
     private Rigidbody mCameraTargetRigidbody;
+
+    private Vector3 mCameraDirectionFromTargetLock;
 
     [Header("Player Movement Values")]
     [SerializeField] private float mPlayerNormalSpeed = 5.0f;
     [SerializeField] private float mPlayerBoostMultiplier = 1.5f;
     [SerializeField] private float mPlayerCameraSensitivity = 1.0f;
     [SerializeField] private float mCameraFOVLerpSpeed = 1.0f;
-    [SerializeField] private float mCameraRotationLerpSpeed = 1.0f;
 
     [SerializeField] private float mTimeScaleSpeedFactor = 60.0f;
 
@@ -53,6 +60,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        mPlayerSpeedSystemObject = GameObject.Find("SpeedSystem");
+        mSpeedSystem = mPlayerSpeedSystemObject.GetComponent<ParticleSystem>();
+        module = mSpeedSystem.emission;
+
         mPlayerCameraTarget = GameObject.Find("CameraTarget");
         mPlayerCameraObject = GameObject.Find("PlayerCamera");
         mCameraTargetRigidbody = mPlayerCameraTarget.GetComponent<Rigidbody>();
@@ -132,6 +143,8 @@ public class PlayerMovement : MonoBehaviour
 
         //Debug.Log("Target: " + mTargetVelocity + "Current: " + mPlayerMovementSpeed + "Change as edited range: " + mCameraDistanceDifference);
 
+        module.enabled = false;
+
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W) && mShiftInput)
         {
             mTargetVelocity = mPlayerBoostMultiplier * mPlayerNormalSpeed;
@@ -142,7 +155,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 mPreviousMovementType = CurrentMovementType.Boosting;
                 mLerpTimer = 0.0f;
-            }
+            }    
+            module.enabled = true;
         }
         else if (inputDirections.z == 1)
         {
@@ -154,7 +168,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 mPreviousMovementType = CurrentMovementType.Normal;
                 mLerpTimer = 0.0f;
-            }    
+            }
         }
         else if (inputDirections.z == -1)
         {
@@ -193,6 +207,17 @@ public class PlayerMovement : MonoBehaviour
 
     public void CalculatePlayerCamera()
     {
+        mCameraDirectionFromTargetLock = mPlayerCameraObject.transform.position - mPlayerCameraTarget.transform.position;
+        mCameraDirectionFromTargetLock.Normalize();
+
+        RaycastHit hit;
+        Physics.Raycast(mPlayerCameraTarget.transform.position, mCameraDirectionFromTargetLock, out hit, 6.14f, mLayerMaskForCameraToAdjustTo);
+
+        if(!hit.transform)
+            mPlayerCameraObject.transform.position = mPlayerCameraTarget.transform.position + mCameraDirectionFromTargetLock * 6.14f;
+        else
+            mPlayerCameraObject.transform.position = mPlayerCameraTarget.transform.position + mCameraDirectionFromTargetLock * (hit.distance -0.5f);
+
         rotateHorizontal = Input.GetAxis(GameConstants.Instance.HorizontalLookInput);
         rotateVertical = -Input.GetAxis(GameConstants.Instance.VerticalLookInput);
 

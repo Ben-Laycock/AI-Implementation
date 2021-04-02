@@ -88,11 +88,7 @@ public class DecisionTreeEditorWindow : EditorWindow
         window.position = new Rect(windowXPosition, windowYPosition, windowWidth, windowHeight);
     }
 
-    private void Update()
-    {
-        
-    }
-
+    //Functions for managing Window closing and unfocusing
     public void EditorQuittingFunction()
     {
         SaveAllNodeChanges();
@@ -108,6 +104,7 @@ public class DecisionTreeEditorWindow : EditorWindow
         EditorQuittingFunction();
     }
 
+    //Rendering Editor Tree and Controll Interface
     void OnGUI()
     {
         if(OneTimeSetupNoRepeat)
@@ -115,7 +112,6 @@ public class DecisionTreeEditorWindow : EditorWindow
             OneTimeSetupNoRepeat = false;
             mOriginalBackgroundColor = GUI.backgroundColor;
             UnityEditor.EditorApplication.quitting += EditorQuittingFunction;
-            //UnityEngine.Application.quitting += EditorQuittingFunction;
         }
 
         //Request Selection of Decision Tree To Edit
@@ -128,17 +124,10 @@ public class DecisionTreeEditorWindow : EditorWindow
         //Check for mouse drag event
         if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
         {
-            //Debug.Log("Mouse Pressed!");
             if (!GetNodeRectContainsMouse(Event.current.mousePosition))
-            {
-                //Debug.Log("Not Contained!");
                 MousePressPosition = Event.current.mousePosition;
-            }
             else
-            {
-                //Debug.Log("Contained");
                 mNeedsReset = true;
-            }
         }
 
         if (Event.current.type == EventType.MouseDrag && Event.current.button == 0)
@@ -148,13 +137,10 @@ public class DecisionTreeEditorWindow : EditorWindow
                 if(!mLockResetState)
                 {
                     if (!GetNodeRectContainsMouse(Event.current.mousePosition))
-                    {
                         mCanDrag = true;
-                    }
                     else
-                    {
                         mNeedsReset = true;
-                    }
+
                     mLockResetState = true;
                 }
 
@@ -237,6 +223,7 @@ public class DecisionTreeEditorWindow : EditorWindow
             } 
         }
 
+        //Setup current tree connected and unconnected decisions and actions with ids
         if (OneTimeSetupOnTree)
         {
             WindowID = 0;
@@ -268,24 +255,20 @@ public class DecisionTreeEditorWindow : EditorWindow
             OneTimeSetupOnTree = false;
         }
 
+        //Render Decision Tree Window and Editable Parameters
         mTreeToEdit.mDecisionTreeName = EditorGUILayout.TextField("Decision Tree Name: ", mTreeToEdit.mDecisionTreeName);
 
         if (GUILayout.Button("Create Decision Node"))
         {
             PossibleDecisionTypes = new List<Type>();
 
-            //types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
             typesToLoop = System.Reflection.Assembly.GetAssembly(typeof(EditableDecision)).GetTypes();
 
             foreach(Type type in typesToLoop)
             {
                 if(type.IsSubclassOf(typeof(EditableDecision)))
-                {
                     PossibleDecisionTypes.Add(type);
-                }
             }
-
-            //Debug.Log(PossibleDecisionTypes.Count);
 
             Rect mWindowRect = new Rect((position.width / 2) - (mScreenOffset.x + 100), (position.height / 2) - (mScreenOffset.y + 50), 200, 100);
 
@@ -302,9 +285,7 @@ public class DecisionTreeEditorWindow : EditorWindow
             foreach (Type type in typesToLoop)
             {
                 if (type.IsSubclassOf(typeof(EditableAction)))
-                {
                     PossibleActionTypes.Add(type);
-                }
             }
 
             Rect mWindowRect = new Rect((position.width / 2) - (mScreenOffset.x + 100), (position.height / 2) - (mScreenOffset.y + 50), 200, 100);
@@ -313,6 +294,7 @@ public class DecisionTreeEditorWindow : EditorWindow
             mCreateActionNodeWindows.Add(newNodeWindow);
         }
 
+        //Draw Background Grid
         DrawGrid(20, 0.2f, Color.gray);
         DrawGrid(100, 0.4f, Color.gray);
 
@@ -325,74 +307,29 @@ public class DecisionTreeEditorWindow : EditorWindow
 
         mScreenOffset -= new Vector2(0, ScreenStartOffsetValue);
 
+        //Draw All Creation Windows and Unconnected Decision and Action Windows
         GUI.backgroundColor = mOriginalBackgroundColor;
 
         for (int i = 0; i < mCreateDecisionNodeWindows.Count; i++)
-        {
-            if (mCreateDecisionNodeWindows[i].mWindowID == -1)
-            {
-                mCreateDecisionNodeWindows[i].mWindowID = WindowID;
-                WindowID++;
-            }
-
-            mCreateDecisionNodeWindows[i].mWindowRect.position += mScreenOffset;
-            mCreateDecisionNodeWindows[i].mWindowRect = GUI.Window(mCreateDecisionNodeWindows[i].mWindowID, mCreateDecisionNodeWindows[i].mWindowRect, DrawCreateDecisionNodeWindow, "Decision Node Creation");
-            mCreateDecisionNodeWindows[i].mWindowRect.position -= mScreenOffset;
-        }
+            DrawNodeWindowWindow(mCreateDecisionNodeWindows[i], DrawCreateDecisionNodeWindow, "Decision Node Creation");
 
         for (int i = 0; i < mCreateActionNodeWindows.Count; i++)
-        {
-            if (mCreateActionNodeWindows[i].mWindowID == -1)
-            {
-                mCreateActionNodeWindows[i].mWindowID = WindowID;
-                WindowID++;
-            }
-
-            mCreateActionNodeWindows[i].mWindowRect.position += mScreenOffset;
-            mCreateActionNodeWindows[i].mWindowRect = GUI.Window(mCreateActionNodeWindows[i].mWindowID, mCreateActionNodeWindows[i].mWindowRect, DrawCreateActionNodeWindow, "Action Node Creation");
-            mCreateActionNodeWindows[i].mWindowRect.position -= mScreenOffset;
-        }
+            DrawNodeWindowWindow(mCreateActionNodeWindows[i], DrawCreateActionNodeWindow, "Action Node Creation");
 
         for(int i = 0; i < mTreeToEdit.mUnconnectedDecisions.Count; i++)
-        {
-            if (mTreeToEdit.mUnconnectedDecisions[i].mWindowID == -1)
-            {
-                mTreeToEdit.mUnconnectedDecisions[i].mWindowID = WindowID;
-                WindowID++;
-            }
-
-            GUI.backgroundColor = mOriginalBackgroundColor;
-
-            Vector2 mOriginalPosition = mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position;
-
-            mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position += mScreenOffset;
-            mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect = GUI.Window(mTreeToEdit.mUnconnectedDecisions[i].mWindowID, mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect, DrawUnconnectedDecisions, "Unconnected Decision");
-            mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position -= mScreenOffset;
-
-            ApplyDragMoveToSubNodes(mTreeToEdit.mUnconnectedDecisions[i], (mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position - mOriginalPosition));
-            DrawNodeRecursive(mTreeToEdit.mUnconnectedDecisions[i]);
-        }
+            DrawUnconnectedDecisionWindow(mTreeToEdit.mUnconnectedDecisions[i], DrawUnconnectedDecisions, "Unconnected Decision");
 
         GUI.backgroundColor = mOriginalBackgroundColor;
 
         for (int i = 0; i < mTreeToEdit.mUnconnectedActions.Count; i++)
-        {
-            if (mTreeToEdit.mUnconnectedActions[i].mWindowID == -1)
-            {
-                mTreeToEdit.mUnconnectedActions[i].mWindowID = WindowID;
-                WindowID++;
-            }
+            DrawUnconnectedActionWindow(mTreeToEdit.mUnconnectedActions[i], DrawUnconnectedActions, "Unconnected Action");
 
-            mTreeToEdit.mUnconnectedActions[i].mEditableActionRect.position += mScreenOffset;
-            mTreeToEdit.mUnconnectedActions[i].mEditableActionRect = GUI.Window(mTreeToEdit.mUnconnectedActions[i].mWindowID, mTreeToEdit.mUnconnectedActions[i].mEditableActionRect, DrawUnconnectedActions, "Unconnected Action");
-            mTreeToEdit.mUnconnectedActions[i].mEditableActionRect.position -= mScreenOffset;
-        }
-
+        //Draw The Current Connected Decision Tree
         DrawEditableDecisionTree();
 
         EndWindows();
 
-        mScreenOffset += new Vector2(0, ScreenStartOffsetValue);
+        mScreenOffset += new Vector2(0, ScreenStartOffsetValue); //Reset Fixed Offset Value
 
         GUI.EndGroup();
 
@@ -400,34 +337,83 @@ public class DecisionTreeEditorWindow : EditorWindow
 
     }
 
-    private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
+    //Drawing the Background Grid
+    private void DrawGrid(float gridLineSplitDistance, float opacity, Color color)
     {
-        int widthDivs = Mathf.CeilToInt(position.width / gridSpacing);
-        int heightDivs = Mathf.CeilToInt(position.height / gridSpacing);
+        int NumberOfLinesHorizontal = Mathf.CeilToInt(position.width / gridLineSplitDistance);
+        int NumberOfLinesVertical = Mathf.CeilToInt(position.height / gridLineSplitDistance);
 
         Handles.BeginGUI();
-        Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
+        Handles.color = new Color(color.r, color.g, color.b, opacity);
 
-        Vector3 newOffset = new Vector3(mScreenOffset.x % gridSpacing, mScreenOffset.y % gridSpacing, 0);
+        Vector3 newOffset = new Vector3(mScreenOffset.x % gridLineSplitDistance, mScreenOffset.y % gridLineSplitDistance, 0);
 
-        for (int i = 0; i < widthDivs; i++)
+        for (int i = 0; i < NumberOfLinesHorizontal; i++)
         {
-            Handles.DrawLine(new Vector3(gridSpacing * i, -gridSpacing, 0) + newOffset, new Vector3(gridSpacing * i, position.height + gridSpacing, 0f) + newOffset);
+            Handles.DrawLine(new Vector3(gridLineSplitDistance * i, -gridLineSplitDistance, 0) + newOffset, new Vector3(gridLineSplitDistance * i, position.height + gridLineSplitDistance, 0f) + newOffset);
         }
 
-        for (int j = 0; j < heightDivs; j++)
+        for (int j = 0; j < NumberOfLinesVertical; j++)
         {
-            Handles.DrawLine(new Vector3(-gridSpacing, gridSpacing * j, 0) + newOffset, new Vector3(position.width + gridSpacing, gridSpacing * j, 0f) + newOffset);
+            Handles.DrawLine(new Vector3(-gridLineSplitDistance, gridLineSplitDistance * j, 0) + newOffset, new Vector3(position.width + gridLineSplitDistance, gridLineSplitDistance * j, 0f) + newOffset);
         }
 
         Handles.color = Color.white;
         Handles.EndGUI();
     }
 
+    //---------------------------------------------------------------------//
+    //------------- Drawing Windows and Window Details --------------------//
+    //---------------------------------------------------------------------//
+    void DrawNodeWindowWindow(NodeWindow window, GUI.WindowFunction function, string windowName)
+    {
+        if (window.mWindowID == -1)
+        {
+            window.mWindowID = WindowID;
+            WindowID++;
+        }
+        window.mWindowRect.position += mScreenOffset;
+        window.mWindowRect = GUI.Window(window.mWindowID, window.mWindowRect, function, windowName);
+        window.mWindowRect.position -= mScreenOffset;
+    }
+
+    void DrawUnconnectedDecisionWindow(EditableDecision decision, GUI.WindowFunction function, string windowName)
+    {
+        if (decision.mWindowID == -1)
+        {
+            decision.mWindowID = WindowID;
+            WindowID++;
+        }
+
+        GUI.backgroundColor = mOriginalBackgroundColor;
+        Vector2 mOriginalPosition = decision.mEditableDecisionRect.position;
+
+        decision.mEditableDecisionRect.position += mScreenOffset;
+        decision.mEditableDecisionRect = GUI.Window(decision.mWindowID, decision.mEditableDecisionRect, function, windowName);
+        decision.mEditableDecisionRect.position -= mScreenOffset;
+
+        ApplyDragMoveToSubNodes(decision, (decision.mEditableDecisionRect.position - mOriginalPosition));
+        DrawNodeRecursive(decision);
+    }
+
+    void DrawUnconnectedActionWindow(EditableAction action, GUI.WindowFunction function, string windowName)
+    {
+        if (action.mWindowID == -1)
+        {
+            action.mWindowID = WindowID;
+            WindowID++;
+        }
+
+        action.mEditableActionRect.position += mScreenOffset;
+        action.mEditableActionRect = GUI.Window(action.mWindowID, action.mEditableActionRect, function, windowName);
+        action.mEditableActionRect.position -= mScreenOffset;
+    }
+
     void DrawCreateDecisionNodeWindow(int id)
     {
         NodeWindow currentWindow = null;;
 
+        //Get the current node window by ID
         for (int i = 0; i < mCreateDecisionNodeWindows.Count; i++)
         {
             if (id == mCreateDecisionNodeWindows[i].mWindowID)
@@ -439,6 +425,7 @@ public class DecisionTreeEditorWindow : EditorWindow
 
         if(currentWindow == null) return;
 
+        //Check which decision the user has Selected
         int MaxPossibleTypes = PossibleDecisionTypes.Count;
 
         string[] options = new string[MaxPossibleTypes];
@@ -450,6 +437,7 @@ public class DecisionTreeEditorWindow : EditorWindow
 
         currentWindow.mSelectedElement = EditorGUILayout.Popup("Node Type", currentWindow.mSelectedElement, options);
 
+        //Create the Required Folders and Assets for Decision Creation
         if (GUILayout.Button("Finalise Creation"))
         {
 
@@ -505,6 +493,7 @@ public class DecisionTreeEditorWindow : EditorWindow
     {
         NodeWindow currentWindow = null; ;
 
+        //Find the Current Node Window By ID
         for (int i = 0; i < mCreateActionNodeWindows.Count; i++)
         {
             if (id == mCreateActionNodeWindows[i].mWindowID)
@@ -516,6 +505,7 @@ public class DecisionTreeEditorWindow : EditorWindow
 
         if (currentWindow == null) return;
 
+        //Check which action the user has Selected
         int MaxPossibleTypes = PossibleActionTypes.Count;
 
         string[] options = new string[MaxPossibleTypes];
@@ -527,6 +517,7 @@ public class DecisionTreeEditorWindow : EditorWindow
 
         currentWindow.mSelectedElement = EditorGUILayout.Popup("Node Type", currentWindow.mSelectedElement, options);
 
+        //Create the Folders Required for Node Creation
         if (GUILayout.Button("Finalise Creation"))
         {
 
@@ -578,71 +569,6 @@ public class DecisionTreeEditorWindow : EditorWindow
         GUI.DragWindow();
     }
 
-    void DrawNodeCurve(Rect start, Rect end, LinkDirection direction)
-    {
-        Vector3 startPos = Vector3.zero;
-        Vector3 endPos = Vector3.zero;
-        Vector3 startTan = Vector3.zero;
-        Vector3 endTan = Vector3.zero;
-        Rect endTexturePos = new Rect(0,0,0,0);
-        Color colorToUse = mTrueConnectorColor;
-
-        Texture2D textureToUse = mDecisionConnectorIcon;
-
-        switch (direction)
-        { 
-            case LinkDirection.LinkTrue:
-                startPos = new Vector3(start.x, start.y + start.height / 2, 0);
-                endPos = new Vector3(end.x + end.width / 2, end.y - size, 0);
-                startTan = startPos + Vector3.left * 50;
-                endTan = endPos + Vector3.down * 50;
-                endTexturePos = new Rect(endPos.x - size / 2, endPos.y, size, size);
-                colorToUse = mTrueConnectorColor;
-                textureToUse = mDecisionConnectorIcon;
-                break;
-
-            case LinkDirection.LinkFalse:
-                startPos = new Vector3(start.x + start.width, start.y + start.height / 2, 0);
-                endPos = new Vector3(end.x + end.width / 2, end.y - size, 0);
-                startTan = startPos + Vector3.right * 50;
-                endTan = endPos + Vector3.down * 50;
-                endTexturePos = new Rect(endPos.x - size / 2, endPos.y, size, size);
-                colorToUse = mFalseConnectorColor;
-                textureToUse = mDecisionConnectorIcon;
-                break;
-
-            case LinkDirection.LinkTrueAction:
-                startPos = new Vector3(start.x, start.y + start.height / 2, 0);
-                endPos = new Vector3(end.x + end.width / 2, end.y - size, 0);
-                startTan = startPos + Vector3.left * 50;
-                endTan = endPos + Vector3.down * 50;
-                endTexturePos = new Rect(endPos.x - size / 2, endPos.y, size, size);
-                colorToUse = mTrueConnectorColor;
-                textureToUse = mActionConnectorIcon;
-                break;
-
-            case LinkDirection.LinkFalseAction:
-                startPos = new Vector3(start.x + start.width, start.y + start.height / 2, 0);
-                endPos = new Vector3(end.x + end.width / 2, end.y - size, 0);
-                startTan = startPos + Vector3.right * 50;
-                endTan = endPos + Vector3.down * 50;
-                endTexturePos = new Rect(endPos.x - size / 2, endPos.y, size, size);
-                colorToUse = mFalseConnectorColor;
-                textureToUse = mActionConnectorIcon;
-                break;
-
-            default:
-                break;
-        }
-
-        Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.white, null, 5);
-
-        var color = GUI.color;
-        GUI.color = colorToUse;
-        GUI.DrawTexture(endTexturePos, textureToUse, ScaleMode.StretchToFill);
-        GUI.color = color;
-    }
-
     void DrawUnconnectedDecisions(int id)
     {
         EditableDecision mCurrentDecision = mTreeToEdit.GetUnconnectedDecisionWithID(id);
@@ -654,22 +580,17 @@ public class DecisionTreeEditorWindow : EditorWindow
 
         if (GUILayout.Button("Set As Root"))
         {
-            if(mTreeToEdit.mRoot == null)
-            {
-                mTreeToEdit.mRoot = mCurrentDecision;
-                mTreeToEdit.mConnectedDecisions.Add(mCurrentDecision);
-                mTreeToEdit.RemoveUnconnectedDecisionWithID(id);
-            }
-            else
+            if(mTreeToEdit.mRoot != null)
             {
                 mTreeToEdit.mUnconnectedDecisions.Add(mTreeToEdit.mRoot);
                 mTreeToEdit.RemoveConnectedDecisionWithID(mTreeToEdit.mRoot.mWindowID);
-                mTreeToEdit.mConnectedDecisions.Add(mCurrentDecision);
-                mTreeToEdit.mRoot = mCurrentDecision;
-                mTreeToEdit.RemoveUnconnectedDecisionWithID(id);
             }
+            mTreeToEdit.mConnectedDecisions.Add(mCurrentDecision);
+            mTreeToEdit.mRoot = mCurrentDecision;
+            mTreeToEdit.RemoveUnconnectedDecisionWithID(id);
         }
 
+        //Select Node to finalise Linking to another decision
         if(mNodeToSetValueFor != null && (mLinkTypeToSet == LinkTypeToSet.NodeTrue || mLinkTypeToSet == LinkTypeToSet.NodeFalse))
         {
             if(!GetIsNodeIDInSubTree(mCurrentDecision, mNodeToSetValueFor.mWindowID))
@@ -698,8 +619,6 @@ public class DecisionTreeEditorWindow : EditorWindow
 
         if (GUILayout.Button("Delete"))
         {
-            //Debug.Log(AssetDatabase.GetAssetPath(mTreeToEdit.mUnconnectedDecisions[i]));
-            //Debug.Log(AssetDatabase.GetAssetPath(mTreeToEdit.mUnconnectedDecisions[i].GetInstanceID()));
             ClearSubNodeBindingsToParent(mCurrentDecision, LinkClearType.All);
 
             mTreeToEdit.RemoveUnconnectedDecisionWithID(id);
@@ -713,10 +632,9 @@ public class DecisionTreeEditorWindow : EditorWindow
     {
         EditableAction mCurrentAction = mTreeToEdit.GetUnconnectedActionWithID(id);;
 
-        if(mCurrentAction != null)
-        {
-            GUILayout.Label(mCurrentAction.mEditibleNodeName);
-        }
+        if(mCurrentAction == null) return;
+        
+        GUILayout.Label(mCurrentAction.mEditibleNodeName);
 
         if (mNodeToSetValueFor != null && (mLinkTypeToSet == LinkTypeToSet.ActionTrue || mLinkTypeToSet == LinkTypeToSet.ActionFalse))
         {
@@ -772,264 +690,231 @@ public class DecisionTreeEditorWindow : EditorWindow
     {
         GUI.backgroundColor = mTrueDecisionColor;
 
-        if(mDecisionToDraw.TrueNode != null)
-        {
-            Vector2 mOriginalPosition = mDecisionToDraw.TrueNode.mEditableDecisionRect.position;
-
-            mDecisionToDraw.TrueNode.mEditableDecisionRect.position += mScreenOffset;
-            mDecisionToDraw.mEditableDecisionRect.position += mScreenOffset;
-
-            mDecisionToDraw.TrueNode.mEditableDecisionRect = GUI.Window(mDecisionToDraw.TrueNode.mWindowID, mDecisionToDraw.TrueNode.mEditableDecisionRect, DrawDecisionNode, "True Decision");
-            DrawNodeCurve(mDecisionToDraw.mEditableDecisionRect, mDecisionToDraw.TrueNode.mEditableDecisionRect, LinkDirection.LinkTrue);
-
-            mDecisionToDraw.mEditableDecisionRect.position -= mScreenOffset;
-            mDecisionToDraw.TrueNode.mEditableDecisionRect.position -= mScreenOffset;
-
-            ApplyDragMoveToSubNodes(mDecisionToDraw.TrueNode, (mDecisionToDraw.TrueNode.mEditableDecisionRect.position - mOriginalPosition));
-            DrawNodeRecursive(mDecisionToDraw.TrueNode);
-        }
+        if (mDecisionToDraw.TrueNode != null)
+            DrawNode(ref mDecisionToDraw.mEditableDecisionRect, ref mDecisionToDraw.TrueNode.mEditableDecisionRect, mDecisionToDraw.TrueNode.mWindowID, "True Decision", LinkDirection.LinkTrue, true, mDecisionToDraw.TrueNode);
 
         GUI.backgroundColor = mFalseDecisionColor;
 
         if (mDecisionToDraw.FalseNode != null)
-        {
-            Vector2 mOriginalPosition = mDecisionToDraw.FalseNode.mEditableDecisionRect.position;
-
-            mDecisionToDraw.FalseNode.mEditableDecisionRect.position += mScreenOffset;
-            mDecisionToDraw.mEditableDecisionRect.position += mScreenOffset;
-
-            mDecisionToDraw.FalseNode.mEditableDecisionRect = GUI.Window(mDecisionToDraw.FalseNode.mWindowID, mDecisionToDraw.FalseNode.mEditableDecisionRect, DrawDecisionNode, "False Decision");
-            DrawNodeCurve(mDecisionToDraw.mEditableDecisionRect, mDecisionToDraw.FalseNode.mEditableDecisionRect, LinkDirection.LinkFalse);
-
-            mDecisionToDraw.mEditableDecisionRect.position -= mScreenOffset;
-            mDecisionToDraw.FalseNode.mEditableDecisionRect.position -= mScreenOffset;
-
-            ApplyDragMoveToSubNodes(mDecisionToDraw.FalseNode, (mDecisionToDraw.FalseNode.mEditableDecisionRect.position - mOriginalPosition));
-            DrawNodeRecursive(mDecisionToDraw.FalseNode);
-        }
+            DrawNode(ref mDecisionToDraw.mEditableDecisionRect, ref mDecisionToDraw.FalseNode.mEditableDecisionRect, mDecisionToDraw.FalseNode.mWindowID, "False Decision", LinkDirection.LinkFalse, true, mDecisionToDraw.FalseNode);
 
         GUI.backgroundColor = mTrueDecisionColor;
 
         if (mDecisionToDraw.TrueAction != null)
-        {
-            mDecisionToDraw.TrueAction.mEditableActionRect.position += mScreenOffset;
-            mDecisionToDraw.mEditableDecisionRect.position += mScreenOffset;
-
-            mDecisionToDraw.TrueAction.mEditableActionRect = GUI.Window(mDecisionToDraw.TrueAction.mWindowID, mDecisionToDraw.TrueAction.mEditableActionRect, DrawActionNode, "True Action");
-            DrawNodeCurve(mDecisionToDraw.mEditableDecisionRect, mDecisionToDraw.TrueAction.mEditableActionRect, LinkDirection.LinkTrueAction);
-
-            mDecisionToDraw.mEditableDecisionRect.position -= mScreenOffset;
-            mDecisionToDraw.TrueAction.mEditableActionRect.position -= mScreenOffset;
-        }
+            DrawNode(ref mDecisionToDraw.mEditableDecisionRect, ref mDecisionToDraw.TrueAction.mEditableActionRect, mDecisionToDraw.TrueAction.mWindowID, "True Action", LinkDirection.LinkTrueAction, false, null);
 
         GUI.backgroundColor = mFalseDecisionColor;
 
         if (mDecisionToDraw.FalseAction != null)
+            DrawNode(ref mDecisionToDraw.mEditableDecisionRect, ref mDecisionToDraw.FalseAction.mEditableActionRect, mDecisionToDraw.FalseAction.mWindowID, "False Action", LinkDirection.LinkFalseAction, false, null);
+    }
+
+    void DrawNode(ref Rect parentRect, ref Rect rectToDraw, int idToDrawWith, string windowName, LinkDirection directionToLink, bool DrawingDecision, EditableDecision DecisionChildNode)
+    {
+        Vector2 mOriginalPosition = rectToDraw.position;
+
+        rectToDraw.position += mScreenOffset;
+        parentRect.position += mScreenOffset;
+
+        if(DrawingDecision)
+            rectToDraw = GUI.Window(idToDrawWith, rectToDraw, DrawDecisionNode, windowName);
+        else
+            rectToDraw = GUI.Window(idToDrawWith, rectToDraw, DrawActionNode, windowName);
+
+        DrawNodeCurve(parentRect, rectToDraw, directionToLink);
+
+        parentRect.position -= mScreenOffset;
+        rectToDraw.position -= mScreenOffset;
+
+        if(DrawingDecision)
         {
-            mDecisionToDraw.FalseAction.mEditableActionRect.position += mScreenOffset;
-            mDecisionToDraw.mEditableDecisionRect.position += mScreenOffset;
-
-            mDecisionToDraw.FalseAction.mEditableActionRect = GUI.Window(mDecisionToDraw.FalseAction.mWindowID, mDecisionToDraw.FalseAction.mEditableActionRect, DrawActionNode, "False Action");
-            
-            DrawNodeCurve(mDecisionToDraw.mEditableDecisionRect, mDecisionToDraw.FalseAction.mEditableActionRect, LinkDirection.LinkFalseAction);
-
-            mDecisionToDraw.mEditableDecisionRect.position -= mScreenOffset;
-            mDecisionToDraw.FalseAction.mEditableActionRect.position -= mScreenOffset;
-        }
+            ApplyDragMoveToSubNodes(DecisionChildNode, (rectToDraw.position - mOriginalPosition));
+            DrawNodeRecursive(DecisionChildNode);
+        } 
     }
 
     void DrawDecisionNode(int id)
     {
-
         EditableDecision mCurrentDecision = mTreeToEdit.GetConnectedDecisionWithID(id);
 
-        if(mCurrentDecision != null)
+        if(mCurrentDecision == null) return;
+
+        GUILayout.Label(mCurrentDecision.mEditibleNodeName);
+
+        bool mShowConnectorOptions = false;
+
+        if(mNodeToSetValueFor == null || mNodeToSetValueFor.mWindowID != mCurrentDecision.mWindowID)
+            mShowConnectorOptions = true;
+
+        if(mShowConnectorOptions)
         {
-            GUILayout.Label(mCurrentDecision.mEditibleNodeName);
-
-            bool mShowConnectorOptions = false;
-
-            if(mNodeToSetValueFor == null)
+            //Shows the option to disconnect the node form its parent node
+            if(mCurrentDecision.mParentDecision != null)
             {
-                mShowConnectorOptions = true;
-            }
-            else
-            {
-                if (mNodeToSetValueFor.mWindowID != mCurrentDecision.mWindowID)
+                if (GUILayout.Button("Disconnect from Parent"))
                 {
-                    mShowConnectorOptions = true;
+                    ClearBindingToParent(mCurrentDecision);
+                    mTreeToEdit.RemoveConnectedDecisionWithID(id);
+                    mTreeToEdit.mUnconnectedDecisions.Add(mCurrentDecision);
                 }
             }
 
-            if(mShowConnectorOptions)
+            //Setting Value for true node
+            if(mCurrentDecision.TrueNode == null && mCurrentDecision.TrueAction == null)
+            { 
+                if (GUILayout.Button("Set True Decision"))
+                {
+                    mLinkTypeToSet = LinkTypeToSet.NodeTrue;
+                    mNodeToSetValueFor = mCurrentDecision;
+                }
+                if (GUILayout.Button("Set True Action"))
+                {
+                    mLinkTypeToSet = LinkTypeToSet.ActionTrue;
+                    mNodeToSetValueFor = mCurrentDecision;
+                }
+            }
+
+            //Disconnect Option for True Node and True Action if One of them is set
+            if(mCurrentDecision.TrueNode != null)
             {
-                if(mCurrentDecision.mParentDecision != null)
+                if (GUILayout.Button("Disconnect True Decision"))
                 {
-                    if (GUILayout.Button("Disconnect from Parent"))
+                    ClearSubNodeBindingsToParent(mCurrentDecision, LinkClearType.NodeTrue);
+                }
+            }
+            if(mCurrentDecision.TrueAction != null)
+            {
+                if (GUILayout.Button("Disconnect True Action"))
+                {
+                    ClearSubNodeBindingsToParent(mCurrentDecision, LinkClearType.ActionTrue);
+                }
+            }
+
+            //Setting Value for false node
+            if (mCurrentDecision.FalseNode == null && mCurrentDecision.FalseAction == null)
+            {
+                if (GUILayout.Button("Set False Decision"))
+                {
+                    mLinkTypeToSet = LinkTypeToSet.NodeFalse;
+                    mNodeToSetValueFor = mCurrentDecision;
+                }
+                if (GUILayout.Button("Set False Action"))
+                {
+                    mLinkTypeToSet = LinkTypeToSet.ActionFalse;
+                    mNodeToSetValueFor = mCurrentDecision;
+                }
+            }
+
+            //Disconnect Buttons for False node and False Action if one of them is set
+            if (mCurrentDecision.FalseNode != null)
+            {
+                if (GUILayout.Button("Disconnect False Decision"))
+                {
+                    ClearSubNodeBindingsToParent(mCurrentDecision, LinkClearType.NodeFalse);
+                }
+            }
+            if (mCurrentDecision.FalseAction != null)
+            {
+                if (GUILayout.Button("Disconnect False Action"))
+                {
+                    ClearSubNodeBindingsToParent(mCurrentDecision, LinkClearType.ActionFalse);
+                }
+            }
+
+            //Show Overrides
+            if ((mLinkTypeToSet == LinkTypeToSet.NodeTrue || mLinkTypeToSet == LinkTypeToSet.NodeFalse))
+            {
+                //Check if the Current Node is the Root Node - If so, do not allow parent override. Root cannot have a parent node
+                bool AttemptingToOverrideRootNode = false;
+
+                if(mTreeToEdit.mRoot != null)
+                {
+                    if((mCurrentDecision.mWindowID == mTreeToEdit.mRoot.mWindowID))
                     {
-                        ClearBindingToParent(mCurrentDecision);
-                        mTreeToEdit.RemoveConnectedDecisionWithID(id);
-                        mTreeToEdit.mUnconnectedDecisions.Add(mCurrentDecision);
+                        AttemptingToOverrideRootNode = true;
                     }
                 }
 
-                //Setting Value for true node
-                if(mCurrentDecision.TrueNode == null && mCurrentDecision.TrueAction == null)
-                { 
-                    if (GUILayout.Button("Set True Decision"))
-                    {
-                        mLinkTypeToSet = LinkTypeToSet.NodeTrue;
-                        mNodeToSetValueFor = mCurrentDecision;
-                    }
-                    if (GUILayout.Button("Set True Action"))
-                    {
-                        mLinkTypeToSet = LinkTypeToSet.ActionTrue;
-                        mNodeToSetValueFor = mCurrentDecision;
-                    }
-                }
-                else
+                //Continue past if the node is not the root node
+                if(mNodeToSetValueFor.mParentDecision != null && !AttemptingToOverrideRootNode)
                 {
-                    if(mCurrentDecision.TrueNode != null)
+                    if(mNodeToSetValueFor.mParentDecision.mWindowID == mCurrentDecision.mWindowID) //Child Node Over writing current node parent
                     {
-                        if (GUILayout.Button("Disconnect True Decision"))
+                        if (GUILayout.Button("Override Parent Link"))
                         {
-                            ClearSubNodeBindingsToParent(mCurrentDecision, LinkClearType.NodeTrue);
-                        }
-                    }
-                    if(mCurrentDecision.TrueAction != null)
-                    {
-                        if (GUILayout.Button("Disconnect True Action"))
-                        {
-                            ClearSubNodeBindingsToParent(mCurrentDecision, LinkClearType.ActionTrue);
-                        }
-                    }
-                }
+                            ClearBindingToParent(mCurrentDecision);
 
-                //Setting Value for false node
-                if (mCurrentDecision.FalseNode == null && mCurrentDecision.FalseAction == null)
-                {
-                    if (GUILayout.Button("Set False Decision"))
-                    {
-                        mLinkTypeToSet = LinkTypeToSet.NodeFalse;
-                        mNodeToSetValueFor = mCurrentDecision;
-                    }
-                    if (GUILayout.Button("Set False Action"))
-                    {
-                        mLinkTypeToSet = LinkTypeToSet.ActionFalse;
-                        mNodeToSetValueFor = mCurrentDecision;
-                    }
-                }
-                else
-                {
-                    if (mCurrentDecision.FalseNode != null)
-                    {
-                        if (GUILayout.Button("Disconnect False Decision"))
-                        {
-                            ClearSubNodeBindingsToParent(mCurrentDecision, LinkClearType.NodeFalse);
-                        }
-                    }
-                    if (mCurrentDecision.FalseAction != null)
-                    {
-                        if (GUILayout.Button("Disconnect False Action"))
-                        {
-                            ClearSubNodeBindingsToParent(mCurrentDecision, LinkClearType.ActionFalse);
-                        }
-                    }
-                }
-
-                //Show Overrides
-                if ((mLinkTypeToSet == LinkTypeToSet.NodeTrue || mLinkTypeToSet == LinkTypeToSet.NodeFalse))
-                {
-                    //Check if the Current Node is the Root Node - If so, do not allow parent override. Root cannot have a parent node
-                    bool AttemptingToOverrideRootNode = false;
-
-                    if(mTreeToEdit.mRoot != null)
-                    {
-                        if((mCurrentDecision.mWindowID == mTreeToEdit.mRoot.mWindowID))
-                        {
-                            AttemptingToOverrideRootNode = true;
-                        }
-                    }
-
-                    //Continue past if the node is not the root node
-                    if(mNodeToSetValueFor.mParentDecision != null && !AttemptingToOverrideRootNode)
-                    {
-                        if(mNodeToSetValueFor.mParentDecision.mWindowID == mCurrentDecision.mWindowID)
-                        {
-                            if (GUILayout.Button("Override Parent Link"))
+                            //Finding and clearing bindings to child node which is the new current node parent
+                            if(mCurrentDecision.TrueNode != null)
                             {
-                                ClearBindingToParent(mCurrentDecision);
-
-                                if(mCurrentDecision.TrueNode != null)
+                                if(mCurrentDecision.TrueNode.mWindowID == mNodeToSetValueFor.mWindowID)
                                 {
-                                    if(mCurrentDecision.TrueNode.mWindowID == mNodeToSetValueFor.mWindowID)
-                                    {
-                                        mTreeToEdit.RemoveConnectedDecisionWithID(mCurrentDecision.TrueNode.mWindowID);
-                                        mTreeToEdit.mUnconnectedDecisions.Add(mCurrentDecision.TrueNode);
+                                    mTreeToEdit.RemoveConnectedDecisionWithID(mCurrentDecision.TrueNode.mWindowID);
+                                    mTreeToEdit.mUnconnectedDecisions.Add(mCurrentDecision.TrueNode);
 
-                                        mCurrentDecision.TrueNode.mParentDecision = null;
-                                        mCurrentDecision.TrueNode = null;
-                                    }
+                                    mCurrentDecision.TrueNode.mParentDecision = null;
+                                    mCurrentDecision.TrueNode = null;
                                 }
-
-                                if (mCurrentDecision.FalseNode != null)
-                                {
-                                    if (mCurrentDecision.FalseNode.mWindowID == mNodeToSetValueFor.mWindowID)
-                                    {
-                                        mTreeToEdit.RemoveConnectedDecisionWithID(mCurrentDecision.FalseNode.mWindowID);
-                                        mTreeToEdit.mUnconnectedDecisions.Add(mCurrentDecision.FalseNode);
-
-                                        mCurrentDecision.FalseNode.mParentDecision = null;
-                                        mCurrentDecision.FalseNode = null;
-                                    }
-                                }
-
-                                if (mLinkTypeToSet == LinkTypeToSet.NodeTrue)
-                                {
-                                    mNodeToSetValueFor.TrueNode = mCurrentDecision;
-                                }
-                                else if (mLinkTypeToSet == LinkTypeToSet.NodeFalse)
-                                {
-                                    mNodeToSetValueFor.FalseNode = mCurrentDecision;
-                                }
-
-                                mCurrentDecision.mParentDecision = mNodeToSetValueFor;
-
-                                mLinkTypeToSet = LinkTypeToSet.None;
-                                mNodeToSetValueFor = null;
                             }
-                        }
-                        else
-                        {
-                            if (GUILayout.Button("Override Parent Link"))
+
+                            if (mCurrentDecision.FalseNode != null)
                             {
-                                ClearBindingToParent(mCurrentDecision);
-
-                                if (mLinkTypeToSet == LinkTypeToSet.NodeTrue)
+                                if (mCurrentDecision.FalseNode.mWindowID == mNodeToSetValueFor.mWindowID)
                                 {
-                                    mNodeToSetValueFor.TrueNode = mCurrentDecision;
-                                }
-                                else if (mLinkTypeToSet == LinkTypeToSet.NodeFalse)
-                                {
-                                    mNodeToSetValueFor.FalseNode = mCurrentDecision;
-                                }
+                                    mTreeToEdit.RemoveConnectedDecisionWithID(mCurrentDecision.FalseNode.mWindowID);
+                                    mTreeToEdit.mUnconnectedDecisions.Add(mCurrentDecision.FalseNode);
 
-                                mCurrentDecision.mParentDecision = mNodeToSetValueFor;
-
-                                mLinkTypeToSet = LinkTypeToSet.None;
-                                mNodeToSetValueFor = null;
+                                    mCurrentDecision.FalseNode.mParentDecision = null;
+                                    mCurrentDecision.FalseNode = null;
+                                }
                             }
+
+                            //Setting the Node As current nodes parent
+                            if (mLinkTypeToSet == LinkTypeToSet.NodeTrue)
+                            {
+                                mNodeToSetValueFor.TrueNode = mCurrentDecision;
+                            }
+                            else if (mLinkTypeToSet == LinkTypeToSet.NodeFalse)
+                            {
+                                mNodeToSetValueFor.FalseNode = mCurrentDecision;
+                            }
+
+                            mCurrentDecision.mParentDecision = mNodeToSetValueFor;
+
+                            mLinkTypeToSet = LinkTypeToSet.None;
+                            mNodeToSetValueFor = null;
                         }
-                    }   
-                }
+                    }
+                    else //Setting Node to be parent of this current node
+                    {
+                        if (GUILayout.Button("Override Parent Link"))
+                        {
+                            ClearBindingToParent(mCurrentDecision);
+
+                            if (mLinkTypeToSet == LinkTypeToSet.NodeTrue)
+                            {
+                                mNodeToSetValueFor.TrueNode = mCurrentDecision;
+                            }
+                            else if (mLinkTypeToSet == LinkTypeToSet.NodeFalse)
+                            {
+                                mNodeToSetValueFor.FalseNode = mCurrentDecision;
+                            }
+
+                            mCurrentDecision.mParentDecision = mNodeToSetValueFor;
+
+                            mLinkTypeToSet = LinkTypeToSet.None;
+                            mNodeToSetValueFor = null;
+                        }
+                    }
+                }   
             }
-            else
+        }
+        else
+        {
+            if (GUILayout.Button("Cancel"))
             {
-                if (GUILayout.Button("Cancel"))
-                {
-                    mLinkTypeToSet = LinkTypeToSet.None;
-                    mNodeToSetValueFor = null;
-                }
+                mLinkTypeToSet = LinkTypeToSet.None;
+                mNodeToSetValueFor = null;
             }
         }
 
@@ -1110,25 +995,73 @@ public class DecisionTreeEditorWindow : EditorWindow
         GUI.DragWindow();
     }
 
+    //Draws Connection Lines Between Nodes
+    void DrawNodeCurve(Rect start, Rect end, LinkDirection direction)
+    {
+        Vector3 startPos = Vector3.zero;
+        Vector3 startTan = Vector3.zero;
+        Color colorToUse = mTrueConnectorColor;
+        Vector3 endPos = new Vector3(end.x + end.width / 2, end.y - size, 0);
+        Vector3 endTan = endPos + Vector3.down * 50;
+        Rect endTexturePos = new Rect(endPos.x - size / 2, endPos.y, size, size);
+
+        Texture2D textureToUse = mDecisionConnectorIcon;
+
+        switch (direction)
+        {
+            case LinkDirection.LinkTrue:
+                startPos = new Vector3(start.x, start.y + start.height / 2, 0);
+                startTan = startPos + Vector3.left * 50;
+                colorToUse = mTrueConnectorColor;
+                textureToUse = mDecisionConnectorIcon;
+                break;
+
+            case LinkDirection.LinkFalse:
+                startPos = new Vector3(start.x + start.width, start.y + start.height / 2, 0);
+                startTan = startPos + Vector3.right * 50;
+                colorToUse = mFalseConnectorColor;
+                textureToUse = mDecisionConnectorIcon;
+                break;
+
+            case LinkDirection.LinkTrueAction:
+                startPos = new Vector3(start.x, start.y + start.height / 2, 0);
+                startTan = startPos + Vector3.left * 50;
+                colorToUse = mTrueConnectorColor;
+                textureToUse = mActionConnectorIcon;
+                break;
+
+            case LinkDirection.LinkFalseAction:
+                startPos = new Vector3(start.x + start.width, start.y + start.height / 2, 0);
+                startTan = startPos + Vector3.right * 50;
+                colorToUse = mFalseConnectorColor;
+                textureToUse = mActionConnectorIcon;
+                break;
+
+            default:
+                break;
+        }
+
+        Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.white, null, 5);
+
+        var color = GUI.color;
+        GUI.color = colorToUse;
+        GUI.DrawTexture(endTexturePos, textureToUse, ScaleMode.StretchToFill);
+        GUI.color = color;
+    }
+
     //Utility Functions For Node Control
     public void ClearBindingToParent(EditableDecision nodeToUnbind)
     {
         if(nodeToUnbind.mParentDecision != null)
         {
             if(nodeToUnbind.mParentDecision.TrueNode != null)
-            {
                 if(nodeToUnbind.mParentDecision.TrueNode.mWindowID == nodeToUnbind.mWindowID)
-                {
                     nodeToUnbind.mParentDecision.TrueNode = null;   
-                }
-            }
+
             if (nodeToUnbind.mParentDecision.FalseNode != null)
-            {
                 if (nodeToUnbind.mParentDecision.FalseNode.mWindowID == nodeToUnbind.mWindowID)
-                {
                     nodeToUnbind.mParentDecision.FalseNode = null;
-                }
-            }
+
             nodeToUnbind.mParentDecision = null;
         }
     }
@@ -1138,24 +1071,17 @@ public class DecisionTreeEditorWindow : EditorWindow
         if (nodeToUnbind.mParentDecision != null)
         {
             if (nodeToUnbind.mParentDecision.TrueAction != null)
-            {
                 if (nodeToUnbind.mParentDecision.TrueAction.mWindowID == nodeToUnbind.mWindowID)
-                {
                     nodeToUnbind.mParentDecision.TrueAction = null;
-                }
-            }
+
             if (nodeToUnbind.mParentDecision.FalseAction != null)
-            {
                 if (nodeToUnbind.mParentDecision.FalseAction.mWindowID == nodeToUnbind.mWindowID)
-                {
                     nodeToUnbind.mParentDecision.FalseAction = null;
-                }
-            }
+
             nodeToUnbind.mParentDecision = null;
         }
     }
 
-    //Manages Editable Tree Lists
     public void ClearSubNodeBindingsToParent(EditableDecision editableDecision, LinkClearType clearType)
     {
         if(editableDecision.TrueNode != null && (clearType == LinkClearType.NodeTrue || clearType == LinkClearType.All))
@@ -1199,59 +1125,26 @@ public class DecisionTreeEditorWindow : EditorWindow
         }
     }
 
-    public void SaveAllNodeChanges()
-    {
-        for(int i = 0; i < mTreeToEdit.mUnconnectedDecisions.Count; i++)
-        {
-            EditorUtility.SetDirty(mTreeToEdit.mUnconnectedDecisions[i]);
-        }
-
-        for (int i = 0; i < mTreeToEdit.mUnconnectedActions.Count; i++)
-        {
-            EditorUtility.SetDirty(mTreeToEdit.mUnconnectedActions[i]);
-        }
-
-        for (int i = 0; i < mTreeToEdit.mConnectedDecisions.Count; i++)
-        {
-            EditorUtility.SetDirty(mTreeToEdit.mConnectedDecisions[i]);
-        }
-
-        for (int i = 0; i < mTreeToEdit.mConnectedActions.Count; i++)
-        {
-            EditorUtility.SetDirty(mTreeToEdit.mConnectedActions[i]);
-        }
-
-        AssetDatabase.SaveAssets();
-    }
-
     public bool GetIsNodeIDInSubTree(EditableDecision editableDecision, int idToCheckFor)
     {
         bool ValueToReturn = false;
 
-        if(editableDecision.TrueNode != null)
+        if (editableDecision.TrueNode != null)
         {
-            if(editableDecision.TrueNode.mWindowID == idToCheckFor)
-            {
+            if (editableDecision.TrueNode.mWindowID == idToCheckFor)
                 ValueToReturn = true;
-            }
             else
-            {
                 ValueToReturn = GetIsNodeIDInSubTree(editableDecision.TrueNode, idToCheckFor);
-            }
         }
 
-        if(ValueToReturn) { return true; }
+        if (ValueToReturn) return true;
 
         if (editableDecision.FalseNode != null)
         {
             if (editableDecision.FalseNode.mWindowID == idToCheckFor)
-            {
                 ValueToReturn = true;
-            }
             else
-            {
                 ValueToReturn = GetIsNodeIDInSubTree(editableDecision.FalseNode, idToCheckFor);
-            }
         }
 
         return ValueToReturn;
@@ -1273,14 +1166,28 @@ public class DecisionTreeEditorWindow : EditorWindow
         }
 
         if (editableDecision.TrueAction != null)
-        {
             editableDecision.TrueAction.mEditableActionRect.position += mDragChangeValue;
-        }
 
         if (editableDecision.FalseAction != null)
-        {
             editableDecision.FalseAction.mEditableActionRect.position += mDragChangeValue;
-        }
+    }
+
+    //Functions to apply for Whole Tree
+    public void SaveAllNodeChanges()
+    {
+        for(int i = 0; i < mTreeToEdit.mUnconnectedDecisions.Count; i++)
+            EditorUtility.SetDirty(mTreeToEdit.mUnconnectedDecisions[i]);
+
+        for (int i = 0; i < mTreeToEdit.mUnconnectedActions.Count; i++)
+            EditorUtility.SetDirty(mTreeToEdit.mUnconnectedActions[i]);
+
+        for (int i = 0; i < mTreeToEdit.mConnectedDecisions.Count; i++)
+            EditorUtility.SetDirty(mTreeToEdit.mConnectedDecisions[i]);
+
+        for (int i = 0; i < mTreeToEdit.mConnectedActions.Count; i++)
+            EditorUtility.SetDirty(mTreeToEdit.mConnectedActions[i]);
+
+        AssetDatabase.SaveAssets();
     }
 
     public bool GetNodeRectContainsMouse(Vector2 positionToCheck)
@@ -1288,170 +1195,104 @@ public class DecisionTreeEditorWindow : EditorWindow
         bool printInfo = false;
 
         for (int i = 0; i < mCreateDecisionNodeWindows.Count; i++)
-        {
-            mCreateDecisionNodeWindows[i].mWindowRect.position += mScreenOffset;
-            if (mCreateDecisionNodeWindows[i].mWindowRect.Contains(positionToCheck))
-            {
-                mCreateDecisionNodeWindows[i].mWindowRect.position -= mScreenOffset;
-                if(printInfo)
-                    Debug.Log("Create Decision Window: " + mCreateDecisionNodeWindows[i].mWindowID);
+            if(CheckMouseInRectAndRestore(mCreateDecisionNodeWindows[i].mWindowRect, positionToCheck, printInfo, "Create Decision Window: " + mCreateDecisionNodeWindows[i].mWindowID))
                 return true;
-            }
-            mCreateDecisionNodeWindows[i].mWindowRect.position -= mScreenOffset;
-        }
 
         for (int i = 0; i < mCreateActionNodeWindows.Count; i++)
-        { 
-            mCreateActionNodeWindows[i].mWindowRect.position += mScreenOffset;
-            if (mCreateActionNodeWindows[i].mWindowRect.Contains(positionToCheck))
-            {
-                mCreateActionNodeWindows[i].mWindowRect.position -= mScreenOffset;
-                if(printInfo)
-                    Debug.Log("Create Action Window: " + mCreateActionNodeWindows[i].mWindowID);
+            if(CheckMouseInRectAndRestore(mCreateActionNodeWindows[i].mWindowRect, positionToCheck, printInfo, "Create Action Window: " + mCreateActionNodeWindows[i].mWindowID))
                 return true;
-            }
-            mCreateActionNodeWindows[i].mWindowRect.position -= mScreenOffset;
-        }
 
         for (int i = 0; i < mTreeToEdit.mUnconnectedDecisions.Count; i++)
-        {
-            mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position += mScreenOffset;
-            if (mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.Contains(positionToCheck))
-            {
-                mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position -= mScreenOffset;
-                if(printInfo)
-                    Debug.Log("Unconnected Decision: " + mTreeToEdit.mUnconnectedDecisions[i].mEditibleNodeName);
+            if(CheckMouseInRectAndRestore(mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect, positionToCheck, printInfo, "Unconnected Decision: " + mTreeToEdit.mUnconnectedDecisions[i].mEditibleNodeName))
                 return true;
-            }
-            mTreeToEdit.mUnconnectedDecisions[i].mEditableDecisionRect.position -= mScreenOffset;
-        }
 
         for (int i = 0; i < mTreeToEdit.mUnconnectedActions.Count; i++)
-        {
-            mTreeToEdit.mUnconnectedActions[i].mEditableActionRect.position += mScreenOffset;
-            if (mTreeToEdit.mUnconnectedActions[i].mEditableActionRect.Contains(positionToCheck))
-            {
-                mTreeToEdit.mUnconnectedActions[i].mEditableActionRect.position -= mScreenOffset;
-                if(printInfo)
-                    Debug.Log("Unconnected Action: " + mTreeToEdit.mUnconnectedActions[i].mEditibleNodeName);
+            if(CheckMouseInRectAndRestore(mTreeToEdit.mUnconnectedActions[i].mEditableActionRect, positionToCheck, printInfo, "Unconnected Action: " + mTreeToEdit.mUnconnectedActions[i].mEditibleNodeName))
                 return true;
-            }
-            mTreeToEdit.mUnconnectedActions[i].mEditableActionRect.position -= mScreenOffset;
-        }
 
         for (int i = 0; i < mTreeToEdit.mConnectedDecisions.Count; i++)
-        {
-            mTreeToEdit.mConnectedDecisions[i].mEditableDecisionRect.position += mScreenOffset;
-            if (mTreeToEdit.mConnectedDecisions[i].mEditableDecisionRect.Contains(positionToCheck))
-            {
-                mTreeToEdit.mConnectedDecisions[i].mEditableDecisionRect.position -= mScreenOffset;
-                if(printInfo)
-                    Debug.Log("Connected Decision: " + mTreeToEdit.mConnectedDecisions[i].mEditibleNodeName);
+            if(CheckMouseInRectAndRestore(mTreeToEdit.mConnectedDecisions[i].mEditableDecisionRect, positionToCheck, printInfo, "Connected Decision: " + mTreeToEdit.mConnectedDecisions[i].mEditibleNodeName))
                 return true;
-            }
-            mTreeToEdit.mConnectedDecisions[i].mEditableDecisionRect.position -= mScreenOffset;
-        }
 
         for (int i = 0; i < mTreeToEdit.mConnectedActions.Count; i++)
-        {
-            mTreeToEdit.mConnectedActions[i].mEditableActionRect.position += mScreenOffset;
-            if (mTreeToEdit.mConnectedActions[i].mEditableActionRect.Contains(positionToCheck))
-            {
-                mTreeToEdit.mConnectedActions[i].mEditableActionRect.position -= mScreenOffset;
-                if(printInfo)
-                    Debug.Log("Connected Action: " + mTreeToEdit.mConnectedActions[i].mEditibleNodeName);
+            if(CheckMouseInRectAndRestore(mTreeToEdit.mConnectedActions[i].mEditableActionRect, positionToCheck, printInfo, "Connected Action: " + mTreeToEdit.mConnectedActions[i].mEditibleNodeName))
                 return true;
-            }
-            mTreeToEdit.mConnectedActions[i].mEditableActionRect.position -= mScreenOffset;
-        }
 
         return false;
     }
 
+    public bool CheckMouseInRectAndRestore(Rect rectToCheck, Vector2 positionToCheck, bool printInfo, string infoToLog)
+    {
+        bool MouseContained = false;
+
+        rectToCheck.position += mScreenOffset;
+        if (rectToCheck.Contains(positionToCheck))
+        {
+            MouseContained = true;
+            if (printInfo)
+                Debug.Log(infoToLog);
+        }
+
+        rectToCheck.position -= mScreenOffset;
+        return MouseContained;
+    }
+
     public int CalculateMaxTreeDepth(EditableDecision editableDecision)
     {
-        if(editableDecision == null)
-        {
-            return 0;
-        }
+        if(editableDecision == null) return 0; //No Depth to be added if Node is Null
 
         if(editableDecision.TrueNode != null && editableDecision.FalseNode != null)
-        {
-            return Mathf.Max(1 + CalculateMaxTreeDepth(editableDecision.TrueNode), 1 + CalculateMaxTreeDepth(editableDecision.FalseNode));
-        }
+            return Mathf.Max(1 + CalculateMaxTreeDepth(editableDecision.TrueNode), 1 + CalculateMaxTreeDepth(editableDecision.FalseNode)); //Return Depth of both nodes - Compare True and False Sub Trees
 
         if(editableDecision.TrueNode != null)
-        {
-            return 1 + CalculateMaxTreeDepth(editableDecision.TrueNode);
-        }
+            return 1 + CalculateMaxTreeDepth(editableDecision.TrueNode); //Get Depth of True Sub Tree
 
         if (editableDecision.FalseNode != null)
-        {
-            return 1 + CalculateMaxTreeDepth(editableDecision.FalseNode);
-        }
+            return 1 + CalculateMaxTreeDepth(editableDecision.FalseNode); //Get Depth of False Sub Tree
 
-        if (editableDecision.TrueAction != null)
-        {
-            return 1;
-        }
+        if (editableDecision.TrueAction != null) return 1; //True Action can only be 1 Node Deep
 
-        if (editableDecision.FalseAction != null)
-        {
-            return 1;
-        }
+        if (editableDecision.FalseAction != null) return 1; //False Action can only be 1 Node Deep
 
-        return 0;
+        return 0; //Default Return Case
     }
 
     public void RefactorTreeNodePositions(EditableDecision editableDecision, int TreeDepthToAdjustFor)
     {
         if(editableDecision.TrueNode != null)
         {
-            int spaceToApply;
-
-            if(TreeDepthToAdjustFor >= 2)
-            {
-                int amountToRemove = TreeDepthToAdjustFor - 1;
-                spaceToApply = ((int)Mathf.Pow(2, TreeDepthToAdjustFor) * 100) - (amountToRemove * 100);
-            }
-            else
-            {
-                spaceToApply = 200;
-            }
-
-            editableDecision.TrueNode.mEditableDecisionRect.position = editableDecision.mEditableDecisionRect.position - new Vector2(spaceToApply, -200);
-
+            editableDecision.TrueNode.mEditableDecisionRect.position = editableDecision.mEditableDecisionRect.position - new Vector2(CalculateSpaceToApply(TreeDepthToAdjustFor), -200);
             RefactorTreeNodePositions(editableDecision.TrueNode, TreeDepthToAdjustFor - 1);
         }
 
         if (editableDecision.FalseNode != null)
         {
-            int spaceToApply;
-
-            if (TreeDepthToAdjustFor >= 2)
-            {
-                int amountToRemove = TreeDepthToAdjustFor - 1;
-                spaceToApply = ((int)Mathf.Pow(2, TreeDepthToAdjustFor) * 100) - (amountToRemove * 100);
-            }
-            else
-            {
-                spaceToApply = 200;
-            }
-
-            editableDecision.FalseNode.mEditableDecisionRect.position = editableDecision.mEditableDecisionRect.position + new Vector2(spaceToApply, 200);
-
+            editableDecision.FalseNode.mEditableDecisionRect.position = editableDecision.mEditableDecisionRect.position + new Vector2(CalculateSpaceToApply(TreeDepthToAdjustFor), 200);
             RefactorTreeNodePositions(editableDecision.FalseNode, TreeDepthToAdjustFor - 1);
         }
 
         if (editableDecision.TrueAction != null)
-        {
             editableDecision.TrueAction.mEditableActionRect.position = editableDecision.mEditableDecisionRect.position - new Vector2(200, -200);
-        }
 
         if (editableDecision.FalseAction != null)
-        {
             editableDecision.FalseAction.mEditableActionRect.position = editableDecision.mEditableDecisionRect.position + new Vector2(200, 200);
+    }
+
+    public int CalculateSpaceToApply(int TreeDepthToAdjustFor)
+    {
+        int spaceToApply;
+
+        if (TreeDepthToAdjustFor >= 2)
+        {
+            int amountToRemove = TreeDepthToAdjustFor - 1;
+            spaceToApply = ((int)Mathf.Pow(2, TreeDepthToAdjustFor) * 100) - (amountToRemove * 100);
         }
+        else
+        {
+            spaceToApply = 200;
+        }
+
+        return spaceToApply;
     }
 
     public void SaveAssetChanges(EditableDecision editableDecision)

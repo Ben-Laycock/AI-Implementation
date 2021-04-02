@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: InRangeOfPlayerForAttack
   m_EditorClassIdentifier: 
   mEditibleNodeName: InRangeOfPlayerForAttack
-  mWindowID: 6
+  mWindowID: 4
   mEditableDecisionRect:
     serializedVersion: 2
     x: 620

@@ -107,6 +107,12 @@ public class AgentHandler : MonoBehaviour, IDamageable
 
     public void SetupAgentForSpawning(float health, float energy, Vector3 position)
     {
+        if(mBoidController == null)
+            mBoidController = this.gameObject.GetComponent<Boids>();
+
+        mBoidController.SetManager(GameConstants.Instance.BoidsManager);
+        GameConstants.Instance.BoidsManager.AddBoid(mBoidController);
+
         mHealth = health;
         mEnergy = energy;
         
@@ -120,6 +126,9 @@ public class AgentHandler : MonoBehaviour, IDamageable
 
     public void KillAgent()
     {
+        mBoidController.ResetBoid();
+        mBoidController.RemoveBoidFromManager();
+
         for(int i = 0; i < 5; i++)
         {
             GameObject newEnergyBall = PoolSystem.Instance.GetObjectFromPool(mEnergyBall, argShouldExpandPool:true, argShouldCreateNonExistingPool:true);

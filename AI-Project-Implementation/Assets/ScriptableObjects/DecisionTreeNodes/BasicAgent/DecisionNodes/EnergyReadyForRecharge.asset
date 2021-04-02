@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnergyReadyForRecharge
   m_EditorClassIdentifier: 
   mEditibleNodeName: EnergyReadyForRecharge
-  mWindowID: 4
+  mWindowID: 2
   mEditableDecisionRect:
     serializedVersion: 2
     x: 1520

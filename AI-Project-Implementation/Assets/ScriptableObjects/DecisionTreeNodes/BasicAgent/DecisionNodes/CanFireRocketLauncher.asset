@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CanFireRocketLauncher
   m_EditorClassIdentifier: 
   mEditibleNodeName: CanFireRocketLauncher
-  mWindowID: 3
+  mWindowID: 6
   mEditableDecisionRect:
     serializedVersion: 2
     x: 920
