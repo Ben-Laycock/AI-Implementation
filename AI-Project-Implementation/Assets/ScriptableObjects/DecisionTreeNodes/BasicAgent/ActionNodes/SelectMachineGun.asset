@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: SelectMachineGun
   m_EditorClassIdentifier: 
   mEditibleNodeName: SelectMachineGun
-  mWindowID: 9
+  mWindowID: 8
   mEditableActionRect:
     serializedVersion: 2
-    x: -1380
-    y: 1105
+    x: -80
+    y: 905
     width: 200
     height: 200
   mParentDecision: {fileID: 11400000, guid: 020c0ae56685b4c4ab8110b2868cd82f, type: 2}

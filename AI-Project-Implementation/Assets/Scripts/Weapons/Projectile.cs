@@ -75,7 +75,7 @@ public class Projectile : MonoBehaviour
         return mDamage;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         IDamageable objectInterface = collision.gameObject.GetComponent<IDamageable>();
 

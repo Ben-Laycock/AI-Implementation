@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: InRangeOfPlayerForAttack
   m_EditorClassIdentifier: 
   mEditibleNodeName: InRangeOfPlayerForAttack
-  mWindowID: 1
+  mWindowID: 6
   mEditableDecisionRect:
     serializedVersion: 2
-    x: -680
-    y: 505
+    x: 620
+    y: 305
     width: 200
     height: 200
-  mParentDecision: {fileID: 11400000, guid: 67d3cf1bc7349dd4ab9b4ace356d164d, type: 2}
+  mParentDecision: {fileID: 0}
   TrueNode: {fileID: 11400000, guid: 4c0d4468ae8791548ad98c680a31d51e, type: 2}
   FalseNode: {fileID: 11400000, guid: 07c41b995de2f0a41abd2c2d6654309c, type: 2}
   TrueAction: {fileID: 0}

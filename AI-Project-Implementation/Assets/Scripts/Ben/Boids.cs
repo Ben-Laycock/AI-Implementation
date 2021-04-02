@@ -34,13 +34,13 @@ public class Boids : MonoBehaviour
     [SerializeField] private float mObstacleAvoidanceWeight = 1f;
     
     [Space]
-    private Flock mFlock = null;
+    private BoidsManager mManager = null;
     private bool mShouldFlock = false;
 
 
-    public void RemoveBoidFromFlock()
+    public void RemoveBoidFromManager()
     {
-        if (mFlock != null) mFlock.RemoveAgent(this);
+        if (mManager != null) mManager.RemoveBoid(this);
     }    
 
     public void ResetBoid()
@@ -55,31 +55,32 @@ public class Boids : MonoBehaviour
     }
 
     public void UpdateBoid(List<Boids> argNeighbours)
-    {
-        if (!mShouldFlock) return;
-        mAcceleration = Vector3.zero;
-
-        if (mTarget != null)
-        {
-            if (CanSee(mTarget.transform.position, mObstacleAvoidanceDistance))
-            {
-                Vector3 directionToTarget = mTarget.transform.position - transform.position;
-                AddAccelerationForce(SteerTo(directionToTarget) * mTargetFollowWeight);
-            }
-        }
-
+    { 
         Vector3 separation = SteerTo(Separate(argNeighbours)) * mSeparationWeight;
-        Vector3 alignment = SteerTo(Alignment(argNeighbours)) * mAlignmentWeight;
-        Vector3 cohesion = SteerTo(Cohesion(argNeighbours)) * mCohesionWeight;
-
-        AddAccelerationForce(alignment);
-        AddAccelerationForce(cohesion);
         AddAccelerationForce(separation);
 
-        if (CollisionAhead())
+        if (mShouldFlock)
         {
-            Vector3 obstacleAvoidance = SteerTo(ObstacleAvoidanceDirection()) * mObstacleAvoidanceWeight;
-            AddAccelerationForce(obstacleAvoidance);
+            if (mTarget != null)
+            {
+                if (CanSee(mTarget.transform.position, mObstacleAvoidanceDistance))
+                {
+                    Vector3 directionToTarget = mTarget.transform.position - transform.position;
+                    AddAccelerationForce(SteerTo(directionToTarget) * mTargetFollowWeight);
+                }
+            }
+
+            Vector3 alignment = SteerTo(Alignment(argNeighbours)) * mAlignmentWeight;
+            Vector3 cohesion = SteerTo(Cohesion(argNeighbours)) * mCohesionWeight;
+
+            AddAccelerationForce(alignment);
+            AddAccelerationForce(cohesion);
+
+            if (CollisionAhead())
+            {
+                Vector3 obstacleAvoidance = SteerTo(ObstacleAvoidanceDirection()) * mObstacleAvoidanceWeight;
+                AddAccelerationForce(obstacleAvoidance);
+            }
         }
 
         mVelocity += mAcceleration * Time.deltaTime;
@@ -98,6 +99,7 @@ public class Boids : MonoBehaviour
             }
             else transform.forward = mVelocity.normalized;
         }
+        mAcceleration = Vector3.zero;
     }
 
     void AddAccelerationForce(Vector3 argForce)
@@ -217,6 +219,12 @@ public class Boids : MonoBehaviour
         return (flockCentre - transform.position);
     }
 
+    public void FleePoint(Vector3 argPoint, float argFleeWeighting)
+    {
+        Vector3 directionToFlee = transform.position - argPoint;
+        AddAccelerationForce(SteerTo(directionToFlee) * argFleeWeighting);
+    }
+
     public void SetTarget(GameObject argTaget)
     {
         mTarget = argTaget;
@@ -227,9 +235,14 @@ public class Boids : MonoBehaviour
         return mTarget;
     }
 
-    public void SetFlock(Flock argFlock)
+    public BoidsManager GetManager()
     {
-        mFlock = argFlock;
+        return mManager;
+    }
+
+    public void SetManager(BoidsManager argManager)
+    {
+        mManager = argManager;
     }
 
     public void SetShouldFlock(bool argState)

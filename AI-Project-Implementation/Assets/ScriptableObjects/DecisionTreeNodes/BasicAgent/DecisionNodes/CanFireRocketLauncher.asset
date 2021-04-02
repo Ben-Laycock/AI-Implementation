@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: CanFireRocketLauncher
   m_EditorClassIdentifier: 
   mEditibleNodeName: CanFireRocketLauncher
-  mWindowID: 5
+  mWindowID: 3
   mEditableDecisionRect:
     serializedVersion: 2
-    x: -380
-    y: 905
+    x: 920
+    y: 705
     width: 200
     height: 200
   mParentDecision: {fileID: 11400000, guid: 07c41b995de2f0a41abd2c2d6654309c, type: 2}

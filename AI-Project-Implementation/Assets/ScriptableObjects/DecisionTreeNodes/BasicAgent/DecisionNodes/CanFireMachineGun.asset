@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: CanFireMachineGun
   m_EditorClassIdentifier: 
   mEditibleNodeName: CanFireMachineGun
-  mWindowID: 3
+  mWindowID: 1
   mEditableDecisionRect:
     serializedVersion: 2
-    x: -1580
-    y: 905
+    x: -280
+    y: 705
     width: 200
     height: 200
   mParentDecision: {fileID: 11400000, guid: 4c0d4468ae8791548ad98c680a31d51e, type: 2}

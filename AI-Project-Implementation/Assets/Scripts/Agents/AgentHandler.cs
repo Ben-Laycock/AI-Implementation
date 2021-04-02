@@ -18,6 +18,10 @@ public class AgentHandler : MonoBehaviour, IDamageable
 
     //AI Algorithms
     private Boids mBoidController;
+    public Boids BoidController
+    {
+        get { return mBoidController; }
+    }
 
     [Header("Agent Values")]
     [SerializeField] private float mHealth = 5.0f;
@@ -52,7 +56,8 @@ public class AgentHandler : MonoBehaviour, IDamageable
     [SerializeField] private float mMachineGunEnergyCost = 1.0f;
     [SerializeField] private float mRocketLauncherEnergyCost = 5.0f;
 
-    [SerializeField] private float mAttackRange = 10.0f;
+    [SerializeField] private float mAttackRange = 20.0f;
+    [SerializeField] private float mTargetTooClose = 10.0f;
 
     [SerializeField] private WeaponSelected mCurrentSelectedWeapon = WeaponSelected.MachineGun;
     public WeaponSelected SelectedWeapon
@@ -79,7 +84,7 @@ public class AgentHandler : MonoBehaviour, IDamageable
     //Agent Setup
     private void Start()
     {
-        mBoidController = gameObject.GetComponent<Boids>();
+        mBoidController = this.gameObject.GetComponent<Boids>();
         SetupFSM();
     }
 
@@ -168,6 +173,11 @@ public class AgentHandler : MonoBehaviour, IDamageable
     public float GetAttackRange()
     {
         return mAttackRange;
+    }
+
+    public float GetTargetTooCloseRange()
+    {
+        return mTargetTooClose;
     }
 
     public float GetMachineGunEnergyCost()

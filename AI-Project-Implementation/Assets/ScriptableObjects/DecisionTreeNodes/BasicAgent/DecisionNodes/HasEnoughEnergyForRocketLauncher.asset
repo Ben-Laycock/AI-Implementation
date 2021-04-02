@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: HasEnoughEnergyForRocketLauncher
   m_EditorClassIdentifier: 
   mEditibleNodeName: HasEnoughEnergyForRocketLauncher
-  mWindowID: 4
+  mWindowID: 2
   mEditableDecisionRect:
     serializedVersion: 2
-    x: -80
-    y: 705
+    x: 1220
+    y: 505
     width: 200
     height: 200
   mParentDecision: {fileID: 11400000, guid: 65905e51da4dee6418f44df5e0ac13e4, type: 2}

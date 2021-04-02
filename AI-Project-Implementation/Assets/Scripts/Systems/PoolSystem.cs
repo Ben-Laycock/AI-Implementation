@@ -178,6 +178,7 @@ public class PoolSystem : MonoBehaviour
         {
             GameObject poolParentObject = GameObject.Find("Pool_" + argKey.name);
             GameObject newObject = Instantiate(argKey, poolParentObject.transform);
+            newObject.name = "PoolObject_" + argKey.name;
             mPools[argKey].Add(newObject);
 
             if (argActivateObject)

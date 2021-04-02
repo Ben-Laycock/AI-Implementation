@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: RechargeEnergy 1
   m_EditorClassIdentifier: 
   mEditibleNodeName: RechargeEnergy
-  mWindowID: 13
+  mWindowID: 12
   mEditableActionRect:
     serializedVersion: 2
-    x: -1180
-    y: 1105
+    x: 120
+    y: 905
     width: 200
     height: 200
   mParentDecision: {fileID: 11400000, guid: 8685448fc17f0024ea8cd31fa6531912, type: 2}

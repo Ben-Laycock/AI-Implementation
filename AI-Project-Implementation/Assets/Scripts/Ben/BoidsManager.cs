@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BoidsManager : MonoBehaviour
 {
+    [SerializeField] private GameObject mFlockTarget = null;
     [SerializeField] private GameObject mBoidPrefab = null;
     [SerializeField] private GameObject mAgentContainer = null;
     private List<Boids> mBoids = null;
@@ -23,6 +24,20 @@ public class BoidsManager : MonoBehaviour
         CalculateCollisionTestDirections();
 
         if (mBoids == null) mBoids = new List<Boids>();
+
+        SetupSpatialGrid();
+        SetupDefaultFlock();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        foreach (Boids boid in mBoids)
+        {
+            mGrid.InsertIntoGrid(boid);
+        }
+
+        mGrid.UpdateGrid();
     }
 
     void CalculateCollisionTestDirections()
@@ -44,40 +59,48 @@ public class BoidsManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void SetupSpatialGrid()
     {
-        //if (Input.GetKeyDown(KeyCode.P))
-        //{
-        //    if (!mBoidPrefab || !mAgentContainer) return;
+        mGrid = new SpatialGrid(mSpatialGridCellSize);
+    }
 
-        //    int flockID = mFlocks.Count;
-        //    GameObject newObject = new GameObject("Flock " + flockID);
-        //    newObject.transform.parent = mAgentContainer.transform;
+    void SetupDefaultFlock()
+    {
+        for (int i = 0; i < mNumOfBoids; i++)
+        {
+            GameObject newAgent = Instantiate(mBoidPrefab, new Vector3(Random.Range(18, 22), Random.Range(18, 22), Random.Range(18, 22)), Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360)));
+            newAgent.name = "Boid " + i;
+            newAgent.transform.parent = mAgentContainer.transform;
+            Boids agentScript = newAgent.GetComponent<Boids>();
+            agentScript.SetManager(this);
+            agentScript.SetShouldFlock(true);
 
-        //    Flock newFlock = new Flock(mDefaultCellSize, mUseGridByDefault);
-        //    mFlocks.Add(newFlock);
+            AddBoid(agentScript);
+            agentScript.SetTarget(mFlockTarget);
+        }
+    }
 
-        //    GameObject newFlockTarget = new GameObject("Flock " + flockID + " Target");
-        //    newFlockTarget.transform.parent = newObject.transform;
-        //    newFlock.SetFlockTarget(newFlockTarget);
+    public void AddBoid(Boids argBoid)
+    {
+        if (argBoid == null) return;
 
-        //    for (int i = 0; i < mNumOfBoids; i++)
-        //    {
-        //        GameObject newAgent = Instantiate(mBoidPrefab, new Vector3(Random.Range(18, 22), Random.Range(18, 22), Random.Range(18, 22)), Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360)));
-        //        newAgent.name = "Boid " + i;
-        //        newAgent.transform.parent = newObject.transform;
-        //        Boids agentScript = newAgent.GetComponent<Boids>();
-        //        agentScript.SetFlock(newFlock);
+        if (!mBoids.Contains(argBoid)) mBoids.Add(argBoid);
+        if (argBoid.GetTarget() != mFlockTarget) argBoid.SetTarget(mFlockTarget);
+    }
 
-        //        newFlock.AddAgent(agentScript);
-        //        agentScript.SetTarget(newFlockTarget);
-        //    }
-        //}
+    public void RemoveBoid(Boids argBoid)
+    {
+        if (argBoid == null) return;
+        if (mBoids.Contains(argBoid)) mBoids.Remove(argBoid);
+    }
 
-        //foreach (Flock f in mFlocks)
-        //{
-        //    f.UpdateFlock();
-        //}
+    public GameObject GetFlockTarget()
+    {
+        return mFlockTarget;
+    }
+
+    public SpatialGrid GetSpatialGrid()
+    {
+        return mGrid;
     }
 }
