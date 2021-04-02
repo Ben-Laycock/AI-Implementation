@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class PathHelpers : MonoBehaviour
 {
-    public static List<Vector3> CondensePathPoints(List<Vector3Int> argPath, float argCollisionRadiusCheck, LayerMask argCollisionMask)
+    public static List<Vector3> CondensePathPoints(List<Vector3Int> argPath, float argMaxJumpDistance, float argCollisionRadiusCheck, LayerMask argCollisionMask)
     {
         if (argPath == null) return null;
         if (argPath.Count == 0) return null;
         List<Vector3> condensedPath = new List<Vector3>();
+        float maxJumpDistanceSqrd = argMaxJumpDistance * argMaxJumpDistance;
 
         condensedPath.Add(argPath[0]);
 
@@ -20,7 +21,7 @@ public class PathHelpers : MonoBehaviour
         {
             Vector3Int nextPoint = argPath[currentIndex];
             Vector3Int prevPoint = argPath[currentIndex - 1];
-            if (PathBlocked(condensedPath[condensedPath.Count - 1], nextPoint, argCollisionRadiusCheck, argCollisionMask)) condensedPath.Add(prevPoint);
+            if (Vector3.SqrMagnitude(condensedPath[condensedPath.Count -1] - nextPoint) > maxJumpDistanceSqrd || PathBlocked(condensedPath[condensedPath.Count - 1], nextPoint, argCollisionRadiusCheck, argCollisionMask)) condensedPath.Add(prevPoint);
             else currentIndex++;
 
             if (currentIndex == argPath.Count - 1)

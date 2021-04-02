@@ -22,7 +22,7 @@ public class FollowPathState : FSMState
         mPathToFollow.Clear();
         mCondensedPath.Clear();
         mPathToFollow = PathFindingData.Instance.GetPath(GameConstants.Instance.PlayerObject, mAgent.transform.position);
-        mCondensedPath = PathHelpers.CondensePathPoints(mPathToFollow, 0.45f, LayerMask.GetMask("Default"));
+        mCondensedPath = PathHelpers.CondensePathPoints(mPathToFollow, Mathf.Infinity, 0.45f, LayerMask.GetMask("Default"));
 
         if (mCondensedPath != null && mCondensedPath.Count > 0)
         {

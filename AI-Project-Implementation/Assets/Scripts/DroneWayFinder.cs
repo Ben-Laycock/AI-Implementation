@@ -42,13 +42,22 @@ public class DroneWayFinder : MonoBehaviour
         mPathPoints = AStar.SearchForPath(argFrom, argTo, ref VoxelManager.Instance.GetMapData());
         if (mCondensedPath == null) mCondensedPath = new List<Vector3>();
         mCondensedPath.Clear();
-        mCondensedPath = PathHelpers.CondensePathPoints(mPathPoints, mCollisionLineRadiusCheck, mPathCollisionMask);
+        mCondensedPath = PathHelpers.CondensePathPoints(mPathPoints, 5f, mCollisionLineRadiusCheck, mPathCollisionMask);
     }
 
     void DrawPath()
     {
         if (mPathPoints.Count <= 0 || mLineDisplay == null) return;
-        mLineDisplay.positionCount = mCondensedPath.Count;
-        mLineDisplay.SetPositions(mCondensedPath.ToArray());
+
+        List<Vector3> renderablePath = new List<Vector3>();
+        int furthestVisibleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, transform.position, mPathCollisionMask);
+
+        renderablePath.Add(transform.position);
+        for (int i = furthestVisibleIndex; i < mCondensedPath.Count; i++)
+        {
+            renderablePath.Add(mCondensedPath[i]);
+        }
+        mLineDisplay.positionCount = renderablePath.Count;
+        mLineDisplay.SetPositions(renderablePath.ToArray());
     }
 }
