@@ -2672,7 +2672,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816071, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mSounds.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816071, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mSounds.Array.data[0].mClip
@@ -2697,6 +2697,14 @@ PrefabInstance:
     - target: {fileID: 774365232359816071, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mSounds.Array.data[2].mName
       value: Shoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 774365232359816071, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
+      propertyPath: mSounds.Array.data[3].mClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 81219744205ce21488fe3b4857d40304, type: 3}
+    - target: {fileID: 774365232359816071, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
+      propertyPath: mSounds.Array.data[3].mName
+      value: Weird
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
