@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -66,6 +67,29 @@ public class MainSystem : MonoBehaviour
                 break;
         }
 
+    }
+
+    public void ResumeGame()
+    {
+        mCurrentGameState = GameState.Running;
+        mPauseMenuCanvas.SetActive(false);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        PoolSystem.Instance.ResetPools();
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void RestartGame()
+    {
+        PoolSystem.Instance.ResetPools();
+        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
 }

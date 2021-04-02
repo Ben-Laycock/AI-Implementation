@@ -196,7 +196,7 @@ public class PoolSystem : MonoBehaviour
     /*
      * Resets all pools by disabling every object ready for their next use
      */
-    void ResetPools()
+    public void ResetPools()
     {
         foreach (var KVP in mPools)
         {
