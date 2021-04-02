@@ -20,6 +20,8 @@ public class BoidsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameConstants.Instance.BoidsManager = this;
+
         // Creates a sphere of points that will be used by the boids to avoid collisions
         CalculateCollisionTestDirections();
 

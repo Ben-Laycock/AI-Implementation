@@ -112,16 +112,20 @@ public class GameConstants : MonoBehaviour
         set { mGlobalGravityScale = value; }
     }
 
+    [Header("Player Objects")]
     [SerializeField] private GameObject mPlayerObject;
     public GameObject PlayerObject
     {
         get { return mPlayerObject; }
+        set { mPlayerObject = value; }
     }
 
+    [Header("Agent Objects")]
     [SerializeField] private BoidsManager mBoidsManager;
     public BoidsManager BoidsManager
     {
         get { return mBoidsManager; }
+        set { mBoidsManager = value; }
     }
 
 }

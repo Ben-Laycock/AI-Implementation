@@ -71,25 +71,16 @@ public class PlayerMovement : MonoBehaviour
         mPlayerCamera = mPlayerCameraObject.GetComponent<Camera>();
 
         mPlayerRigidbody = gameObject.GetComponent<Rigidbody>();
-
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
-
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-
         ResetPlayerMovementValues();
         GetPlayerInput();
 
         CalculatePlayerCamera();
 
         MovePlayer();
-
     }
 
     public void ResetPlayerMovementValues()

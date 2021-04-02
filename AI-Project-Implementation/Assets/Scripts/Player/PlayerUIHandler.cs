@@ -11,17 +11,25 @@ public class PlayerUIHandler : MonoBehaviour
 
     [Header("Text Fields")]
     [SerializeField] private GameObject mScoreObject;
+    [SerializeField] private GameObject mWaveObject;
 
     private Text mScoreText;
+    private Text mWaveText;
 
     private void Start()
     {
         mScoreText = mScoreObject.GetComponent<Text>();
+        mWaveText = mWaveObject.GetComponent<Text>();
     }
 
     public void UpdateScoreText(int score)
     {
         mScoreText.text = "SCORE: " + score;
+    }
+
+    public void UpdateWaveText(int wave)
+    {
+        mWaveText.text = "WAVE: " + wave;
     }
 
     public void UpdateHealthBar(float currentHealth, float maxHealth)

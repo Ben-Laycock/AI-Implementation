@@ -24,6 +24,8 @@ public class PlayerHandler : MonoBehaviour, IDamageable
     private void Start()
     {
         
+        GameConstants.Instance.PlayerObject = gameObject;
+
         mPlayerMovementScript = GetComponent<PlayerMovement>();
         mPlayerParticleHandlerScript = GetComponent<PlayerParticleHandler>();
 

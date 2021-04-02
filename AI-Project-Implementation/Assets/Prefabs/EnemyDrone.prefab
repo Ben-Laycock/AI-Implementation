@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ed0a427ce9a45d4db657ead15f70acc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mTarget: {fileID: 0}
+  mTarget: {x: 0, y: 0, z: 0}
   mCollisionDetectionMask:
     serializedVersion: 2
     m_Bits: 1
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mBasicAgentTree: {fileID: 11400000, guid: b6f20cb4b5e22534dadaab1bba748a77, type: 2}
-  mHealth: 5
+  mHealth: 1
   mEnergy: 20
   mMaxHealth: 5
   mMaxEnergy: 5

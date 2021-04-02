@@ -7,6 +7,13 @@ public class WaveSystem : MonoBehaviour
     [Header("Agents")]
     [SerializeField] private GameObject mEnemyDrone;
 
+    [Header("Player Objects")]
+    [SerializeField] private GameObject mPlayerObject;
+    [SerializeField] private GameObject mPlayerUICanvas;
+
+    private PlayerHandler mPlayerHandler;
+    private PlayerUIHandler mPlayerUIHandler;
+
     [Header("Wave Information")]
     [SerializeField] private int mCurrentWave = 1;
 
@@ -18,8 +25,16 @@ public class WaveSystem : MonoBehaviour
 
     bool mSpawnEnemies = true;
 
+    private void Start()
+    {
+        mPlayerHandler = mPlayerObject.GetComponent<PlayerHandler>();
+        mPlayerUIHandler = mPlayerUICanvas.GetComponent<PlayerUIHandler>();
+    }
+
     private void Update()
     {
+        mPlayerUIHandler.UpdateWaveText(mCurrentWave);
+
         if(mSpawnEnemies)
         {
             int numberOfEnemiesToSpawn = mNumberOfEnemies + (mCurrentWave * 2);
@@ -33,9 +48,16 @@ public class WaveSystem : MonoBehaviour
 
         if(mWaveTimer >= mWaveLength)
         {
+            mPlayerHandler.IncreaseScore(50 * mCurrentWave);
+
             mCurrentWave++;
             mSpawnEnemies = true;
             mWaveTimer = 0.0f;
+
+            if(mCurrentWave == mNumberOfWaves + 1)
+            {
+                //Game Over
+            }
         }
 
         mWaveTimer += Time.deltaTime;
