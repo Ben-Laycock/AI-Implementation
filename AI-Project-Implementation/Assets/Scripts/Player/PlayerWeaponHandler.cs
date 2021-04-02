@@ -32,6 +32,8 @@ public class PlayerWeaponHandler : MonoBehaviour
     [SerializeField] private GameObject mBulletPrefab;
     [SerializeField] private GameObject mRocketPrefab;
 
+    private string[] mShootingSounds = new string[5] { "Shoot", "Shoot01", "Shoot02", "Shoot03", "Shoot04" };
+
     private float mMachineGunFireTimer = 0.0f;
     private float mRocketLauncherFireTimer = 0.0f;
 
@@ -90,6 +92,7 @@ public class PlayerWeaponHandler : MonoBehaviour
 
     public void FireProjectile(float damageToApply, float speed, WeaponType type, Vector3 positionToFireFrom)
     {
+        int randomSoundIndex = Random.Range(0, 5);
         switch (mCurrentWeaponType)
         {
             case WeaponType.MachineGun:
@@ -99,7 +102,7 @@ public class PlayerWeaponHandler : MonoBehaviour
                 bulletProjectileScript.SetupProjectile(damageToApply, speed, positionToFireFrom);
                 bulletProjectileScript.LaunchProjectile(transform.forward);
 
-                AudioSystem.Instance.PlaySound("Shoot", 0.1f);
+                AudioSystem.Instance.PlaySound(mShootingSounds[randomSoundIndex], 0.1f);
                 break;
 
             case WeaponType.RocketLauncher:
@@ -108,7 +111,8 @@ public class PlayerWeaponHandler : MonoBehaviour
 
                 rocketProjectileScript.SetupProjectile(damageToApply, speed, positionToFireFrom);
                 rocketProjectileScript.LaunchProjectile(transform.forward);
-                AudioSystem.Instance.PlaySound("Shoot", 0.1f);
+
+                AudioSystem.Instance.PlaySound(mShootingSounds[randomSoundIndex], 0.1f);
                 break;
 
             default:

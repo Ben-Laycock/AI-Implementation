@@ -126,7 +126,13 @@ public class AgentHandler : MonoBehaviour, IDamageable
 
     public void KillAgent()
     {
-        AudioSystem.Instance.PlaySound("Explosion", 0.08f);
+        int randomExplosion = Random.Range(0, 3);
+        if (randomExplosion == 0)
+            AudioSystem.Instance.PlaySound("Explosion", 0.08f);
+        else if (randomExplosion == 1)
+            AudioSystem.Instance.PlaySound("Explosion01", 0.08f);
+        else
+            AudioSystem.Instance.PlaySound("Explosion02", 0.08f);
 
         mBoidController.ResetBoid();
         mBoidController.RemoveBoidFromManager();

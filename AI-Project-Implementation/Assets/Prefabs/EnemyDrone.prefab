@@ -103,7 +103,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   mCollisionRadiusCheck: 0.75
-  mMaxNeighbours: 20
+  mMaxNeighbours: 15
   mMinMaxSpeed: {x: 5, y: 15}
   mMaxSteering: 5
   mUseSmoothRotation: 1
