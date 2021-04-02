@@ -31,6 +31,7 @@ public class MainSystem : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
         mScoreText = mGameOverScoreObject.GetComponent<Text>();
     }
 
@@ -94,6 +95,7 @@ public class MainSystem : MonoBehaviour
     {
         PoolSystem.Instance.ResetPools();
         Time.timeScale = 1;
+        mCurrentGameState = GameState.Running;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
@@ -107,6 +109,7 @@ public class MainSystem : MonoBehaviour
     {
         PoolSystem.Instance.ResetPools();
         Time.timeScale = 1;
+        mCurrentGameState = GameState.Running;
         SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
