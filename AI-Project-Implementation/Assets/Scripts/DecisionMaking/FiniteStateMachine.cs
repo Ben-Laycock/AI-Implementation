@@ -69,8 +69,8 @@ public abstract class FSMState
         return fsmStateID.DefaultStateID;
     }
 
-    public virtual void DoBeforeEntering() { }
-    public virtual void DoBeforeLeaving() { }
+    public abstract void DoBeforeEntering();
+    public abstract void DoBeforeLeaving();
     public abstract void Reason(GameObject player, AgentHandler agent);
     public abstract void Act(GameObject player, AgentHandler agent);
 

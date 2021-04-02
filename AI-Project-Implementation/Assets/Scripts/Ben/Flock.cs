@@ -44,7 +44,7 @@ public class Flock
     {
         mBoids.Add(argBoid);
 
-        if (argBoid.GetTarget() != mFlockTarget) argBoid.SetTarget(mFlockTarget);
+        if (argBoid.GetTarget() != mFlockTarget.transform.position) argBoid.SetTarget(mFlockTarget.transform.position);
     }
 
     public void RemoveAgent(Boids argBoid)
@@ -60,7 +60,7 @@ public class Flock
 
         foreach (Boids boid in mBoids)
         {
-            boid.SetTarget(argTarget);
+            boid.SetTarget(argTarget.transform.position);
         }
     }
 

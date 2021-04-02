@@ -26,6 +26,16 @@ public class AStar : MonoBehaviour
         Dictionary<Vector3Int, Node> openNodes = new Dictionary<Vector3Int, Node>();
         Dictionary<Vector3Int, Node> closedNodes = new Dictionary<Vector3Int, Node>();
 
+        if (argArray == null || argArray.Length == 0) return new List<Vector3Int>();
+
+        argStartPos.x = Mathf.Clamp(argStartPos.x, 0, argArray.GetLength(0));
+        argStartPos.y = Mathf.Clamp(argStartPos.y, 0, argArray.GetLength(1));
+        argStartPos.z = Mathf.Clamp(argStartPos.z, 0, argArray.GetLength(2));
+
+        argEndPos.x = Mathf.Clamp(argEndPos.x, 0, argArray.GetLength(0));
+        argEndPos.y = Mathf.Clamp(argEndPos.y, 0, argArray.GetLength(1));
+        argEndPos.z = Mathf.Clamp(argEndPos.z, 0, argArray.GetLength(2));
+
         if (argArray[argStartPos.x, argStartPos.y, argStartPos.z] != (byte)0) return new List<Vector3Int>();
         if (argArray[argEndPos.x, argEndPos.y, argEndPos.z] != (byte)0) return new List<Vector3Int>();
 

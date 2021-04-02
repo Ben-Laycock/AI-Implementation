@@ -144,6 +144,7 @@ public class AgentHandler : MonoBehaviour, IDamageable
     public void SetupFSM()
     {
         FollowPathState followState = new FollowPathState();
+        followState.SetAgentHandler(this);
         followState.AddTransitionToState(fsmTransition.ToChase, fsmStateID.ChasePlayer);
         followState.AddTransitionToState(fsmTransition.ToAttack, fsmStateID.AttackPlayer);
 
@@ -156,8 +157,8 @@ public class AgentHandler : MonoBehaviour, IDamageable
         chaseState.AddTransitionToState(fsmTransition.ToAttack, fsmStateID.AttackPlayer);
 
         mBasicAgentFSM = new FiniteStateMachine();
-        mBasicAgentFSM.AddState(followState);
         mBasicAgentFSM.AddState(attackState);
+        mBasicAgentFSM.AddState(followState);
         mBasicAgentFSM.AddState(chaseState);
     }
 

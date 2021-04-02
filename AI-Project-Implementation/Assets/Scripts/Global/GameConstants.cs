@@ -10,23 +10,15 @@ public class GameConstants : MonoBehaviour
     // Get Singleton Instance
     public static GameConstants Instance
     {
-
-        get
-        {
-            return sInstance;
-        }
-
+        get { return sInstance; }
     }
 
     private void Awake()
     {
-
-        if (null != sInstance && this != sInstance)
-            Destroy(this.gameObject);
+        if (null != sInstance && this != sInstance) Destroy(this.gameObject);
 
         sInstance = this;
         DontDestroyOnLoad(this.gameObject);
-
     }
 
 

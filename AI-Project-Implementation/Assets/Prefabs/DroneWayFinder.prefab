@@ -47,6 +47,7 @@ MonoBehaviour:
   mLineDisplay: {fileID: 0}
   mCollisionLineRadiusCheck: 0.49
   mPathPoints: []
+  mCondensedPath: []
   mPathCollisionMask:
     serializedVersion: 2
     m_Bits: 1
@@ -159,6 +160,7 @@ GameObject:
   - component: {fileID: 557365733723027100}
   - component: {fileID: 3464379426815752505}
   - component: {fileID: 1726855519673961971}
+  - component: {fileID: 1719470551}
   m_Layer: 0
   m_Name: DroneWayFinder
   m_TagString: Untagged
@@ -173,7 +175,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934489784749485094}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -234,3 +236,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1719470551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934489784749485094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d15956e5e4576b444b8e1d460cf977a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mPathLine: {fileID: 0}
+  mTarget: {x: 0, y: 0, z: 0}
+  mDroneTargetProximityRange: 10
+  mHasReachedTarget: 0

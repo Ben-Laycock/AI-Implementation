@@ -76,7 +76,7 @@ public class BoidsManager : MonoBehaviour
             agentScript.SetShouldFlock(true);
 
             AddBoid(agentScript);
-            agentScript.SetTarget(mFlockTarget);
+            agentScript.SetTarget(mFlockTarget.transform.position);
         }
     }
 
@@ -85,7 +85,7 @@ public class BoidsManager : MonoBehaviour
         if (argBoid == null) return;
 
         if (!mBoids.Contains(argBoid)) mBoids.Add(argBoid);
-        if (argBoid.GetTarget() != mFlockTarget) argBoid.SetTarget(mFlockTarget);
+        if (argBoid.GetTarget() != mFlockTarget.transform.position) argBoid.SetTarget(mFlockTarget.transform.position);
     }
 
     public void RemoveBoid(Boids argBoid)

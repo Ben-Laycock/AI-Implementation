@@ -4,9 +4,32 @@ using UnityEngine;
 
 public class FollowPathState : FSMState
 {
+    AgentHandler mAgent = null;
+    List<Vector3Int> mPathToFollow = null;
+    List<Vector3> mCondensedPath = null;
+
     public FollowPathState()
     {
+        mPathToFollow = new List<Vector3Int>();
+        mCondensedPath = new List<Vector3>();
         mStateID = fsmStateID.FollowPath;
+    }
+
+    public override void DoBeforeEntering()
+    {
+        if (mPathToFollow == null) mPathToFollow = new List<Vector3Int>();
+        if (mCondensedPath == null) mCondensedPath = new List<Vector3>();
+        mPathToFollow.Clear();
+        mCondensedPath.Clear();
+        mPathToFollow = PathFindingData.Instance.GetPath(GameConstants.Instance.PlayerObject, mAgent.transform.position);
+        mCondensedPath = PathHelpers.CondensePathPoints(mPathToFollow, LayerMask.GetMask("Default"));
+    }
+
+    public override void DoBeforeLeaving()
+    {
+        if (mPathToFollow != null) mPathToFollow.Clear();
+        if (mCondensedPath != null) mCondensedPath.Clear();
+        mAgent.BoidController.SetTarget(Vector3.zero);
     }
 
     public override void Reason(GameObject player, AgentHandler agent)
@@ -28,7 +51,16 @@ public class FollowPathState : FSMState
     public override void Act(GameObject player, AgentHandler agent)
     {
         //Follow the Found Path
-        agent.BoidController.SetTarget(agent.BoidController.GetManager().GetFlockTarget());
+        if (mCondensedPath != null && mCondensedPath.Count > 0)
+        {
+            //Debug.Log("FollowingPath");
+            int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, agent.transform.position, LayerMask.GetMask("Default"));
+            agent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
+        }
+        else
+        {
+            //Debug.Log(mCondensedPath.Count);
+        }
         agent.BoidController.SetShouldFlock(true);
 
         // Find paths for boids using spatial grid
@@ -36,6 +68,10 @@ public class FollowPathState : FSMState
         // state machine handles the rest..
     }
 
+    public void SetAgentHandler(AgentHandler argAgentHandler)
+    {
+        mAgent = argAgentHandler;
+    }
 }
 
 public class AttackState : FSMState
@@ -43,6 +79,16 @@ public class AttackState : FSMState
     public AttackState()
     {
         mStateID = fsmStateID.AttackPlayer;
+    }
+
+    public override void DoBeforeEntering()
+    {
+        
+    }
+
+    public override void DoBeforeLeaving()
+    {
+        
     }
 
     public override void Reason(GameObject player, AgentHandler agent)
@@ -84,6 +130,16 @@ public class ChasePlayerState : FSMState
         mStateID = fsmStateID.ChasePlayer;
     }
 
+    public override void DoBeforeEntering()
+    {
+
+    }
+
+    public override void DoBeforeLeaving()
+    {
+
+    }
+
     public override void Reason(GameObject player, AgentHandler agent)
     {
         Vector3 directionToPlayer = GameConstants.Instance.PlayerObject.transform.position - agent.transform.position;
@@ -101,7 +157,7 @@ public class ChasePlayerState : FSMState
     public override void Act(GameObject player, AgentHandler agent)
     {
         //Chase Player
-        agent.BoidController.SetTarget(player);
+        agent.BoidController.SetTarget(player.transform.position);
         agent.BoidController.SetShouldFlock(true);
     }
 
