@@ -56,20 +56,11 @@ public class FollowPathState : FSMState
 
     public override void Act(GameObject player, AgentHandler agent)
     {
-        float distanceThreshold = 5f;
-        bool useOptimisation = false;
+        float distanceThresholdSqrd = 25f;
         //Follow the Found Path
         if (mCondensedPath != null && mCondensedPath.Count > 0)
         {
-            if (useOptimisation)
-            {
-                if (Vector3.SqrMagnitude(agent.transform.position - agent.BoidController.GetTarget()) < (distanceThreshold * distanceThreshold))
-                {
-                    int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, agent.transform.position, LayerMask.GetMask("Default"));
-                    agent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
-                }
-            }
-            else
+            if (Vector3.SqrMagnitude(agent.transform.position - agent.BoidController.GetTarget()) < distanceThresholdSqrd)
             {
                 int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, agent.transform.position, LayerMask.GetMask("Default"));
                 agent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
