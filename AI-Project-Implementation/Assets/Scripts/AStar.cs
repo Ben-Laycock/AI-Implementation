@@ -87,11 +87,13 @@ public class AStar : MonoBehaviour
         // Construct path
         List<Vector3Int> path = new List<Vector3Int>();
         Vector3Int currentPos = argEndPos;
+
         while (currentPos != argStartPos)
         {
             path.Add(currentPos);
             currentPos = closedNodes[currentPos].mParentPosition;
         }
+
         path.Reverse();
 
         return path;

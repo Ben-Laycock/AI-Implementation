@@ -8,11 +8,11 @@ public class PathHelpers : MonoBehaviour
     {
         if (argPath == null) return null;
         if (argPath.Count == 0) return null;
+
         List<Vector3> condensedPath = new List<Vector3>();
         float maxJumpDistanceSqrd = argMaxJumpDistance * argMaxJumpDistance;
 
         condensedPath.Add(argPath[0]);
-
         // Start from index 2, this is because 0 has already been added
         // The test work one point ahead meaning if the path to index 2 is blocked
         // it will add 2 - 1
@@ -21,7 +21,11 @@ public class PathHelpers : MonoBehaviour
         {
             Vector3Int nextPoint = argPath[currentIndex];
             Vector3Int prevPoint = argPath[currentIndex - 1];
-            if (Vector3.SqrMagnitude(condensedPath[condensedPath.Count -1] - nextPoint) > maxJumpDistanceSqrd || PathBlocked(condensedPath[condensedPath.Count - 1], nextPoint, argCollisionRadiusCheck, argCollisionMask)) condensedPath.Add(prevPoint);
+
+            if (Vector3.SqrMagnitude(condensedPath[condensedPath.Count - 1] - nextPoint) > maxJumpDistanceSqrd || PathBlocked(condensedPath[condensedPath.Count - 1], nextPoint, argCollisionRadiusCheck, argCollisionMask))
+            {
+                condensedPath.Add(prevPoint);
+            }
             else currentIndex++;
 
             if (currentIndex == argPath.Count - 1)

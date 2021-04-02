@@ -9820,7 +9820,9 @@ MonoBehaviour:
   mMaxHealth: 100
   mMaxEnergy: 100
   mScore: 0
+  mNumberOfRelicsCollected: 0
   mPlayerUICanvas: {fileID: 0}
+  mMainSystem: {fileID: 0}
 --- !u!114 &7124416190475855576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9886,7 +9888,7 @@ MonoBehaviour:
   mRocketLauncherFireRate: 1
   mBulletSpeed: 15
   mBulletDamage: 1
-  mRocketSpeed: 12
+  mRocketSpeed: 20
   mRocketDamage: 5
   mBulletPrefab: {fileID: 6861636193121705170, guid: c3e47802845dbb04881dbad368b4320f, type: 3}
   mRocketPrefab: {fileID: 1874445154318880541, guid: 98ec488c17a81a941b09d55570d9677e, type: 3}

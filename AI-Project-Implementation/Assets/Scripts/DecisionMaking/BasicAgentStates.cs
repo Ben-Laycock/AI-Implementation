@@ -19,8 +19,10 @@ public class FollowPathState : FSMState
     {
         if (mPathToFollow == null) mPathToFollow = new List<Vector3Int>();
         if (mCondensedPath == null) mCondensedPath = new List<Vector3>();
+
         mPathToFollow.Clear();
         mCondensedPath.Clear();
+
         mPathToFollow = PathFindingData.Instance.GetPath(GameConstants.Instance.PlayerObject, mAgent.transform.position);
         mCondensedPath = PathHelpers.CondensePathPoints(mPathToFollow, Mathf.Infinity, 0.45f, LayerMask.GetMask("Default"));
 

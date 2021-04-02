@@ -595,10 +595,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7124416190475855584, guid: 28a87caeb64032541a7392952dda78b6, type: 3}
-      propertyPath: mRocketSpeed
-      value: 12
-      objectReference: {fileID: 0}
     - target: {fileID: 7124416190475855588, guid: 28a87caeb64032541a7392952dda78b6, type: 3}
       propertyPath: mMainSystem
       value: 
@@ -1843,13 +1839,29 @@ PrefabInstance:
       value: MainSystem
       objectReference: {fileID: 0}
     - target: {fileID: 1331687515962681979, guid: 512f93cfbc89a7f44ae4eca542420d2b, type: 3}
+      propertyPath: mWaveLength
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331687515962681979, guid: 512f93cfbc89a7f44ae4eca542420d2b, type: 3}
+      propertyPath: mCurrentWave
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331687515962681979, guid: 512f93cfbc89a7f44ae4eca542420d2b, type: 3}
       propertyPath: mPlayerObject
       value: 
       objectReference: {fileID: 330569637}
     - target: {fileID: 1331687515962681979, guid: 512f93cfbc89a7f44ae4eca542420d2b, type: 3}
+      propertyPath: mNumberOfWaves
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331687515962681979, guid: 512f93cfbc89a7f44ae4eca542420d2b, type: 3}
       propertyPath: mPlayerUICanvas
       value: 
       objectReference: {fileID: 1891889035}
+    - target: {fileID: 1331687515962681979, guid: 512f93cfbc89a7f44ae4eca542420d2b, type: 3}
+      propertyPath: mNumberOfEnemies
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1331687515962682756, guid: 512f93cfbc89a7f44ae4eca542420d2b, type: 3}
       propertyPath: mGameOverCanvas
       value: 
@@ -3136,13 +3148,13 @@ GameObject:
   - component: {fileID: 1842451702}
   - component: {fileID: 1842451700}
   - component: {fileID: 1842451701}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Relic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1842451700
 MonoBehaviour:
   m_ObjectHideFlags: 0
