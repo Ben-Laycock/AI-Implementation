@@ -22,7 +22,13 @@ public class FollowPathState : FSMState
         mPathToFollow.Clear();
         mCondensedPath.Clear();
         mPathToFollow = PathFindingData.Instance.GetPath(GameConstants.Instance.PlayerObject, mAgent.transform.position);
-        mCondensedPath = PathHelpers.CondensePathPoints(mPathToFollow, LayerMask.GetMask("Default"));
+        mCondensedPath = PathHelpers.CondensePathPoints(mPathToFollow, 0.45f, LayerMask.GetMask("Default"));
+
+        if (mCondensedPath != null && mCondensedPath.Count > 0)
+        {
+            int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, mAgent.transform.position, LayerMask.GetMask("Default"));
+            mAgent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
+        }
     }
 
     public override void DoBeforeLeaving()
@@ -50,16 +56,24 @@ public class FollowPathState : FSMState
 
     public override void Act(GameObject player, AgentHandler agent)
     {
+        float distanceThreshold = 5f;
+        bool useOptimisation = false;
         //Follow the Found Path
         if (mCondensedPath != null && mCondensedPath.Count > 0)
         {
-            //Debug.Log("FollowingPath");
-            int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, agent.transform.position, LayerMask.GetMask("Default"));
-            agent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
-        }
-        else
-        {
-            //Debug.Log(mCondensedPath.Count);
+            if (useOptimisation)
+            {
+                if (Vector3.SqrMagnitude(agent.transform.position - agent.BoidController.GetTarget()) < (distanceThreshold * distanceThreshold))
+                {
+                    int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, agent.transform.position, LayerMask.GetMask("Default"));
+                    agent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
+                }
+            }
+            else
+            {
+                int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, agent.transform.position, LayerMask.GetMask("Default"));
+                agent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
+            }
         }
         agent.BoidController.SetShouldFlock(true);
 

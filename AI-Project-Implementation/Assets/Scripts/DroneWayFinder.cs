@@ -42,7 +42,7 @@ public class DroneWayFinder : MonoBehaviour
         mPathPoints = AStar.SearchForPath(argFrom, argTo, ref VoxelManager.Instance.GetMapData());
         if (mCondensedPath == null) mCondensedPath = new List<Vector3>();
         mCondensedPath.Clear();
-        mCondensedPath = PathHelpers.CondensePathPoints(mPathPoints, mPathCollisionMask);
+        mCondensedPath = PathHelpers.CondensePathPoints(mPathPoints, mCollisionLineRadiusCheck, mPathCollisionMask);
     }
 
     void DrawPath()

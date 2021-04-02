@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PathHelpers : MonoBehaviour
 {
-    public static List<Vector3> CondensePathPoints(List<Vector3Int> argPath, LayerMask argCollisionMask)
+    public static List<Vector3> CondensePathPoints(List<Vector3Int> argPath, float argCollisionRadiusCheck, LayerMask argCollisionMask)
     {
         if (argPath == null) return null;
         if (argPath.Count == 0) return null;
@@ -20,7 +20,7 @@ public class PathHelpers : MonoBehaviour
         {
             Vector3Int nextPoint = argPath[currentIndex];
             Vector3Int prevPoint = argPath[currentIndex - 1];
-            if (PathBlocked(condensedPath[condensedPath.Count - 1], nextPoint, 0.1f, argCollisionMask)) condensedPath.Add(prevPoint);
+            if (PathBlocked(condensedPath[condensedPath.Count - 1], nextPoint, argCollisionRadiusCheck, argCollisionMask)) condensedPath.Add(prevPoint);
             else currentIndex++;
 
             if (currentIndex == argPath.Count - 1)
