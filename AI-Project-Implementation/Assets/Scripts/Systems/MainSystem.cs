@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum GameState
 {
@@ -19,11 +20,18 @@ public class MainSystem : MonoBehaviour
     [SerializeField] private GameObject mPauseMenuCanvas;
     [SerializeField] private GameObject mGameOverCanvas;
 
+    [Header("Canvas Elements")]
+    [SerializeField] private GameObject mGameOverScoreObject;
+
+    private Text mScoreText;
+
     private GameState mCurrentGameState = GameState.Running;
+
+    private int mFinalScore = 0;
 
     private void Start()
     {
-
+        mScoreText = mGameOverScoreObject.GetComponent<Text>();
     }
 
     private void Update()
@@ -35,18 +43,24 @@ public class MainSystem : MonoBehaviour
             {
                 mCurrentGameState = GameState.Paused;
                 mPauseMenuCanvas.SetActive(true);
+                Time.timeScale = 0;
             }
             else if(mCurrentGameState == GameState.Paused)
             {
                 mCurrentGameState = GameState.Running;
                 mPauseMenuCanvas.SetActive(false);
+                Time.timeScale = 1;
             }
         }
 
         if(mGameOver) {
+            Time.timeScale = 0;
             mCurrentGameState = GameState.GameOver;
             if(!mGameOverCanvas.activeSelf)
+            {
+                mScoreText.text = "SCORE: " + mFinalScore;
                 mGameOverCanvas.SetActive(true);
+            }
         }
 
         switch(mCurrentGameState)
@@ -73,23 +87,37 @@ public class MainSystem : MonoBehaviour
     {
         mCurrentGameState = GameState.Running;
         mPauseMenuCanvas.SetActive(false);
+        Time.timeScale = 1;
     }
 
     public void ReturnToMainMenu()
     {
         PoolSystem.Instance.ResetPools();
+        Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     public void QuitGame()
     {
+        Time.timeScale = 1;
         Application.Quit();
     }
 
     public void RestartGame()
     {
         PoolSystem.Instance.ResetPools();
+        Time.timeScale = 1;
         SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
+    }
+
+    public void SetGameOver(bool value)
+    {
+        mGameOver = value;
+    }
+
+    public void SetFinalScore(int value)
+    {
+        mFinalScore = value;
     }
 
 }

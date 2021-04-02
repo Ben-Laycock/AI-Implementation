@@ -98,7 +98,7 @@ public class AudioSystem : MonoBehaviour
             deactivationCompononent.ResetTimer();
 
             audioSource.clip = mSounds[argKey];
-            audioSource.volume = 1f;
+            audioSource.volume = argVolume;
 
             audioObject.SetActive(true);
             audioSource.Play();

@@ -12,6 +12,11 @@ public class EnergyBall : MonoBehaviour
 
     private Rigidbody mRigidbody;
 
+    private bool GlideTowardsPlayer = false;
+    private bool CanGlideToPlayer = false;
+    [SerializeField] private float mSpeedToApproachPlayer = 5.0f;
+    [SerializeField] private GameObject EnergyPopVFX;
+
     private void Awake()
     {
         mRigidbody = gameObject.GetComponent<Rigidbody>();
@@ -21,6 +26,7 @@ public class EnergyBall : MonoBehaviour
     {
         if(mEnergyBallGlideTimer < 1.0f)
         {
+            CanGlideToPlayer = false;
             mRigidbody.velocity = mGlideDirection;
             if(gameObject.transform.localScale.x < 0.3)
             {
@@ -30,7 +36,36 @@ public class EnergyBall : MonoBehaviour
         }
         else
         {
+            CanGlideToPlayer = true;
             mRigidbody.velocity = Vector3.zero;
+        }
+
+        if(GlideTowardsPlayer && CanGlideToPlayer)
+        {
+            Vector3 dirToPlayer = GameConstants.Instance.PlayerObject.transform.position - transform.position;
+            mRigidbody.velocity = dirToPlayer.normalized * mSpeedToApproachPlayer;
+
+            mSpeedToApproachPlayer += Time.deltaTime * 3;
+
+        }
+
+        if ((GameConstants.Instance.PlayerObject.transform.position - transform.position).magnitude <= 2.0f)
+        {
+            AudioSystem.Instance.PlaySound("Pickup", 0.1f);
+
+            GameObject EnergyPopVFXObject = PoolSystem.Instance.GetObjectFromPool(EnergyPopVFX, argActivateObject:true, argShouldExpandPool:true, argShouldCreateNonExistingPool:true);
+            EnergyPopVFXObject.transform.position = transform.position;
+
+            DeactivateVFX EnergyPopVFXObjectScript = EnergyPopVFXObject.GetComponent<DeactivateVFX>();
+            EnergyPopVFXObjectScript.WaitForDeactivation();
+
+            //Give Player Energy
+            PlayerHandler playerHandler = GameConstants.Instance.PlayerObject.GetComponent<PlayerHandler>();
+            playerHandler.IncreaseScore((int)mEnergyToProvide);
+            playerHandler.ChangePlayerEnergyBy(mEnergyToProvide);
+
+            //Reset Energy Ball
+            DeactivateEnergyBall();
         }
     }
 
@@ -52,22 +87,20 @@ public class EnergyBall : MonoBehaviour
 
     public void DeactivateEnergyBall()
     {
-        gameObject.SetActive(false);
+        mSpeedToApproachPlayer = 5.0f;
         mGlideDirection = Vector3.zero;
         mEnergyBallGlideTimer = 1000.0f;
+        GlideTowardsPlayer = false;
+        gameObject.SetActive(false); 
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.name == "Player")
+        if(other.gameObject.name == "PlayerPickupRange")
         {
-            //Give Player Energy
-            PlayerHandler playerHandler = other.gameObject.GetComponent<PlayerHandler>();
-            playerHandler.IncreaseScore((int)mEnergyToProvide);
-            playerHandler.ChangePlayerEnergyBy(mEnergyToProvide);
 
-            //Reset Energy Ball
-            DeactivateEnergyBall();
+            GlideTowardsPlayer = true;
+            
         }
     }
 

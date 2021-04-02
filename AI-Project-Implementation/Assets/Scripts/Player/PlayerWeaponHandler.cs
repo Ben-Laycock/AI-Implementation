@@ -44,6 +44,16 @@ public class PlayerWeaponHandler : MonoBehaviour
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            if(mCurrentWeaponType == WeaponType.MachineGun)
+                mCurrentWeaponType = WeaponType.RocketLauncher;
+            else
+                mCurrentWeaponType = WeaponType.MachineGun;
+
+            mPlayerHandler.GetPlayerUIHandler().SwitchSelectedWeapon();
+        }
+
         if(Input.GetMouseButton(0))
         {
             mMachineGunFireTimer += Time.deltaTime;
@@ -88,6 +98,8 @@ public class PlayerWeaponHandler : MonoBehaviour
 
                 bulletProjectileScript.SetupProjectile(damageToApply, speed, positionToFireFrom);
                 bulletProjectileScript.LaunchProjectile(transform.forward);
+
+                AudioSystem.Instance.PlaySound("Shoot", 0.1f);
                 break;
 
             case WeaponType.RocketLauncher:
@@ -96,6 +108,7 @@ public class PlayerWeaponHandler : MonoBehaviour
 
                 rocketProjectileScript.SetupProjectile(damageToApply, speed, positionToFireFrom);
                 rocketProjectileScript.LaunchProjectile(transform.forward);
+                AudioSystem.Instance.PlaySound("Shoot", 0.1f);
                 break;
 
             default:

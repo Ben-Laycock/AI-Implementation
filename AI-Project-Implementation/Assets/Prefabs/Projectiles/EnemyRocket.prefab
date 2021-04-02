@@ -111,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mDamage: 1
   mSpeed: 1
-  mProjectileExplosionEffect: {fileID: 6992359505178986886, guid: 0be14987a1e6f4c44a877c827f1d040e, type: 3}
+  mProjectileExplosionEffect: {fileID: 7337412706669661858, guid: 17cad13b6d02fc940a399d0105bcd638, type: 3}
 --- !u!54 &8276168319688091804
 Rigidbody:
   m_ObjectHideFlags: 0

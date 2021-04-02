@@ -12,14 +12,17 @@ public class PlayerHandler : MonoBehaviour, IDamageable
     [SerializeField] private float mMaxEnergy = 100.0f;
 
     [SerializeField] private int mScore = 0;
+    [SerializeField] private int mNumberOfRelicsCollected = 0;
 
     [Header("Game Objects for Reference")]
     [SerializeField] private GameObject mPlayerUICanvas;
+    [SerializeField] private GameObject mMainSystem;
 
     //Other Player Scripts
     private PlayerMovement mPlayerMovementScript;
     private PlayerParticleHandler mPlayerParticleHandlerScript;
     private PlayerUIHandler mPlayerUIHandler;
+    private MainSystem mMainSystemScript;
 
     private void Start()
     {
@@ -31,6 +34,8 @@ public class PlayerHandler : MonoBehaviour, IDamageable
 
         mPlayerUIHandler = mPlayerUICanvas.GetComponent<PlayerUIHandler>();
 
+        mMainSystemScript = mMainSystem.GetComponent<MainSystem>();
+
     }
 
     private void Update()
@@ -38,12 +43,23 @@ public class PlayerHandler : MonoBehaviour, IDamageable
 
         mPlayerParticleHandlerScript.ChangeBoosterParticles(mPlayerMovementScript.GetPlayerMovementSpeed(), mPlayerMovementScript.GetPlayerBoostMultiplier() * mPlayerMovementScript.GetPlayerNormalSpeed());
 
+        if(mHealth <= 0.0f)
+        {
+            mMainSystemScript.SetFinalScore(mScore);
+            mMainSystemScript.SetGameOver(true);
+        }
     }
 
     public void IncreaseScore(int amount)
     {
         mScore += amount;
         mPlayerUIHandler.UpdateScoreText(mScore);
+    }
+
+    public void IncreaseCollectedRelicCount(int amount)
+    {
+        mNumberOfRelicsCollected += amount;
+        mPlayerUIHandler.UpdateObjective(mNumberOfRelicsCollected);
     }
 
     public void ChangePlayerHealthBy(float amount)
@@ -84,5 +100,10 @@ public class PlayerHandler : MonoBehaviour, IDamageable
     public void TakeDamage(float argAmount)
     {
         ChangePlayerHealthBy(-argAmount);
+    }
+
+    public PlayerUIHandler GetPlayerUIHandler()
+    {
+        return mPlayerUIHandler;
     }
 }

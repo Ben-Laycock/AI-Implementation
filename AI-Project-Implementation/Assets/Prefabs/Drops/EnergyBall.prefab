@@ -111,6 +111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mEnergyToProvide: 1
   mEnergyBallGlideTimer: 1000
+  mSpeedToApproachPlayer: 5
+  EnergyPopVFX: {fileID: 7075053018870074450, guid: 406ff58f453f98f47b47a3d0765a52d5, type: 3}
 --- !u!54 &-2611059933893456470
 Rigidbody:
   m_ObjectHideFlags: 0

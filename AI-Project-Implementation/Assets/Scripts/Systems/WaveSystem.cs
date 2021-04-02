@@ -40,7 +40,7 @@ public class WaveSystem : MonoBehaviour
             int numberOfEnemiesToSpawn = mNumberOfEnemies + (mCurrentWave * 2);
             for(int i = 0; i < numberOfEnemiesToSpawn; i++)
             {
-                SpawnEnemyDrone(new Vector3(0,0,0));
+                SpawnEnemyDrone(new Vector3(-20, -20, -20));
             }
 
             mSpawnEnemies = false;
