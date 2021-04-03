@@ -16,6 +16,7 @@ public class GameOverPortal : MonoBehaviour
     {
         if(other.gameObject.name == "Player")
         {
+            mMainSystem.SetFinalScore(other.gameObject.GetComponent<PlayerHandler>().GetScore());
             mMainSystem.SetGameOver(true);
         }
     }
