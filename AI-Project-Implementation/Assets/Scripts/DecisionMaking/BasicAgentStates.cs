@@ -17,20 +17,7 @@ public class FollowPathState : FSMState
 
     public override void DoBeforeEntering()
     {
-        if (mPathToFollow == null) mPathToFollow = new List<Vector3Int>();
-        if (mCondensedPath == null) mCondensedPath = new List<Vector3>();
-
-        mPathToFollow.Clear();
-        mCondensedPath.Clear();
-
-        mPathToFollow = PathFindingData.Instance.GetPath(GameConstants.Instance.PlayerObject, mAgent.transform.position);
-        mCondensedPath = PathHelpers.CondensePathPoints(mPathToFollow, Mathf.Infinity, 0.45f, LayerMask.GetMask("Default"));
-
-        if (mCondensedPath != null && mCondensedPath.Count > 0)
-        {
-            int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, mAgent.transform.position, LayerMask.GetMask("Default"));
-            mAgent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
-        }
+        CalculateNewPath();
     }
 
     public override void DoBeforeLeaving()
@@ -68,6 +55,11 @@ public class FollowPathState : FSMState
                 int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, agent.transform.position, LayerMask.GetMask("Default"));
                 agent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
             }
+            if (Vector3.SqrMagnitude(agent.transform.position - mCondensedPath[mCondensedPath.Count-1]) < distanceThresholdSqrd)
+            {
+                agent.BoidController.SetTarget(player.transform.position);
+                //CalculateNewPath();
+            }
         }
         agent.BoidController.SetShouldFlock(true);
 
@@ -79,6 +71,24 @@ public class FollowPathState : FSMState
     public void SetAgentHandler(AgentHandler argAgentHandler)
     {
         mAgent = argAgentHandler;
+    }
+
+    void CalculateNewPath()
+    {
+        if (mPathToFollow == null) mPathToFollow = new List<Vector3Int>();
+        if (mCondensedPath == null) mCondensedPath = new List<Vector3>();
+
+        mPathToFollow.Clear();
+        mCondensedPath.Clear();
+
+        mPathToFollow = PathFindingData.Instance.GetPath(GameConstants.Instance.PlayerObject, mAgent.transform.position);
+        mCondensedPath = PathHelpers.CondensePathPoints(mPathToFollow, Mathf.Infinity, 0.45f, LayerMask.GetMask("Default"));
+
+        if (mCondensedPath != null && mCondensedPath.Count > 0)
+        {
+            int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, mAgent.transform.position, LayerMask.GetMask("Default"));
+            mAgent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
+        }
     }
 }
 

@@ -95,6 +95,7 @@ public class Boids : MonoBehaviour
 
         // Move boid
         transform.position += mVelocity * Time.deltaTime;
+        Debug.DrawRay(transform.position, mVelocity.normalized, Color.blue, 0.1f);
 
         // Rotate boid if moving
         if (mVelocity.normalized != Vector3.zero)

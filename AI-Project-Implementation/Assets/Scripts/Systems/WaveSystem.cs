@@ -10,6 +10,8 @@ public class WaveSystem : MonoBehaviour
     [Header("Player Objects")]
     [SerializeField] private GameObject mPlayerObject;
     [SerializeField] private GameObject mPlayerUICanvas;
+    [SerializeField] private List<GameObject> mSpawnPoints = new List<GameObject>();
+    [SerializeField] private Vector2 mSpawnDistanceIdeals = Vector2.zero;
 
     private PlayerHandler mPlayerHandler;
     private PlayerUIHandler mPlayerUIHandler;
@@ -35,12 +37,17 @@ public class WaveSystem : MonoBehaviour
     {
         mPlayerUIHandler.UpdateWaveText(mCurrentWave);
 
+        GameObject idealSpawn = FindIdealSpawn();
+
         if(mSpawnEnemies)
         {
             int numberOfEnemiesToSpawn = mNumberOfEnemies + (mCurrentWave * 2);
             for(int i = 0; i < numberOfEnemiesToSpawn; i++)
             {
-                SpawnEnemyDrone(new Vector3(-20, -20, -20));
+                if (idealSpawn != null)
+                    SpawnEnemyDrone(idealSpawn.transform.position);
+                else
+                    SpawnEnemyDrone(new Vector3(0,0,0));
             }
 
             mSpawnEnemies = false;
@@ -61,6 +68,30 @@ public class WaveSystem : MonoBehaviour
         }
 
         mWaveTimer += Time.deltaTime;
+    }
+
+    GameObject FindIdealSpawn()
+    {
+        float minSpawnDistanceSqr = mSpawnDistanceIdeals.x * mSpawnDistanceIdeals.x;
+        float maxSpawnDistanceSqr = mSpawnDistanceIdeals.y * mSpawnDistanceIdeals.y;
+
+        GameObject bestAvaliableSpawn = null;
+        float closestSpawn = float.MaxValue;
+
+        foreach (GameObject spawnPoint in mSpawnPoints)
+        {
+            float distanceToPlayerSqr = Vector3.SqrMagnitude(spawnPoint.transform.position - mPlayerObject.transform.position);
+            if (distanceToPlayerSqr > minSpawnDistanceSqr && distanceToPlayerSqr < maxSpawnDistanceSqr)
+            {
+                return spawnPoint;
+            }
+            if (distanceToPlayerSqr > minSpawnDistanceSqr && distanceToPlayerSqr < closestSpawn)
+            {
+                closestSpawn = distanceToPlayerSqr;
+                bestAvaliableSpawn = spawnPoint;
+            }
+        }
+        return bestAvaliableSpawn;
     }
 
     public void SpawnEnemyDrone(Vector3 positionToSpawn)
