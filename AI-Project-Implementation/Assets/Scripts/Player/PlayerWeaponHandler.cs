@@ -21,6 +21,7 @@ public class PlayerWeaponHandler : MonoBehaviour
     [SerializeField] private WeaponType mCurrentWeaponType = WeaponType.MachineGun;
     [SerializeField] private float mMachineGunFireRate = 0.1f;
     [SerializeField] private float mRocketLauncherFireRate = 1.0f;
+    [SerializeField] private LayerMask mEnemyShipLayer;
 
     [Header("Projectile Information")]
     [SerializeField] private float mBulletSpeed = 1.0f;
@@ -100,7 +101,7 @@ public class PlayerWeaponHandler : MonoBehaviour
                 Projectile bulletProjectileScript = BulletToFire.GetComponent<Projectile>();
 
                 bulletProjectileScript.SetupProjectile(damageToApply, speed, positionToFireFrom);
-                bulletProjectileScript.LaunchProjectile(transform.forward);
+                bulletProjectileScript.LaunchProjectile(transform.forward, null, false);
 
                 AudioSystem.Instance.PlaySound(mShootingSounds[randomSoundIndex], 0.1f);
                 break;
@@ -110,7 +111,17 @@ public class PlayerWeaponHandler : MonoBehaviour
                 Projectile rocketProjectileScript = RocketToFire.GetComponent<Projectile>();
 
                 rocketProjectileScript.SetupProjectile(damageToApply, speed, positionToFireFrom);
-                rocketProjectileScript.LaunchProjectile(transform.forward);
+
+                RaycastHit hit;
+
+                if (Physics.SphereCast(new Ray(transform.position, transform.forward), 5.0f, out hit, 50.0f, mEnemyShipLayer))
+                {
+                    rocketProjectileScript.LaunchProjectile(transform.forward, hit.collider.gameObject, true);
+                }
+                else
+                {
+                    rocketProjectileScript.LaunchProjectile(transform.forward, null, false);
+                }
 
                 AudioSystem.Instance.PlaySound(mShootingSounds[randomSoundIndex], 0.1f);
                 break;

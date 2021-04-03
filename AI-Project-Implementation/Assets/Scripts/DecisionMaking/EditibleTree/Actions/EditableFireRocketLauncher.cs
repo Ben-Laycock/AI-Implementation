@@ -10,7 +10,7 @@ public class EditableFireRocketLauncher : EditableAction
         Projectile projectileScript = projectileToFire.GetComponent<Projectile>();
 
         projectileScript.SetupProjectile(5.0f, 12.0f, agentScript.transform.position);
-        projectileScript.LaunchProjectile((GameConstants.Instance.PlayerObject.transform.position - agentScript.transform.position).normalized);
+        projectileScript.LaunchProjectile((GameConstants.Instance.PlayerObject.transform.position - agentScript.transform.position).normalized, GameConstants.Instance.PlayerObject, true);
 
         agentScript.ChangeAgentEnergyBy(-agentScript.GetRocketLauncherEnergyCost());
 

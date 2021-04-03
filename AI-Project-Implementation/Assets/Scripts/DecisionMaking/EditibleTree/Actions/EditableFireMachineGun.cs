@@ -10,7 +10,7 @@ public class EditableFireMachineGun : EditableAction
         Projectile projectileScript = projectileToFire.GetComponent<Projectile>();
 
         projectileScript.SetupProjectile(1.0f, 15.0f, agentScript.transform.position);
-        projectileScript.LaunchProjectile((GameConstants.Instance.PlayerObject.transform.position - agentScript.transform.position).normalized);
+        projectileScript.LaunchProjectile((GameConstants.Instance.PlayerObject.transform.position - agentScript.transform.position).normalized, null, false);
 
         agentScript.ChangeAgentEnergyBy(-agentScript.GetMachineGunEnergyCost());
 
