@@ -15,6 +15,11 @@ public class Projectile : MonoBehaviour
 
     private Rigidbody mProjectileRigidbody;
 
+    private GameObject mProjectileTarget = null;
+    private bool mShouldTarget = false;
+
+    [SerializeField] private TrailRenderer mProjectileTrail;
+
     private void Awake()
     {
         mProjectileRigidbody = gameObject.GetComponent<Rigidbody>();
@@ -31,6 +36,11 @@ public class Projectile : MonoBehaviour
             {
                 KillProjectile();
             }
+
+            if(mShouldTarget && mProjectileTarget != null && mProjectileTarget.activeSelf)
+            {
+                mProjectileRigidbody.velocity = (mProjectileTarget.transform.position - transform.position).normalized * mSpeed;
+            }
         }
 
     }
@@ -44,12 +54,24 @@ public class Projectile : MonoBehaviour
 
         transform.position = position;
 
+        if(mProjectileTrail != null)
+        {
+            mProjectileTrail.Clear();
+        }
+
         gameObject.SetActive(true);
     }
     
-    public void LaunchProjectile(Vector3 directionToLaunch)
+    public void LaunchProjectile(Vector3 directionToLaunch, GameObject targetToFollow, bool shouldTarget)
     {
         mProjectileRigidbody.velocity = directionToLaunch * mSpeed;
+
+        mShouldTarget = shouldTarget;
+
+        if (shouldTarget)
+        {
+            mProjectileTarget = targetToFollow;
+        }       
     }
 
     public void KillProjectile()
@@ -65,6 +87,7 @@ public class Projectile : MonoBehaviour
         mProjectileRigidbody.velocity = Vector3.zero;
 
         transform.position = Vector3.zero;
+        mProjectileTarget = null;
 
         mDamage = 0.0f;
         mSpeed = 0.0f;
