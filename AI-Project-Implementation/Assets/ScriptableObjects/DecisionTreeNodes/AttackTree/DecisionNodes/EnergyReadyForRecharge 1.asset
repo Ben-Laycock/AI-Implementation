@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea39e55118a7c64f84b8926e7710f6e, type: 3}
+  m_Name: EnergyReadyForRecharge 1
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: EnergyReadyForRecharge
+  mWindowID: 5
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: 1520
+    y: 705
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: e286c7d7c8a6a864da8cffe0a216df11, type: 2}
+  TrueNode: {fileID: 0}
+  FalseNode: {fileID: 0}
+  TrueAction: {fileID: 11400000, guid: 67da9b560e22a1c4f82342d98bcbd4e8, type: 2}
+  FalseAction: {fileID: 0}

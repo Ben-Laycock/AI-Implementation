@@ -61,6 +61,9 @@ public class AgentHandler : MonoBehaviour, IDamageable
     [SerializeField] private float mAttackRange = 20.0f;
     [SerializeField] private float mTargetTooClose = 10.0f;
 
+    [SerializeField] private float mTimeRequiredToDeployMine = 30.0f;
+    [SerializeField] private float mDeployMineTimer = 0.0f;
+
     [SerializeField] private WeaponSelected mCurrentSelectedWeapon = WeaponSelected.MachineGun;
     public WeaponSelected SelectedWeapon
     {
@@ -71,7 +74,6 @@ public class AgentHandler : MonoBehaviour, IDamageable
     [Header("Prefab Objects")]
     [SerializeField] private GameObject mEnergyBall;
     [SerializeField] private GameObject mBullet;
-
     public GameObject BulletPrefab
     {
         get { return mBullet; }
@@ -81,6 +83,12 @@ public class AgentHandler : MonoBehaviour, IDamageable
     public GameObject RocketPrefab
     {
         get { return mRocket; }
+    }
+
+    [SerializeField] private GameObject mMinePrefab;
+    public GameObject MinePrefab
+    {
+        get { return mMinePrefab; }
     }
 
     //Agent Setup
@@ -101,6 +109,7 @@ public class AgentHandler : MonoBehaviour, IDamageable
         {
             mEnergyRegenTimer += Time.deltaTime;
             mFireProjectileTimer += Time.deltaTime;
+            mDeployMineTimer += Time.deltaTime;
 
             mBasicAgentFSM.currentState.Reason(GameConstants.Instance.PlayerObject, this);
             mBasicAgentFSM.currentState.Act(GameConstants.Instance.PlayerObject, this);
@@ -243,6 +252,21 @@ public class AgentHandler : MonoBehaviour, IDamageable
     public void SetEnergyRegenTimer(float value)
     {
         mEnergyRegenTimer = value;
+    }
+
+    public float GetTimeRequiredToDelopMine()
+    {
+        return mTimeRequiredToDeployMine;
+    }
+
+    public float GetDeployMineTimer()
+    {
+        return mDeployMineTimer;
+    }
+
+    public void SetDeployMineTimer(float value)
+    {
+        mDeployMineTimer = value;
     }
 
     //Interface Implementations

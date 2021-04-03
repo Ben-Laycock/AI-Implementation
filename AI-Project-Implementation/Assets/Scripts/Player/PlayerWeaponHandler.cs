@@ -47,7 +47,10 @@ public class PlayerWeaponHandler : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Tab))
+        mMachineGunFireTimer += Time.deltaTime;
+        mRocketLauncherFireTimer += Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             if(mCurrentWeaponType == WeaponType.MachineGun)
                 mCurrentWeaponType = WeaponType.RocketLauncher;
@@ -59,9 +62,6 @@ public class PlayerWeaponHandler : MonoBehaviour
 
         if(Input.GetMouseButton(0))
         {
-            mMachineGunFireTimer += Time.deltaTime;
-            mRocketLauncherFireTimer += Time.deltaTime;
-
             switch (mCurrentWeaponType)
             {
                 case WeaponType.MachineGun:

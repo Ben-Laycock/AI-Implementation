@@ -128,4 +128,17 @@ public class GameConstants : MonoBehaviour
         set { mBoidsManager = value; }
     }
 
+    [SerializeField] private int mNumberOfMines = 0;
+    public int NumberOfMines
+    {
+        get { return mNumberOfMines; }
+        set { mNumberOfMines = value; }
+    }
+
+    [SerializeField] private int mMaxNumberOfMines = 5;
+    public int MaxNumberOfMines
+    {
+        get { return mMaxNumberOfMines; }
+    }
+
 }

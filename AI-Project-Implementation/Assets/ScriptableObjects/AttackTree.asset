@@ -15,6 +15,16 @@ MonoBehaviour:
   mDecisionTreeName: AttackTree
   mUnconnectedDecisions: []
   mUnconnectedActions: []
-  mConnectedDecisions: []
-  mConnectedActions: []
-  mRoot: {fileID: 0}
+  mConnectedDecisions:
+  - {fileID: 11400000, guid: 5a4a080fe8bd2f842b80da3e2a5e3491, type: 2}
+  - {fileID: 11400000, guid: 09fee248f601c1d40aabbc3177d4c6c3, type: 2}
+  - {fileID: 11400000, guid: a63d30a54bd54bc408eb028c5f096175, type: 2}
+  - {fileID: 11400000, guid: 1ad4e5fc804cccb429c3fd56fa75a66f, type: 2}
+  - {fileID: 11400000, guid: e286c7d7c8a6a864da8cffe0a216df11, type: 2}
+  - {fileID: 11400000, guid: a0db7751a2547494fb50a049cd77fce5, type: 2}
+  mConnectedActions:
+  - {fileID: 11400000, guid: 20349d0ec5856a649b4a250710585937, type: 2}
+  - {fileID: 11400000, guid: a8afa80c4331ebb488fa20398f686f00, type: 2}
+  - {fileID: 11400000, guid: 2e2332bc90db3814fac8c02ada9a61ca, type: 2}
+  - {fileID: 11400000, guid: 67da9b560e22a1c4f82342d98bcbd4e8, type: 2}
+  mRoot: {fileID: 11400000, guid: 5a4a080fe8bd2f842b80da3e2a5e3491, type: 2}

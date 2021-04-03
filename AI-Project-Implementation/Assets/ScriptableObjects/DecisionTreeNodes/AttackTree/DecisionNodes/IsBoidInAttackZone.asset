@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6cc18a54d934dd419292c1000aeaeba, type: 3}
+  m_Name: IsBoidInAttackZone
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: IsBoidInAttackZone
+  mWindowID: 0
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: 620
+    y: 305
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 0}
+  TrueNode: {fileID: 11400000, guid: 09fee248f601c1d40aabbc3177d4c6c3, type: 2}
+  FalseNode: {fileID: 11400000, guid: e286c7d7c8a6a864da8cffe0a216df11, type: 2}
+  TrueAction: {fileID: 0}
+  FalseAction: {fileID: 0}

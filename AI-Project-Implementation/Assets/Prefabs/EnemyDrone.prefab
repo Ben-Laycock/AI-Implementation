@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mState: 
-  mBasicAgentTree: {fileID: 11400000, guid: b6f20cb4b5e22534dadaab1bba748a77, type: 2}
+  mBasicAgentTree: {fileID: 11400000, guid: cc0c62e3ff2d5c8438f73b488ad70336, type: 2}
   mHealth: 1
   mEnergy: 20
   mMaxHealth: 5
@@ -143,10 +143,13 @@ MonoBehaviour:
   mRocketLauncherEnergyCost: 5
   mAttackRange: 20
   mTargetTooClose: 10
+  mTimeRequiredToDeployMine: 30
+  mDeployMineTimer: 0
   mCurrentSelectedWeapon: 1
   mEnergyBall: {fileID: 5033396887364817696, guid: c27602912369e374485114fff49f891b, type: 3}
   mBullet: {fileID: 4083848541615419982, guid: b2e9eb82f23569949a23a08c631fc533, type: 3}
   mRocket: {fileID: 8276168319688091751, guid: 4b60bb92bca1c6d49924470809b26eda, type: 3}
+  mMinePrefab: {fileID: 5580963540289712574, guid: 62e04da945c062d4ba76d4a56825165d, type: 3}
 --- !u!65 &1279290440563856722
 BoxCollider:
   m_ObjectHideFlags: 0

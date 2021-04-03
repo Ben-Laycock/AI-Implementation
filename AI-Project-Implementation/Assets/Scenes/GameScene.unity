@@ -3645,7 +3645,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.size
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[1].mPoolPrefab
@@ -3684,12 +3684,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4283703150324999260, guid: 51e4e16fab2ccd546b2ff2c64e54ff78, type: 3}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
+      propertyPath: mPools.Array.data[10].mPoolPrefab
+      value: 
+      objectReference: {fileID: 5580963540289712574, guid: 62e04da945c062d4ba76d4a56825165d, type: 3}
+    - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[0].mAmountToCreate
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[1].mAmountToCreate
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[2].mAmountToCreate
@@ -3697,31 +3701,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[3].mAmountToCreate
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[4].mAmountToCreate
-      value: 20
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[5].mAmountToCreate
-      value: 20
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[6].mAmountToCreate
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[7].mAmountToCreate
-      value: 10
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[8].mAmountToCreate
-      value: 10
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: mPools.Array.data[9].mAmountToCreate
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 774365232359816064, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
+      propertyPath: mPools.Array.data[10].mAmountToCreate
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 774365232359816069, guid: f0e348cdf9e4700408343f9b6b8dda0e, type: 3}
       propertyPath: m_Name
