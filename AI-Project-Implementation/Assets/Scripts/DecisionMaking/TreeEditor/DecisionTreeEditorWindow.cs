@@ -32,6 +32,7 @@ public enum LinkClearType
     All = 4
 }
 
+#if UNITY_EDITOR
 public class DecisionTreeEditorWindow : EditorWindow
 {
 
@@ -1308,6 +1309,7 @@ public class DecisionTreeEditorWindow : EditorWindow
     }
 
 }
+#endif
 
 class NodeWindow
 {
