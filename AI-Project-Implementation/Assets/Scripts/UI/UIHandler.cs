@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class UIHandler : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class UIHandler : MonoBehaviour
     private GameObject mSoundEnabledButton;
     private RectTransform mSoundEnabledButtonTransform;
     private Image mSoundEnabledButtonImg;
+
+    [SerializeField] private Slider mSoundSlider;
 
     private bool mSoundEnabled;
     public bool soundEnabled
@@ -48,6 +51,8 @@ public class UIHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+
         mPlayButtonTransform = mPlayButton.GetComponent<RectTransform>();
         if (null == mPlayButtonTransform)
             return;
@@ -76,7 +81,17 @@ public class UIHandler : MonoBehaviour
         if (null == mGameMenuLogoTransform)
             return;
 
-        mSoundEnabled = true;
+        if(PlayerPrefs.GetInt("SoundEnabled", 1) == 1)
+        {
+            mSoundEnabled = true;
+        }
+        else
+        {
+            mSoundEnabled = false;
+        }
+
+        mSoundSlider.value = PlayerPrefs.GetFloat("SoundSliderValue", 1.0f);
+
         mButtonFlashAnimating = false;
     }
 
@@ -146,19 +161,28 @@ public class UIHandler : MonoBehaviour
     public void EnableSound()
     {
         mSoundEnabled = !mSoundEnabled;
+
+        if(soundEnabled)
+        {
+            PlayerPrefs.SetInt("SoundEnabled", 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("SoundEnabled", 0);
+        }
     }
 
     public void ChangeGameVolume()
     {
-
+        PlayerPrefs.SetFloat("SoundSliderValue", mSoundSlider.value);
     }
 
-    public void PlayGame(GameObject triggerObj)
+    public void PlayGame()
     {
-
+        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
-    public void ExitGame(GameObject triggerObj)
+    public void ExitGame()
     {
         Application.Quit();
     }

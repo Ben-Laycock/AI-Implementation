@@ -81,6 +81,8 @@ public class AudioSystem : MonoBehaviour
      */
     public void PlaySound(string argKey, float argVolume)
     {
+        if(PlayerPrefs.GetInt("SoundEnabled", 1) == 0) return;
+
         // Return due to invalid key
         if (!mSounds.ContainsKey(argKey) || "" == argKey)
         {
@@ -98,7 +100,7 @@ public class AudioSystem : MonoBehaviour
             deactivationCompononent.ResetTimer();
 
             audioSource.clip = mSounds[argKey];
-            audioSource.volume = argVolume;
+            audioSource.volume = argVolume * PlayerPrefs.GetFloat("SoundSliderValue", 1.0f);
 
             audioObject.SetActive(true);
             audioSource.Play();

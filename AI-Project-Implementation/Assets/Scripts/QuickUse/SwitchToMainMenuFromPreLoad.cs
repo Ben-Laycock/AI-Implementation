@@ -7,6 +7,6 @@ public class SwitchToMainMenuFromPreLoad : MonoBehaviour
 {
     private void Start()
     {
-        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 }
