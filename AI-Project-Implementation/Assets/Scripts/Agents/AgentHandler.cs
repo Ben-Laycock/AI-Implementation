@@ -14,7 +14,8 @@ public class AgentHandler : MonoBehaviour, IDamageable
     public string mState = "";
 
     [Header("Decision Trees To Use")]
-    [SerializeField] private EditableTree mBasicAgentTree;
+    [SerializeField] private EditableTree mBasicAgentAttackTree;
+    [SerializeField] private EditableTree mSwitchToAttackDecisionTree;
 
     private FiniteStateMachine mBasicAgentFSM;
 
@@ -226,7 +227,12 @@ public class AgentHandler : MonoBehaviour, IDamageable
 
     public EditableTree GetBasicAgentDecisionTree()
     {
-        return mBasicAgentTree;
+        return mBasicAgentAttackTree;
+    }
+
+    public EditableTree GetSwitchToAttackDecisionTree()
+    {
+        return mSwitchToAttackDecisionTree;
     }
 
     //Change functions for Agent Values

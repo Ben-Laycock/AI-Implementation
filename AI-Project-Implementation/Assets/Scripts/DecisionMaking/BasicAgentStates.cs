@@ -169,8 +169,15 @@ public class ChasePlayerState : FSMState
         }
         else
         {
-            if (directionToPlayer.magnitude <= agent.GetAttackRange())
-                agent.FSMTransitionPassthrough(fsmTransition.ToAttack);
+            EditableTree SwitchToAttackDecisionTree = agent.GetSwitchToAttackDecisionTree();
+
+            if (SwitchToAttackDecisionTree != null)
+            {
+                SwitchToAttackDecisionTree.mRoot.MakeDecision(agent);
+            }
+
+            //if (directionToPlayer.magnitude <= agent.GetAttackRange())
+                //agent.FSMTransitionPassthrough(fsmTransition.ToAttack);
         }
     }
 
@@ -178,8 +185,8 @@ public class ChasePlayerState : FSMState
     {
         agent.mState = "Chase";
         //Chase Player
-        agent.BoidController.SetTarget(player.transform.position);
-        agent.BoidController.SetShouldFlock(true);
+        //agent.BoidController.SetTarget(player.transform.position);
+        //agent.BoidController.SetShouldFlock(true);
     }
 
 }

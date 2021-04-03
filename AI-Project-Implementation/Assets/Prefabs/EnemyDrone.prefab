@@ -129,11 +129,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mState: 
-  mBasicAgentTree: {fileID: 11400000, guid: cc0c62e3ff2d5c8438f73b488ad70336, type: 2}
+  mBasicAgentAttackTree: {fileID: 11400000, guid: cc0c62e3ff2d5c8438f73b488ad70336, type: 2}
+  mSwitchToAttackDecisionTree: {fileID: 11400000, guid: c9f4799d9ee4f394db530484405d07c2, type: 2}
   mHealth: 1
-  mEnergy: 20
+  mEnergy: 5
   mMaxHealth: 5
-  mMaxEnergy: 5
+  mMaxEnergy: 20
   mEnergyRegenTimer: 0
   mTimeToRegenEnergy: 1
   mFireProjectileTimer: 0

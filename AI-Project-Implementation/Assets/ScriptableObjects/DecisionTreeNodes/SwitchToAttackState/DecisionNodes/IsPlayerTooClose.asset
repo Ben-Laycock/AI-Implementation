@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe92dc1809430c46a7ad82b8d452dd9, type: 3}
+  m_Name: IsPlayerTooClose
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: IsPlayerTooClose
+  mWindowID: 1
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: 920
+    y: 505
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: 81ce23d4eae1ab642a8dd9cf173ce5da, type: 2}
+  TrueNode: {fileID: 0}
+  FalseNode: {fileID: 0}
+  TrueAction: {fileID: 11400000, guid: a6b34dfcb80685f4c9cccfebb1807355, type: 2}
+  FalseAction: {fileID: 11400000, guid: cb5362cbd4d27124e9356529f63c9df2, type: 2}
