@@ -57,9 +57,9 @@ public class PlayerUIHandler : MonoBehaviour
         mEnergyBarObject.GetComponent<RectTransform>().sizeDelta = new Vector2((200 / maxEnergy) * currentEnergy, 30);
     }
 
-    public void UpdateObjective(int amount)
+    public void UpdateObjective(int amount, int max)
     {
-        mObjectiveText.text = "COLLECT RELICS " + amount + "/3";
+        mObjectiveText.text = "COLLECT RELICS " + amount + "/" + max;
     }
 
     public void SwitchSelectedWeapon()

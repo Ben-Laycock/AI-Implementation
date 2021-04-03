@@ -13,10 +13,13 @@ public class PlayerHandler : MonoBehaviour, IDamageable
 
     [SerializeField] private int mScore = 0;
     [SerializeField] private int mNumberOfRelicsCollected = 0;
+    [SerializeField] private int mMaxRelicNumber = 5;
 
     [Header("Game Objects for Reference")]
     [SerializeField] private GameObject mPlayerUICanvas;
     [SerializeField] private GameObject mMainSystem;
+
+    [SerializeField] private GameOverPortal mGameOverPortal;
 
     //Other Player Scripts
     private PlayerMovement mPlayerMovementScript;
@@ -59,7 +62,11 @@ public class PlayerHandler : MonoBehaviour, IDamageable
     public void IncreaseCollectedRelicCount(int amount)
     {
         mNumberOfRelicsCollected += amount;
-        mPlayerUIHandler.UpdateObjective(mNumberOfRelicsCollected);
+        mPlayerUIHandler.UpdateObjective(mNumberOfRelicsCollected, mMaxRelicNumber);
+        if(mNumberOfRelicsCollected >= mMaxRelicNumber)
+        {
+            mGameOverPortal.ActivatePortal();
+        }
     }
 
     public void ChangePlayerHealthBy(float amount)
