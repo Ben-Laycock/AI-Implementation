@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DroneController : MonoBehaviour
 {
-    [SerializeField] List<GameObject> mRelics = new List<GameObject>();
+    [SerializeField] private List<GameObject> mRelics = new List<GameObject>();
+    [SerializeField] private GameObject mPortal = null;
     [SerializeField] private GameObject mPathLine = null;
     private DroneWayFinder mWayFinder = null;
     [SerializeField] private GameObject mTarget = null;
@@ -49,6 +50,7 @@ public class DroneController : MonoBehaviour
                 closestDistanceSqrd = distanceSqrd;
             }
         }
+        if (closest == null) closest = mPortal;
         return closest;
     }
 

@@ -270,6 +270,14 @@ public class Boids : MonoBehaviour
         AddAccelerationForce(SteerTo(directionToTarget) * mTargetFollowWeight);
     }
 
+    public void SeekPoint(Vector3 argPoint, float argSeekWeighting)
+    {
+        // Get direction towards argPoint
+        Vector3 directionToSeek = argPoint - transform.position;
+        // Calculate and apply force
+        AddAccelerationForce(SteerTo(directionToSeek) * argSeekWeighting);
+    }
+
     public void FleePoint(Vector3 argPoint, float argFleeWeighting)
     {
         // Get direction away from argPoint
