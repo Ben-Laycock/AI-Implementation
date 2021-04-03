@@ -58,6 +58,7 @@ public class FollowPathState : FSMState
 
     public override void Act(GameObject player, AgentHandler agent)
     {
+        agent.mState = "Path";
         float distanceThresholdSqrd = 25f;
         //Follow the Found Path
         if (mCondensedPath != null && mCondensedPath.Count > 0)
@@ -114,7 +115,9 @@ public class AttackState : FSMState
 
     public override void Act(GameObject player, AgentHandler agent)
     {
+        agent.mState = "Attack";
         //Attack the Player
+        agent.BoidController.SetTarget(player.transform.position);
         agent.BoidController.SetShouldFlock(false);
         float range = agent.GetTargetTooCloseRange();
         if ((range * range) > (player.transform.position - agent.transform.position).sqrMagnitude)
@@ -139,7 +142,7 @@ public class ChasePlayerState : FSMState
 
     public override void DoBeforeEntering()
     {
-
+        
     }
 
     public override void DoBeforeLeaving()
@@ -163,6 +166,7 @@ public class ChasePlayerState : FSMState
 
     public override void Act(GameObject player, AgentHandler agent)
     {
+        agent.mState = "Chase";
         //Chase Player
         agent.BoidController.SetTarget(player.transform.position);
         agent.BoidController.SetShouldFlock(true);

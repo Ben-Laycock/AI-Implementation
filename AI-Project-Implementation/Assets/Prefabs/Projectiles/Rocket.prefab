@@ -114,6 +114,7 @@ MonoBehaviour:
   mSpeed: 1
   mProjectileExplosionEffect: {fileID: 6992359505178986886, guid: 0be14987a1e6f4c44a877c827f1d040e, type: 3}
   mProjectileTrail: {fileID: 413430942367150857}
+  mPlaySoundOnCollision: 1
 --- !u!54 &1874445154318880742
 Rigidbody:
   m_ObjectHideFlags: 0

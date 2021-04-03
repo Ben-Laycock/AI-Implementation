@@ -19,6 +19,7 @@ public class Projectile : MonoBehaviour
     private bool mShouldTarget = false;
 
     [SerializeField] private TrailRenderer mProjectileTrail;
+    [SerializeField] private bool mPlaySoundOnCollision = false;
 
     private void Awake()
     {
@@ -76,6 +77,17 @@ public class Projectile : MonoBehaviour
 
     public void KillProjectile()
     {
+        if (mPlaySoundOnCollision)
+        {
+            int randomExplosion = Random.Range(0, 3);
+            if (randomExplosion == 0)
+                AudioSystem.Instance.PlaySound("Explosion", 0.01f);
+            else if (randomExplosion == 1)
+                AudioSystem.Instance.PlaySound("Explosion01", 0.01f);
+            else
+                AudioSystem.Instance.PlaySound("Explosion02", 0.01f);
+        }
+
         GameObject explosion = PoolSystem.Instance.GetObjectFromPool(mProjectileExplosionEffect, argActivateObject:true , argShouldExpandPool:true, argShouldCreateNonExistingPool:true);
         explosion.transform.position = transform.position;
 

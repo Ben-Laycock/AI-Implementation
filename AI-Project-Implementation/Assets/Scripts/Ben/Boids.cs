@@ -167,15 +167,16 @@ public class Boids : MonoBehaviour
     {
         Vector3 averageAvoidanceDirection = Vector3.zero;
         int separationNeighbours = 0;
+        float separationDistanceSqrd = mSeparationDistance * mSeparationDistance;
 
         // Loop through all neighbouring boids
         foreach (Boids other in argNeighbours)
         {
             if (ReferenceEquals(this, other)) continue; // Continue to next boid, testing against self?
 
-            float distanceToNeighbour = Vector3.Distance(transform.position, other.transform.position);
+            float distanceToNeighbour = Vector3.SqrMagnitude(transform.position - other.transform.position);
             // Move to next neighbour if current is too far away or in the same position as this boid
-            if (distanceToNeighbour > mSeparationDistance || distanceToNeighbour <= 0) continue;
+            if (distanceToNeighbour > separationDistanceSqrd || distanceToNeighbour <= 0) continue;
 
             // Get direction to seperate from neighbour
             Vector3 separationDirection = transform.position - other.transform.position;
@@ -200,6 +201,7 @@ public class Boids : MonoBehaviour
     {
         Vector3 averageFlockDirection = Vector3.zero;
         int alignmentNeighbours = 0;
+        float alignmentDistanceSqrd = mAlignmentDistance * mAlignmentDistance;
 
         // Loop through all neighbouring boids
         foreach (Boids other in argNeighbours)
@@ -207,9 +209,9 @@ public class Boids : MonoBehaviour
             if (!other.GetShouldFlock()) continue; // Continue to next, current isnt flocking
             if (ReferenceEquals(this, other)) continue; // Continue to next, testing against self?
 
-            float distanceToNeighbour = Vector3.Distance(transform.position, other.transform.position);
+            float distanceToNeighbour = Vector3.SqrMagnitude(transform.position - other.transform.position);
             // Move to next neighbour if current is too far away or in the same position as this boid
-            if (distanceToNeighbour > mAlignmentDistance || distanceToNeighbour <= 0) continue;
+            if (distanceToNeighbour > alignmentDistanceSqrd || distanceToNeighbour <= 0) continue;
 
             // Add other boids velocity to the average flock firection
             averageFlockDirection += other.mVelocity;
@@ -229,6 +231,7 @@ public class Boids : MonoBehaviour
     {
         Vector3 flockCentre = Vector3.zero;
         int cohesionNeighbours = 0;
+        float cohesionDistanceSqrd = mCohesionDistance * mCohesionDistance;
 
         // Loop through all neighbouring boids
         foreach (Boids other in argNeighbours)
@@ -236,9 +239,9 @@ public class Boids : MonoBehaviour
             if (!other.GetShouldFlock()) continue; // Continue to next, current isnt flocking
             if (ReferenceEquals(this, other)) continue; // Continue to next boid, testing against self?
 
-            float distanceToNeighbour = Vector3.Distance(transform.position, other.transform.position);
+            float distanceToNeighbour = Vector3.SqrMagnitude(transform.position - other.transform.position);
             // Move to next neighbour if current is too far away or in the same position as this boid
-            if (distanceToNeighbour > mCohesionDistance || distanceToNeighbour <= 0) continue;
+            if (distanceToNeighbour > cohesionDistanceSqrd || distanceToNeighbour <= 0) continue;
 
             // Add other boids position to flock centre position
             flockCentre += other.transform.position;

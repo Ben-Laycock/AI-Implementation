@@ -99,10 +99,10 @@ public class VoxelManager : MonoBehaviour
                     bool pointWithinPlanet = distSqr < planetRadiusSqr;
                     if (perlinVal > Instance.PerlinThresholdMinMax.x && perlinVal < Instance.PerlinThresholdMinMax.y && pointWithinPlanet)
                     {
-                        if (perlinVal > 0.47f)
-                            mMapData[x, y, z] = 1;
-                        else
+                        if (perlinVal < 0.47f || distSqr < (planetRadiusSqr*0.95f))
                             mMapData[x, y, z] = 2;
+                        else
+                            mMapData[x, y, z] = 1;
                     }
                     else
                         mMapData[x, y, z] = 0;

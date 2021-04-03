@@ -11,6 +11,8 @@ public enum WeaponSelected
 
 public class AgentHandler : MonoBehaviour, IDamageable
 {
+    public string mState = "";
+
     [Header("Decision Trees To Use")]
     [SerializeField] private EditableTree mBasicAgentTree;
 

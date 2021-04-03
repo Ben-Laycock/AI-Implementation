@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class DroneController : MonoBehaviour
 {
+    [SerializeField] List<GameObject> mRelics = new List<GameObject>();
     [SerializeField] private GameObject mPathLine = null;
     private DroneWayFinder mWayFinder = null;
-    [SerializeField] private Vector3Int mTarget = Vector3Int.zero;
+    [SerializeField] private GameObject mTarget = null;
     [SerializeField] private float mDroneTargetProximityRange = 10f;
     [SerializeField] private bool mHasReachedTarget = false;
 
@@ -21,11 +22,34 @@ public class DroneController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            FindAndDrawPathFromTo(new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z), mTarget);
+            mTarget = FindClosestRelic();
+            if (mTarget != null)
+            {
+                mHasReachedTarget = false;
+                FindAndDrawPathFromTo(new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z),
+                    new Vector3Int((int)mTarget.transform.position.x, (int)mTarget.transform.position.y, (int)mTarget.transform.position.z));
+            }
         }
 
         // Check if drone is within range of target
         HasReachedTarget();
+    }
+
+    GameObject FindClosestRelic()
+    {
+        GameObject closest = null;
+        float closestDistanceSqrd = float.MaxValue;
+        foreach (GameObject relic in mRelics)
+        {
+            if (relic == null) continue;
+            float distanceSqrd = Vector3.SqrMagnitude(relic.transform.position - transform.position);
+            if (distanceSqrd < closestDistanceSqrd)
+            {
+                closest = relic;
+                closestDistanceSqrd = distanceSqrd;
+            }
+        }
+        return closest;
     }
 
     public void FindAndDrawPathFromTo(Vector3Int argFrom, Vector3Int argTo)
@@ -34,18 +58,13 @@ public class DroneController : MonoBehaviour
         mWayFinder.SetShouldRenderPath(true);
     }
 
-    public void SetTarget(Vector3Int argTarget)
-    {
-        mTarget = argTarget;
-        mHasReachedTarget = false;
-    }
-
     void HasReachedTarget()
     {
         if (!mHasReachedTarget)
         {
-            if (Vector3.SqrMagnitude(mTarget - transform.position) < (mDroneTargetProximityRange * mDroneTargetProximityRange))
+            if (mTarget == null || Vector3.SqrMagnitude(mTarget.transform.position - transform.position) < (mDroneTargetProximityRange * mDroneTargetProximityRange))
             {
+                if (mTarget != null) mRelics.Remove(mTarget);
                 mWayFinder.SetShouldRenderPath(false);
                 mWayFinder.ClearPathRender();
                 mHasReachedTarget = true;
