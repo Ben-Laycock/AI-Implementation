@@ -19,6 +19,7 @@ public class MainSystem : MonoBehaviour
     [Header("UI Canvas's")]
     [SerializeField] private GameObject mPauseMenuCanvas;
     [SerializeField] private GameObject mGameOverCanvas;
+    [SerializeField] private GameObject mLoadingCanvas;
 
     [Header("Canvas Elements")]
     [SerializeField] private GameObject mGameOverScoreObject;
@@ -28,6 +29,7 @@ public class MainSystem : MonoBehaviour
     private GameState mCurrentGameState = GameState.Running;
 
     private int mFinalScore = 0;
+    private bool mRestartingScene = false;
 
     private void Start()
     {
@@ -37,7 +39,8 @@ public class MainSystem : MonoBehaviour
 
     private void Update()
     {
-        
+        if (mRestartingScene) return;
+
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(mCurrentGameState == GameState.Running)
@@ -107,10 +110,15 @@ public class MainSystem : MonoBehaviour
 
     public void RestartGame()
     {
+        mRestartingScene = true;
         PoolSystem.Instance.ResetPools();
         Time.timeScale = 1;
         mCurrentGameState = GameState.Running;
-        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
+        AsyncOperation op = SceneManager.LoadSceneAsync("GameScene", LoadSceneMode.Single);
+        mGameOverCanvas.SetActive(false);
+        mPauseMenuCanvas.SetActive(false);
+        mLoadingCanvas.SetActive(true);
+        op.allowSceneActivation = true;
     }
 
     public void SetGameOver(bool value)

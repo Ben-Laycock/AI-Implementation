@@ -48,10 +48,16 @@ public class UIHandler : MonoBehaviour
     }
     private float mHighlightFlashSpeed = 16;
 
+    [SerializeField] private GameObject mMainMenuCanvas = null;
+    [SerializeField] private GameObject mLoadingCanvas = null;
+
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
+
+        if (mMainMenuCanvas != null) mMainMenuCanvas.SetActive(true);
+        if (mLoadingCanvas != null) mLoadingCanvas.SetActive(false);
 
         mPlayButtonTransform = mPlayButton.GetComponent<RectTransform>();
         if (null == mPlayButtonTransform)
@@ -179,7 +185,10 @@ public class UIHandler : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
+        AsyncOperation op = SceneManager.LoadSceneAsync("GameScene", LoadSceneMode.Single);
+        mMainMenuCanvas.SetActive(false);
+        mLoadingCanvas.SetActive(true);
+        op.allowSceneActivation = true;
     }
 
     public void ExitGame()
