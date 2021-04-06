@@ -25,6 +25,21 @@ public class UIHandler : MonoBehaviour
     private RectTransform mSoundEnabledButtonTransform;
     private Image mSoundEnabledButtonImg;
 
+    [SerializeField]
+    private GameObject mWayFinderObject;
+
+    private Renderer mmWayFinderObjectRenderer;
+    private Transform mWayFinderObjectTransform;
+
+    [SerializeField]
+    private float mWayFinderAnimationSpeed = 0.6f;
+    [SerializeField]
+    private float mWayFinderAnimationHeight = 3f;
+    [SerializeField]
+    private float mWayFinderAnimationRotationSpeed = 0.6f;
+    [SerializeField]
+    private float mWayFinderAnimationRotationAmount = 0.05f;
+
     [SerializeField] private Slider mSoundSlider;
 
     private bool mSoundEnabled;
@@ -35,10 +50,6 @@ public class UIHandler : MonoBehaviour
 
     [SerializeField]
     private float soundEnabledBtnFadeSpeed = 8;
-
-    [SerializeField]
-    private GameObject mGameMenuLogo;
-    private RectTransform mGameMenuLogoTransform;
 
     private bool mButtonFlashAnimating = false;
     public bool buttonFlashAnimating
@@ -83,11 +94,15 @@ public class UIHandler : MonoBehaviour
         if (null == mSoundEnabledButtonImg)
             return;
 
-        mGameMenuLogoTransform = mGameMenuLogo.GetComponent<RectTransform>();
-        if (null == mGameMenuLogoTransform)
+        mmWayFinderObjectRenderer = mWayFinderObject.GetComponent<Renderer>();
+        if (null == mmWayFinderObjectRenderer)
             return;
 
-        if(PlayerPrefs.GetInt("SoundEnabled", 1) == 1)
+        mWayFinderObjectTransform = mWayFinderObject.GetComponent<Transform>();
+        if (null == mWayFinderObjectTransform)
+            return;
+
+        if (PlayerPrefs.GetInt("SoundEnabled", 1) == 1)
         {
             mSoundEnabled = true;
         }
@@ -121,6 +136,11 @@ public class UIHandler : MonoBehaviour
         }
         soundEnabledBtnAlpha = Mathf.Clamp(soundEnabledBtnAlpha, 0, 1);
         mSoundEnabledButtonImg.color = new Color(1, 1, 1, soundEnabledBtnAlpha);
+
+        mWayFinderObjectTransform.position = new Vector3(mWayFinderObjectTransform.position.x, Mathf.Sin(Time.time * mWayFinderAnimationSpeed) * mWayFinderAnimationHeight, mWayFinderObjectTransform.position.z);
+
+        mWayFinderObjectTransform.RotateAround(mmWayFinderObjectRenderer.bounds.center, new Vector3(0, 0, 1), mWayFinderAnimationRotationAmount * Mathf.Sin(Time.time * mWayFinderAnimationRotationSpeed));
+        mWayFinderObjectTransform.RotateAround(mmWayFinderObjectRenderer.bounds.center, new Vector3(1, 0, 0), mWayFinderAnimationRotationAmount * Mathf.Sin(Time.time * mWayFinderAnimationRotationSpeed));
 
         if (!mButtonFlashAnimating)
             return;
