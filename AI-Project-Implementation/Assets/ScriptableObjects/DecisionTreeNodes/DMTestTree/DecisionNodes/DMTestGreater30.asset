@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65be0581856aa1f4295902b14355f7f5, type: 3}
+  m_Name: DMTestGreater30
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: DMTestGreater30
+  mWindowID: 3
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: -977
+    y: 568
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: 166a9c0c3816b8542bc2578c0ab928e1, type: 2}
+  TrueNode: {fileID: 11400000, guid: daf303c1af9bc454084517129cd1277f, type: 2}
+  FalseNode: {fileID: 11400000, guid: 728bf0e1fd9c31e45bc665e904bbfffa, type: 2}
+  TrueAction: {fileID: 0}
+  FalseAction: {fileID: 0}

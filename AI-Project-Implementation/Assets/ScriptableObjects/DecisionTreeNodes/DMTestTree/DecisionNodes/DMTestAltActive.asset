@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 591866e45afb0b8479284b8abe9794ff, type: 3}
+  m_Name: DMTestAltActive
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: DMTestAltActive
+  mWindowID: 21
+  mEditableDecisionRect:
+    serializedVersion: 2
+    x: -377
+    y: 368
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 0}
+  TrueNode: {fileID: 11400000, guid: b2a7ffb460cc20b4984ce8d6e58ac1df, type: 2}
+  FalseNode: {fileID: 11400000, guid: 3cee3ceb3e832a942bd1153945c4d972, type: 2}
+  TrueAction: {fileID: 0}
+  FalseAction: {fileID: 0}

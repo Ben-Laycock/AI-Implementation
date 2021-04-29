@@ -9,19 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbe92dc1809430c46a7ad82b8d452dd9, type: 3}
-  m_Name: IsPlayerTooClose
+  m_Script: {fileID: 11500000, guid: 65be0581856aa1f4295902b14355f7f5, type: 3}
+  m_Name: DMTestGreater30 1
   m_EditorClassIdentifier: 
-  mEditibleNodeName: IsPlayerTooClose
+  mEditibleNodeName: DMTestGreater30
   mWindowID: 2
   mEditableDecisionRect:
     serializedVersion: 2
-    x: 920
-    y: 505
+    x: -77
+    y: 768
     width: 200
     height: 200
-  mParentDecision: {fileID: 11400000, guid: 81ce23d4eae1ab642a8dd9cf173ce5da, type: 2}
+  mParentDecision: {fileID: 11400000, guid: 3cee3ceb3e832a942bd1153945c4d972, type: 2}
   TrueNode: {fileID: 0}
   FalseNode: {fileID: 0}
-  TrueAction: {fileID: 11400000, guid: a6b34dfcb80685f4c9cccfebb1807355, type: 2}
-  FalseAction: {fileID: 11400000, guid: cb5362cbd4d27124e9356529f63c9df2, type: 2}
+  TrueAction: {fileID: 11400000, guid: 86465ff017aa2334db62b45aa7d2e5af, type: 2}
+  FalseAction: {fileID: 11400000, guid: 7e7650d232134e44d904355feb0b57c3, type: 2}

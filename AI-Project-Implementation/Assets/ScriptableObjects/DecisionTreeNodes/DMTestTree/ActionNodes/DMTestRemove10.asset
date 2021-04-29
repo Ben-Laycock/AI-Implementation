@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 088bac0dcb5ea034a81b02f35e86dc22, type: 3}
+  m_Name: DMTestRemove10
+  m_EditorClassIdentifier: 
+  mEditibleNodeName: DMTestRemove10
+  mWindowID: 11
+  mEditableActionRect:
+    serializedVersion: 2
+    x: -1477
+    y: 968
+    width: 200
+    height: 200
+  mParentDecision: {fileID: 11400000, guid: daf303c1af9bc454084517129cd1277f, type: 2}

@@ -9,19 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6cc18a54d934dd419292c1000aeaeba, type: 3}
-  m_Name: IsBoidInAttackZone
+  m_Script: {fileID: 11500000, guid: f7e15fbc1b137d749950d720ae9b7928, type: 3}
+  m_Name: DMTestGreater20
   m_EditorClassIdentifier: 
-  mEditibleNodeName: IsBoidInAttackZone
+  mEditibleNodeName: DMTestGreater20
   mWindowID: 1
   mEditableDecisionRect:
     serializedVersion: 2
-    x: 320
-    y: 505
+    x: -677
+    y: 768
     width: 200
     height: 200
-  mParentDecision: {fileID: 11400000, guid: 81ce23d4eae1ab642a8dd9cf173ce5da, type: 2}
+  mParentDecision: {fileID: 11400000, guid: b2a7ffb460cc20b4984ce8d6e58ac1df, type: 2}
   TrueNode: {fileID: 0}
   FalseNode: {fileID: 0}
-  TrueAction: {fileID: 11400000, guid: 2b654b8d498580948a81b761a655a943, type: 2}
-  FalseAction: {fileID: 11400000, guid: a23a4070e0264904b8f41dccefbd3455, type: 2}
+  TrueAction: {fileID: 11400000, guid: fe37894f204d47d459605e9556516986, type: 2}
+  FalseAction: {fileID: 11400000, guid: 41f04e913b0d8b2488810c7d11c6934c, type: 2}

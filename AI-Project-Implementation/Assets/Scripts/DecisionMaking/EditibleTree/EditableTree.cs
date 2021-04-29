@@ -136,8 +136,8 @@ public abstract class EditableDecision : ScriptableObject
     public EditableAction TrueAction = null;
     public EditableAction FalseAction = null;
 
-    public abstract void MakeDecision(AgentHandler agentInformation);
-
+    public virtual void MakeDecision(AgentHandler agentInformation) { }
+    
     public void RunChildDecision(AgentHandler agentInformation, bool value)
     {
         if (value)
@@ -169,6 +169,38 @@ public abstract class EditableDecision : ScriptableObject
         //Debug.Log("No Further Decisions Or Actions!");
     }
 
+    public virtual void MakeDecision(DMTestObjectScript agentInformation) { }
+
+    public void RunChildDecision(DMTestObjectScript agentInformation, bool value)
+    {
+        if (value)
+        {
+            if (TrueNode != null)
+            {
+                TrueNode.MakeDecision(agentInformation);
+                return;
+            }
+            else if (TrueAction != null)
+            {
+                TrueAction.TakeAction(agentInformation);
+                return;
+            }
+        }
+        else
+        {
+            if (FalseNode != null)
+            {
+                FalseNode.MakeDecision(agentInformation);
+                return;
+            }
+            else if (FalseAction != null)
+            {
+                FalseAction.TakeAction(agentInformation);
+                return;
+            }
+        }
+        //Debug.Log("No Further Decisions Or Actions!");
+    }
 }
 
 [System.Serializable]
@@ -180,5 +212,6 @@ public abstract class EditableAction : ScriptableObject
     [SerializeField] public Rect mEditableActionRect;
     [SerializeField] public EditableDecision mParentDecision = null;
 
-    public abstract void TakeAction(AgentHandler agentInformation);
+    public virtual void TakeAction(AgentHandler agentInformation) { }
+    public virtual void TakeAction(DMTestObjectScript agentInformation) { }
 }
