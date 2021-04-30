@@ -181,7 +181,7 @@ public class TestBoid : MonoBehaviour
         {
             if (ReferenceEquals(this, other)) continue; // Continue to next boid, testing against self?
 
-            //if (Vector3.Angle(transform.forward, (other.transform.position - transform.position)) > mSeparationAngle) continue;
+            if (Vector3.Angle(transform.forward, (other.transform.position - transform.position)) > mSeparationAngle) continue;
 
             float distanceToNeighbour = Vector3.SqrMagnitude(transform.position - other.transform.position);
             // Move to next neighbour if current is too far away or in the same position as this boid
@@ -218,7 +218,7 @@ public class TestBoid : MonoBehaviour
             if (!other.GetShouldFlock()) continue; // Continue to next, current isnt flocking
             if (ReferenceEquals(this, other)) continue; // Continue to next, testing against self?
 
-            //if (Vector3.Angle(transform.forward, (other.transform.position - transform.position)) > mAlignmentAngle) continue;
+            if (Vector3.Angle(transform.forward, (other.transform.position - transform.position)) > mAlignmentAngle) continue;
 
             float distanceToNeighbour = Vector3.SqrMagnitude(transform.position - other.transform.position);
             // Move to next neighbour if current is too far away or in the same position as this boid
@@ -250,7 +250,7 @@ public class TestBoid : MonoBehaviour
             if (!other.GetShouldFlock()) continue; // Continue to next, current isnt flocking
             if (ReferenceEquals(this, other)) continue; // Continue to next boid, testing against self?
 
-            //if (Vector3.Angle(transform.forward, (other.transform.position - transform.position)) > mCohesionAngle) continue;
+            if (Vector3.Angle(transform.forward, (other.transform.position - transform.position)) > mCohesionAngle) continue;
 
             float distanceToNeighbour = Vector3.SqrMagnitude(transform.position - other.transform.position);
             // Move to next neighbour if current is too far away or in the same position as this boid
