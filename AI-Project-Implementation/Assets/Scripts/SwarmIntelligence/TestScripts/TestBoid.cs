@@ -101,7 +101,7 @@ public class TestBoid : MonoBehaviour
 
         // Move boid
         transform.position += mVelocity * Time.deltaTime;
-        Debug.DrawRay(transform.position, mVelocity.normalized, Color.blue, 0.1f);
+        //Debug.DrawRay(transform.position, mVelocity.normalized, Color.blue, 0.1f);
 
         // Rotate boid if moving
         if (mVelocity.normalized != Vector3.zero)
@@ -140,10 +140,10 @@ public class TestBoid : MonoBehaviour
         //if (Physics.SphereCast(new Ray(transform.position, directionToTarget.normalized), mCollisionRadiusCheck, directionToTarget.magnitude, mCollisionDetectionMask))
         if (Physics.Raycast(new Ray(transform.position, directionToTarget.normalized), argRange, mCollisionDetectionMask))
         {
-            Debug.DrawRay(transform.position, directionToTarget.normalized * argRange, Color.red, 0.1f);
+            //Debug.DrawRay(transform.position, directionToTarget.normalized * argRange, Color.red, 0.1f);
             return false;
         }
-        Debug.DrawRay(transform.position, directionToTarget.normalized * argRange, Color.green, 0.1f);
+        //Debug.DrawRay(transform.position, directionToTarget.normalized * argRange, Color.green, 0.1f);
         return true;
     }
 

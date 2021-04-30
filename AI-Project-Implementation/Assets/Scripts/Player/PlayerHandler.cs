@@ -27,6 +27,11 @@ public class PlayerHandler : MonoBehaviour, IDamageable
     private PlayerUIHandler mPlayerUIHandler;
     private MainSystem mMainSystemScript;
 
+    public MainSystem GetMainSystem()
+    {
+        return mMainSystemScript;
+    }
+
     private void Start()
     {
         

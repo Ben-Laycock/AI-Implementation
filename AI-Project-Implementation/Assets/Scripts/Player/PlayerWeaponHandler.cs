@@ -60,7 +60,7 @@ public class PlayerWeaponHandler : MonoBehaviour
             mPlayerHandler.GetPlayerUIHandler().SwitchSelectedWeapon();
         }
 
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButton(0) && mPlayerHandler.GetMainSystem().GetCurrentGameState() == GameState.Running)
         {
             switch (mCurrentWeaponType)
             {

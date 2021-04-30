@@ -18,6 +18,12 @@ public class Boids : MonoBehaviour
     [SerializeField] private float mMaxSteering = 0.1f;
     [SerializeField] private bool mUseSmoothRotation = false;
 
+    [Header("View Angles")]
+    [SerializeField] private bool mUseViewingAngles = true;
+    [SerializeField] private float mSeparationAngle = 130f;
+    [SerializeField] private float mAlignmentAngle = 70f;
+    [SerializeField] private float mCohesionAngle = 70f;
+
     [Space]
     [Header("View Distances")]
     [SerializeField] private float mSeparationDistance = 1f;
@@ -95,7 +101,7 @@ public class Boids : MonoBehaviour
 
         // Move boid
         transform.position += mVelocity * Time.deltaTime;
-        Debug.DrawRay(transform.position, mVelocity.normalized, Color.blue, 0.1f);
+        //Debug.DrawRay(transform.position, mVelocity.normalized, Color.blue, 0.1f);
 
         // Rotate boid if moving
         if (mVelocity.normalized != Vector3.zero)
@@ -134,10 +140,10 @@ public class Boids : MonoBehaviour
         //if (Physics.SphereCast(new Ray(transform.position, directionToTarget.normalized), mCollisionRadiusCheck, directionToTarget.magnitude, mCollisionDetectionMask))
         if (Physics.Raycast(new Ray(transform.position, directionToTarget.normalized), argRange, mCollisionDetectionMask))
         {
-            Debug.DrawRay(transform.position, directionToTarget.normalized * argRange, Color.red, 0.1f);
+            //Debug.DrawRay(transform.position, directionToTarget.normalized * argRange, Color.red, 0.1f);
             return false;
         }
-        Debug.DrawRay(transform.position, directionToTarget.normalized * argRange, Color.green, 0.1f);
+        //Debug.DrawRay(transform.position, directionToTarget.normalized * argRange, Color.green, 0.1f);
         return true;
     }
 
@@ -175,6 +181,8 @@ public class Boids : MonoBehaviour
         {
             if (ReferenceEquals(this, other)) continue; // Continue to next boid, testing against self?
 
+            if (mUseViewingAngles && Vector3.Angle(transform.forward, (other.transform.position - transform.position)) > mSeparationAngle) continue;
+
             float distanceToNeighbour = Vector3.SqrMagnitude(transform.position - other.transform.position);
             // Move to next neighbour if current is too far away or in the same position as this boid
             if (distanceToNeighbour > separationDistanceSqrd || distanceToNeighbour <= 0) continue;
@@ -210,6 +218,8 @@ public class Boids : MonoBehaviour
             if (!other.GetShouldFlock()) continue; // Continue to next, current isnt flocking
             if (ReferenceEquals(this, other)) continue; // Continue to next, testing against self?
 
+            if (mUseViewingAngles && Vector3.Angle(transform.forward, (other.transform.position - transform.position)) > mAlignmentAngle) continue;
+
             float distanceToNeighbour = Vector3.SqrMagnitude(transform.position - other.transform.position);
             // Move to next neighbour if current is too far away or in the same position as this boid
             if (distanceToNeighbour > alignmentDistanceSqrd || distanceToNeighbour <= 0) continue;
@@ -239,6 +249,8 @@ public class Boids : MonoBehaviour
         {
             if (!other.GetShouldFlock()) continue; // Continue to next, current isnt flocking
             if (ReferenceEquals(this, other)) continue; // Continue to next boid, testing against self?
+
+            if (mUseViewingAngles && Vector3.Angle(transform.forward, (other.transform.position - transform.position)) > mCohesionAngle) continue;
 
             float distanceToNeighbour = Vector3.SqrMagnitude(transform.position - other.transform.position);
             // Move to next neighbour if current is too far away or in the same position as this boid

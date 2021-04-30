@@ -24,7 +24,7 @@ public class FollowPathState : FSMState
     {
         if (mPathToFollow != null) mPathToFollow.Clear();
         if (mCondensedPath != null) mCondensedPath.Clear();
-        mAgent.BoidController.SetTarget(Vector3.zero);
+        mAgent.BoidController.SetTarget(GameConstants.Instance.PlayerObject.transform.position);
     }
 
     public override void Reason(GameObject player, AgentHandler agent)
@@ -54,11 +54,15 @@ public class FollowPathState : FSMState
             {
                 int furthestVisisbleIndex = PathHelpers.FindFurthestVisiblePointIndex(mCondensedPath, agent.transform.position, LayerMask.GetMask("Default"));
                 agent.BoidController.SetTarget(mCondensedPath[furthestVisisbleIndex]);
+                if (Vector3.Angle(agent.transform.forward, (mCondensedPath[furthestVisisbleIndex] - agent.transform.position)) > 30)
+                {
+                    agent.transform.forward = (mCondensedPath[furthestVisisbleIndex] - agent.transform.position);
+                }
             }
             if (Vector3.SqrMagnitude(agent.transform.position - mCondensedPath[mCondensedPath.Count-1]) < distanceThresholdSqrd)
             {
                 agent.BoidController.SetTarget(player.transform.position);
-                //CalculateNewPath();
+                CalculateNewPath();
             }
         }
         agent.BoidController.SetShouldFlock(true);
@@ -82,7 +86,11 @@ public class FollowPathState : FSMState
         mCondensedPath.Clear();
 
         mPathToFollow = PathFindingData.Instance.GetPath(GameConstants.Instance.PlayerObject, mAgent.transform.position);
-        mCondensedPath = PathHelpers.CondensePathPoints(mPathToFollow, Mathf.Infinity, 0.45f, LayerMask.GetMask("Default"));
+        //mCondensedPath = PathHelpers.CondensePathPoints(mPathToFollow, Mathf.Infinity, 0.45f, LayerMask.GetMask("Default"));
+        foreach (Vector3Int v in mPathToFollow)
+        {
+            mCondensedPath.Add(v);
+        }
 
         if (mCondensedPath != null && mCondensedPath.Count > 0)
         {

@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ed0a427ce9a45d4db657ead15f70acc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mTarget: {x: 0, y: 0, z: 0}
+  mTarget: {x: 100, y: 100, z: 100}
   mCollisionDetectionMask:
     serializedVersion: 2
     m_Bits: 1
@@ -107,6 +107,10 @@ MonoBehaviour:
   mMinMaxSpeed: {x: 5, y: 10}
   mMaxSteering: 5
   mUseSmoothRotation: 0
+  mUseViewingAngles: 0
+  mSeparationAngle: 130
+  mAlignmentAngle: 70
+  mCohesionAngle: 70
   mSeparationDistance: 3
   mAlignmentDistance: 6
   mCohesionDistance: 6

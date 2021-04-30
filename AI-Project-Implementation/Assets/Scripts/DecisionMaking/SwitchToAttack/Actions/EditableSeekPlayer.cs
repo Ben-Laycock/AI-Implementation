@@ -11,6 +11,7 @@ public class EditableSeekPlayer : EditableAction
         distanceToPlayer *= 0.01f;
         float mSeekWeight = distanceToPlayer * 1f;
 
+        agentScript.BoidController.SetTarget(GameConstants.Instance.PlayerObject.transform.position);
         agentScript.BoidController.SeekPoint(GameConstants.Instance.PlayerObject.transform.position, mSeekWeight);
         agentScript.BoidController.SetShouldFlock(true);
     }

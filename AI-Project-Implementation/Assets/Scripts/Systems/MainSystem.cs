@@ -131,4 +131,9 @@ public class MainSystem : MonoBehaviour
         mFinalScore = value;
     }
 
+    public GameState GetCurrentGameState()
+    {
+        return mCurrentGameState;
+    }
+
 }
