@@ -196,11 +196,15 @@ public class UIHandler : MonoBehaviour
         {
             PlayerPrefs.SetInt("SoundEnabled", 0);
         }
+
+        AudioSystem.Instance.PlaySound("Weird", 0.1f);
     }
 
     public void ChangeGameVolume()
     {
         PlayerPrefs.SetFloat("SoundSliderValue", mSoundSlider.value);
+
+        AudioSystem.Instance.PlaySound("Weird", 0.1f);
     }
 
     public void PlayGame()
@@ -209,6 +213,7 @@ public class UIHandler : MonoBehaviour
         mMainMenuCanvas.SetActive(false);
         mLoadingCanvas.SetActive(true);
         op.allowSceneActivation = true;
+        AudioSystem.Instance.PlaySound("PlayGameSound", 0.1f);
     }
 
     public void ExitGame()
