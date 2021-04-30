@@ -4847,6 +4847,10 @@ PrefabInstance:
       propertyPath: mUnSelectedWeaponImage
       value: 
       objectReference: {fileID: 1831325648}
+    - target: {fileID: 3764564060081837300, guid: a3042ecaf5bebe74bb2daab90531c249, type: 3}
+      propertyPath: mKillObjectiveTextObject
+      value: 
+      objectReference: {fileID: 829453268}
     - target: {fileID: 3764564060081837301, guid: a3042ecaf5bebe74bb2daab90531c249, type: 3}
       propertyPath: m_Pivot.x
       value: 0

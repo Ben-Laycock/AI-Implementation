@@ -138,6 +138,8 @@ public class AgentHandler : MonoBehaviour, IDamageable
 
     public void KillAgent()
     {
+        GameConstants.Instance.PlayerObject.GetComponent<PlayerHandler>().IncreaseKilledSpaceShipsCount(1);
+
         int randomExplosion = Random.Range(0, 3);
         if (randomExplosion == 0)
             AudioSystem.Instance.PlaySound("Explosion", 0.08f);
