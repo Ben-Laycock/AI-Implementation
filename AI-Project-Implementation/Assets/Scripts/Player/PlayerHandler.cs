@@ -12,6 +12,7 @@ public class PlayerHandler : MonoBehaviour, IDamageable
     [SerializeField] private float mMaxEnergy = 100.0f;
 
     [SerializeField] private int mScore = 0;
+    [SerializeField] private int mNumberOfSpaceShipsKilled = 0;
     [SerializeField] private int mNumberOfRelicsCollected = 0;
     [SerializeField] private int mMaxRelicNumber = 5;
 
@@ -27,6 +28,8 @@ public class PlayerHandler : MonoBehaviour, IDamageable
     private PlayerUIHandler mPlayerUIHandler;
     private MainSystem mMainSystemScript;
 
+    private bool mPortalActive = false;
+    
     public MainSystem GetMainSystem()
     {
         return mMainSystemScript;
@@ -56,6 +59,12 @@ public class PlayerHandler : MonoBehaviour, IDamageable
             mMainSystemScript.SetFinalScore(mScore);
             mMainSystemScript.SetGameOver(true);
         }
+
+        if (mNumberOfRelicsCollected >= mMaxRelicNumber && mNumberOfSpaceShipsKilled >= 20 && !mPortalActive)
+        {
+            mPortalActive = true;
+            mGameOverPortal.ActivatePortal();
+        }
     }
 
     public void IncreaseScore(int amount)
@@ -68,10 +77,12 @@ public class PlayerHandler : MonoBehaviour, IDamageable
     {
         mNumberOfRelicsCollected += amount;
         mPlayerUIHandler.UpdateObjective(mNumberOfRelicsCollected, mMaxRelicNumber);
-        if(mNumberOfRelicsCollected >= mMaxRelicNumber)
-        {
-            mGameOverPortal.ActivatePortal();
-        }
+    }
+
+    public void IncreaseKilledSpaceShipsCount(int amount)
+    {
+        mNumberOfSpaceShipsKilled += amount;
+        mPlayerUIHandler.UpdateKillObjective(mNumberOfSpaceShipsKilled, 20);
     }
 
     public void ChangePlayerHealthBy(float amount)

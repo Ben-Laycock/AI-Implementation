@@ -13,6 +13,7 @@ public class PlayerUIHandler : MonoBehaviour
     [SerializeField] private GameObject mScoreObject;
     [SerializeField] private GameObject mWaveObject;
     [SerializeField] private GameObject mObjectiveObject;
+    [SerializeField] private GameObject mKillObjectiveTextObject;
 
     [Header("Weapon Images")]
     [SerializeField] private GameObject mSelectedWeaponImage;
@@ -26,12 +27,14 @@ public class PlayerUIHandler : MonoBehaviour
     private Text mScoreText;
     private Text mWaveText;
     private Text mObjectiveText;
+    private Text mKillObjectiveText;
 
     private void Start()
     {
         mScoreText = mScoreObject.GetComponent<Text>();
         mWaveText = mWaveObject.GetComponent<Text>();
         mObjectiveText = mObjectiveObject.GetComponent<Text>();
+        mKillObjectiveText = mKillObjectiveTextObject.GetComponent<Text>();
 
         mSelectedImage = mSelectedWeaponImage.GetComponent<Image>();
         mUnSelectedImage = mUnSelectedWeaponImage.GetComponent<Image>();
@@ -60,6 +63,13 @@ public class PlayerUIHandler : MonoBehaviour
     public void UpdateObjective(int amount, int max)
     {
         mObjectiveText.text = "COLLECT RELICS " + amount + "/" + max;
+    }
+
+    public void UpdateKillObjective(int amount, int max)
+    {
+        if(amount > max) return;
+
+        mKillObjectiveText.text = "KILL SPACE SHIPS " + amount + "/" + max;
     }
 
     public void SwitchSelectedWeapon()

@@ -24,6 +24,11 @@ public class MainSystem : MonoBehaviour
     [Header("Canvas Elements")]
     [SerializeField] private GameObject mGameOverScoreObject;
 
+    [Header("Background Music")]
+    [SerializeField] private GameObject mBackgroundMusicObject;
+
+    private AudioSource mBackgroundAudioSource;
+
     private Text mScoreText;
 
     private GameState mCurrentGameState = GameState.Running;
@@ -35,15 +40,29 @@ public class MainSystem : MonoBehaviour
     {
         Time.timeScale = 1;
         mScoreText = mGameOverScoreObject.GetComponent<Text>();
+
+        mBackgroundAudioSource = mBackgroundMusicObject.GetComponent<AudioSource>();
+        mBackgroundAudioSource.volume = 0.03f * PlayerPrefs.GetFloat("SoundSliderValue", 1.0f);
     }
 
     private void Update()
     {
+        //AudioSystem.Instance.GetAudioObject()
+
+        if(mCurrentGameState == GameState.Paused && mBackgroundAudioSource.isPlaying)
+            mBackgroundAudioSource.Pause();
+        else if(mCurrentGameState == GameState.Running && mBackgroundAudioSource.isPlaying && !mGameOver)
+            mBackgroundAudioSource.UnPause();
+        else if (!mBackgroundAudioSource.isPlaying && !mGameOver && mCurrentGameState == GameState.Running)
+            mBackgroundAudioSource.Play();
+
         if (mRestartingScene) return;
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if(mCurrentGameState == GameState.Running)
+            AudioSystem.Instance.PlaySound("Weird", 0.1f);
+
+            if (mCurrentGameState == GameState.Running)
             {
                 mCurrentGameState = GameState.Paused;
                 mPauseMenuCanvas.SetActive(true);
@@ -58,12 +77,15 @@ public class MainSystem : MonoBehaviour
         }
 
         if(mGameOver) {
+            mBackgroundAudioSource.Stop();
+
             Time.timeScale = 0;
             mCurrentGameState = GameState.GameOver;
             if(!mGameOverCanvas.activeSelf)
             {
                 mScoreText.text = "SCORE: " + mFinalScore;
                 mGameOverCanvas.SetActive(true);
+                AudioSystem.Instance.PlaySound("GameOverSound", 0.1f);
             }
         }
 
@@ -89,6 +111,7 @@ public class MainSystem : MonoBehaviour
 
     public void ResumeGame()
     {
+        AudioSystem.Instance.PlaySound("Weird", 0.1f);
         mCurrentGameState = GameState.Running;
         mPauseMenuCanvas.SetActive(false);
         Time.timeScale = 1;
@@ -96,6 +119,7 @@ public class MainSystem : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
+        AudioSystem.Instance.PlaySound("Weird", 0.1f);
         PoolSystem.Instance.ResetPools();
         Time.timeScale = 1;
         mCurrentGameState = GameState.Running;
@@ -104,20 +128,27 @@ public class MainSystem : MonoBehaviour
 
     public void QuitGame()
     {
+        AudioSystem.Instance.PlaySound("Weird", 0.1f);
         Time.timeScale = 1;
         Application.Quit();
     }
 
     public void RestartGame()
     {
+        AudioSystem.Instance.PlaySound("Weird", 0.1f);
         mRestartingScene = true;
+
         PoolSystem.Instance.ResetPools();
         Time.timeScale = 1;
+
         mCurrentGameState = GameState.Running;
+
         AsyncOperation op = SceneManager.LoadSceneAsync("GameScene", LoadSceneMode.Single);
+
         mGameOverCanvas.SetActive(false);
         mPauseMenuCanvas.SetActive(false);
         mLoadingCanvas.SetActive(true);
+
         op.allowSceneActivation = true;
     }
 
